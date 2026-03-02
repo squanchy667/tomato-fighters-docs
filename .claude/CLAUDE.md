@@ -6,7 +6,7 @@ This is the **documentation repo** for TomatoFighters. It contains task specs, d
 
 All development tools (commands, agents, skills) live in the **code repo**:
 ```
-../tomato-fighters/.claude/    ← 8 commands, 17 agents, 4 skills
+../tomato-fighters/.claude/    ← 12 commands, 20 agents, 4 skills
 ```
 
 Open Claude Code in `tomato-fighters/` (the sibling directory), not here.
