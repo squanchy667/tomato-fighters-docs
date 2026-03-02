@@ -10,7 +10,8 @@
 | **Agent** | so-architect |
 | **Depends On** | T001 |
 | **Blocks** | T007, T008 |
-| **Status** | PENDING |
+| **Status** | DONE |
+| **Completed** | 2026-03-02 |
 | **Branch** | `pillar2/T006-character-base-stats` |
 
 ## Objective

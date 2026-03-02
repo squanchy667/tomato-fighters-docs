@@ -1,11 +1,11 @@
 # Tomato Fighters — Task Board
 
-> 4/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 6/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
 ## Phase 1: Foundation
-> Status: IN_PROGRESS | Tasks: 4/13 | Weeks: 1-2
+> Status: IN_PROGRESS | Tasks: 6/13 | Weeks: 1-2
 > Goal: Shared contracts established, one character moves and hits a dummy enemy, camera follows
 
 ### T001: Shared Interfaces, Enums, and Data Structures [DONE]
@@ -70,25 +70,25 @@
   - [ ] TelegraphType field (Normal/Unstoppable)
   - [ ] CreateAssetMenu attribute for easy creation
 
-### T006: CharacterBaseStats ScriptableObject [PENDING]
+### T006: CharacterBaseStats ScriptableObject [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 2 | **Depends on:** T001
 - **Files:** `Shared/Data/CharacterBaseStats.cs`, `ScriptableObjects/Characters/BrutorStats.asset`, `SlasherStats.asset`, `MysticaStats.asset`, `ViperStats.asset`
 - **Description:** ScriptableObject defining the 8 base stats per character (HP, DEF, ATK, SPD, MNA, MRG, CRT, PRS). Create all 4 character stat assets with the values from CHARACTER-ARCHETYPES.md. Include passive ability identifier.
 - **Acceptance:**
-  - [ ] CharacterBaseStats SO with 8 stat fields + passive ID
-  - [ ] 4 character assets with correct stat values
-  - [ ] Stat values match CHARACTER-ARCHETYPES.md exactly
+  - [x] CharacterBaseStats SO with 8 stat fields + passive ID
+  - [x] 4 character assets with correct stat values
+  - [x] Stat values match CHARACTER-ARCHETYPES.md exactly
 
-### T007: CharacterStatCalculator [PENDING]
+### T007: CharacterStatCalculator [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T006
 - **Files:** `Paths/CharacterStatCalculator.cs`
 - **Description:** Plain C# class (not MonoBehaviour) for testability. Calculates final stats: Base + Sum(PathBonuses) then multiply by RitualMultiplier, TrinketMultiplier, SoulTreeBonus. Each stat independently calculated. Returns a FinalStats struct.
 - **Acceptance:**
-  - [ ] Pure C# class, not MonoBehaviour
-  - [ ] Correct formula: (Base + PathBonuses) * Ritual * Trinket * SoulTree
-  - [ ] Independent per-stat calculation
-  - [ ] Returns FinalStats with all 8 stats
-  - [ ] Unit testable with mock inputs
+  - [x] Pure C# class, not MonoBehaviour
+  - [x] Correct formula: (Base + PathBonuses) * Ritual * Trinket * SoulTree
+  - [x] Independent per-stat calculation
+  - [x] Returns FinalStats with all 8 stats
+  - [x] Unit testable with mock inputs
 
 ### T008: PathData ScriptableObject — 12 Paths [PENDING]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 2 | **Depends on:** T001, T006

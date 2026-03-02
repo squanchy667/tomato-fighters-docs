@@ -10,7 +10,8 @@
 | **Agent** | roguelite-agent |
 | **Depends On** | T006 |
 | **Blocks** | T017, T025 |
-| **Status** | PENDING |
+| **Status** | DONE |
+| **Completed** | 2026-03-02 |
 | **Branch** | `pillar2/T007-stat-calculator` |
 
 ## Objective

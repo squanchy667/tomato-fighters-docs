@@ -1,5 +1,19 @@
 # Changelog
 
+## [Phase 1] — 2026-03-03 (Docs sync)
+
+### Status Updates
+- **T006: PENDING → DONE** — code and 4 character assets existed since 2026-03-02 but board/spec were never updated
+- **T007: PENDING → DONE** — CharacterStatCalculator, FinalStats, StatModifierInput all exist; board/spec were never updated
+- **T004: IN PROGRESS** — hit-confirm, cancel flags (dash/jump), movement lock, stagger/death resets now implemented. Remaining: InputBufferSystem integration (deferred). Cancel input buffering added to ComboController with `TryDashCancel`/`TryJumpCancel` and `ComboInteractionConfig` SO for priority/reset config.
+
+### Deviations Flagged (require human review)
+- T002 spec lists files under `Characters/` but actual code is under `Combat/Movement/`
+- T001 has undocumented additions: `AttackMode.cs` enum, `TomatoFighters.Characters.asmdef`
+- T003 acceptance criteria were retroactively simplified (changelog 2026-03-02 already flagged this)
+
+---
+
 ## [Phase 1] — 2026-03-02 (Docs sync + T004 audit)
 
 ### Status Updates
