@@ -27,11 +27,29 @@
 * [Character Archetypes](design-specs/CHARACTER-ARCHETYPES.md)
 * [Absolum Reference](design-specs/absolum-reverse-engineering-unity-guide.md)
 * [AgentPilot Bootstrap](design-specs/AGENTPILOT-BOOTSTRAP.md)
+* [Agent Pilot Guide v1](design-specs/agent-pilot-guide-project-talamh.md)
+* [Agent Pilot Guide v2](design-specs/agent-pilot-guide-project-talamh-v2.md)
 
 ## Product
 
 * [Features](product/features.md)
 * [Roadmap](product/roadmap.md)
+
+## Tasks — Phase 1
+
+* [T001: Shared Contracts](tasks/phase-1/T001-shared-contracts.md)
+* [T002: CharacterController2D](tasks/phase-1/T002-character-controller.md)
+* [T003: InputBufferSystem](tasks/phase-1/T003-input-buffer.md)
+* [T004: Combo Chain](tasks/phase-1/T004-combo-chain.md)
+* [T005: AttackData SO](tasks/phase-1/T005-attack-data-so.md)
+* [T006: CharacterBaseStats SO](tasks/phase-1/T006-character-base-stats.md)
+* [T007: StatCalculator](tasks/phase-1/T007-stat-calculator.md)
+* [T008: PathData SO](tasks/phase-1/T008-path-data-so.md)
+* [T009: CurrencyManager](tasks/phase-1/T009-currency-manager.md)
+* [T010: WaveManager](tasks/phase-1/T010-wave-manager.md)
+* [T011: EnemyBase](tasks/phase-1/T011-enemy-base.md)
+* [T012: CameraController](tasks/phase-1/T012-camera-controller.md)
+* [T013: Test Scene](tasks/phase-1/T013-test-scene.md)
 
 ## Resources
 

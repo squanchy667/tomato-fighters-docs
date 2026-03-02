@@ -1,26 +1,26 @@
 # Tomato Fighters — Task Board
 
-> 0/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 1/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
 ## Phase 1: Foundation
-> Status: PENDING | Tasks: 0/13 | Weeks: 1-2
+> Status: IN_PROGRESS | Tasks: 1/13 | Weeks: 1-2
 > Goal: Shared contracts established, one character moves and hits a dummy enemy, camera follows
 
-### T001: Shared Interfaces, Enums, and Data Structures [PENDING]
+### T001: Shared Interfaces, Enums, and Data Structures [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** ALL | **Depends on:** none
 - **Files:** `Shared/Interfaces/ICombatEvents.cs`, `Shared/Interfaces/IBuffProvider.cs`, `Shared/Interfaces/IPathProvider.cs`, `Shared/Interfaces/IDamageable.cs`, `Shared/Interfaces/IAttacker.cs`, `Shared/Interfaces/IRunProgressionEvents.cs`, `Shared/Enums/*.cs`, `Shared/Data/*.cs`
 - **Description:** Define ALL cross-pillar interface contracts, shared enums (CharacterType, PathType, StatType, DamageType, RitualTrigger, TelegraphType, RitualFamily, RitualCategory), and data structures (DamagePacket, AttackData base, StrikeEventData, etc.). This is a sync session — all 3 devs together.
 - **Acceptance:**
-  - [ ] ICombatEvents with all 12 event signatures
-  - [ ] IBuffProvider with path-extended queries
-  - [ ] IPathProvider with tier + ability queries
-  - [ ] IDamageable + IAttacker interfaces
-  - [ ] IRunProgressionEvents with path selection events
-  - [ ] All shared enums defined
-  - [ ] DamagePacket struct defined
-  - [ ] Compiles with zero warnings
+  - [x] ICombatEvents with all 12 event signatures
+  - [x] IBuffProvider with path-extended queries
+  - [x] IPathProvider with tier + ability queries
+  - [x] IDamageable + IAttacker interfaces
+  - [x] IRunProgressionEvents with path selection events
+  - [x] All shared enums defined
+  - [x] DamagePacket struct defined
+  - [x] Compiles with zero warnings
 
 ### T002: CharacterController2D — Brutor First [PENDING]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T001
