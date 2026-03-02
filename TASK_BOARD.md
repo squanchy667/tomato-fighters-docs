@@ -173,12 +173,13 @@
 ### T015: HitboxManager [PENDING]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T014
 - **Files:** `Combat/HitboxManager.cs`
-- **Description:** Activate/deactivate attack colliders via Animation Events. Never in Update(). Reports hit-confirm to ComboSystem for cancel enabling. Supports multiple hitbox shapes per attack. Collision layer filtering.
+- **Description:** Activate/deactivate attack colliders via Animation Events. Never in Update(). Reports hit-confirm to ComboSystem for cancel enabling. Supports multiple hitbox shapes per attack. Collision layer filtering. **Unlocks cancel system end-to-end testing** — wires collision → `ComboController.OnHitConfirmed()` → cancel window opens.
 - **Acceptance:**
   - [ ] Animation Event-driven activation
   - [ ] Hit-confirm callback to ComboSystem
   - [ ] Multiple hitbox shapes supported
   - [ ] Layer filtering (player vs enemy)
+  - [ ] Cancel system integration tests: hit → cancel window → dash/jump cancel executes (see `.claude/dumps/cancel-buffer-tests-dump.md`)
 
 ### T016: DefenseSystem — Deflect/Clash/Dodge [PENDING]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T014

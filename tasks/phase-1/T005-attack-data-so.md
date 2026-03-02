@@ -162,6 +162,20 @@ From the character spec, Brutor's base ATK is 0.7 (low) and his strikes are desc
 - [ ] All fields use documented units (frames for timing, multipliers for damage, Vector2 for forces)
 - [ ] Compiles with zero warnings
 
+## Unlocks: Cancel System Testing
+
+T005 completion (AttackData with frame-based hitbox timing) combined with T015 (HitboxManager wiring hit detection to `OnHitConfirmed()`) unlocks end-to-end testing of the cancel system implemented in T004.
+
+**Cancel system overview:** Players can dash-cancel or jump-cancel out of combo attacks, but only after a hit connects (hit-confirm). Without hit-confirm, cancel inputs are buffered for ~0.15s. The cancel system lives in `ComboController.TryDashCancel()` / `TryJumpCancel()` with priority resolution via `ComboInteractionConfig`.
+
+**What T005 enables:** AttackData provides `hitboxStartFrame`, `hitboxActiveFrames`, and `totalFrames` — the frame data that HitboxManager (T015) needs to know when to activate hitboxes and report hit-confirms. Without this data, there's no automated path from "attack animation plays" to "hit confirmed."
+
+**Tests to add after T005 + T015:**
+- PlayMode integration tests: attack → hitbox activates → collides with enemy → `OnHitConfirmed()` fires → cancel window opens → dash/jump cancel executes
+- Cancel buffer expiry: buffer cancel input before hit, verify it's consumed when hit-confirm arrives within window
+- Per-character cancel availability: verify `canDashCancelOnHit` / `canJumpCancelOnHit` flags on ComboStep interact correctly with AttackData timing
+- See `.claude/dumps/cancel-buffer-tests-dump.md` for 11 planned PlayMode test cases (unit-level, callable now without T005)
+
 ## References
 
 - `architecture/interface-contracts.md` — AttackData field definitions, IAttacker.CurrentAttack reference
