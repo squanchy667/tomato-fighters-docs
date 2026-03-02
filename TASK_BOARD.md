@@ -44,16 +44,21 @@
   - [x] Buffer clears on state reset
   - [x] Compiles with zero warnings
 
-### T004: Basic Strike Combo Chain [DONE]
+### T004: Basic Strike Combo Chain [IN PROGRESS]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T002, T003
 - **Files:** `Combat/Combo/AttackType.cs`, `Combat/Combo/ComboState.cs`, `Combat/Combo/ComboStep.cs`, `Combat/Combo/ComboDefinition.cs`, `Combat/Combo/ComboStateMachine.cs`, `Combat/Combo/ComboController.cs`, `Combat/Combo/ComboDebugUI.cs`
-- **Description:** Branching combo tree with light/heavy paths. Brutor: 7-step tree (L→L→L sweep, L→H launcher, H→H ground pound). Plain C# ComboStateMachine with Tick(dt) for testability. Animation-event-driven transitions. 25 unit tests.
+- **Description:** Branching combo tree with light/heavy paths. Brutor: 7-step tree (L→L→L sweep, L→H launcher, H→H ground pound). Plain C# ComboStateMachine with Tick(dt) for testability. Animation-event-driven transitions. Hit-confirm cancel system.
 - **Acceptance:**
   - [x] Branching combo tree with light/heavy paths per step
   - [x] 7-step branching tree for Brutor with finishers
   - [x] Input window per step (configurable)
   - [x] ComboDefinition ScriptableObject with flat step array
   - [x] Plain C# ComboStateMachine testable without Unity runtime
+  - [x] Hit-confirm callback (`OnHitConfirmed`) with dash-cancel and jump-cancel
+  - [x] `canDashCancelOnHit` / `canJumpCancelOnHit` fields on ComboStep
+  - [ ] InputBufferSystem integration (consume from T003 instead of internal buffer)
+  - [x] Movement lock integration (CharacterMotor subscribes to combo events)
+  - [x] Combo resets on stagger/death (not just window expiry)
 
 ### T005: AttackData ScriptableObject [PENDING]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T001

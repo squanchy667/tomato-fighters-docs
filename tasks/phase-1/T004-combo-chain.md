@@ -10,8 +10,7 @@
 | **Agent** | combat-agent |
 | **Depends On** | T002, T003 |
 | **Blocks** | T014 |
-| **Status** | DONE |
-| **Completed** | 2026-03-02 |
+| **Status** | IN PROGRESS |
 | **Branch** | `tal` |
 
 ## Objective
@@ -97,10 +96,29 @@ The system is designed to be extended in T014 (Phase 2) for all 4 characters wit
 
 ## File Plan
 
+### Already Implemented
 | File Path | Description |
 |-----------|-------------|
-| `Combat/ComboNode.cs` | Serializable class or ScriptableObject defining a single node in the combo tree |
-| `Combat/ComboSystem.cs` | MonoBehaviour: combo state machine, InputBuffer consumer, attack flow controller |
+| `Combat/Combo/AttackType.cs` | Enum: Light, Heavy |
+| `Combat/Combo/ComboState.cs` | Enum: Idle, Attacking, ComboWindow, Finisher |
+| `Combat/Combo/ComboStep.cs` | Serializable struct: combo tree node with branching indices |
+| `Combat/Combo/ComboDefinition.cs` | ScriptableObject: flat step array with root indices |
+| `Combat/Combo/ComboStateMachine.cs` | Plain C# state machine: sequencing, input buffer, window timer |
+| `Combat/Combo/ComboController.cs` | MonoBehaviour: wires input → state machine → animation → events |
+| `Combat/Combo/ComboDebugUI.cs` | Debug overlay with auto-advance |
+| `Tests/EditMode/Combat/Combo/ComboStateMachineTests.cs` | 29 unit tests |
+
+### Remaining Work
+| File Path | Changes |
+|-----------|---------|
+| `Combat/Combo/ComboStep.cs` | +`canDashCancelOnHit`, +`canJumpCancelOnHit` fields |
+| `Combat/Combo/ComboInteractionConfig.cs` | **New SO** — cancel priority, reset triggers, movement lock flags |
+| `Combat/Combo/ComboStateMachine.cs` | +`OnHitConfirmed()`, +`hitConfirmed` flag, +`CanDashCancel`/`CanJumpCancel` properties, +`CancelPerformed()` |
+| `Combat/Combo/ComboController.cs` | +`[SerializeField] CharacterMotor motor`, +`[SerializeField] ComboInteractionConfig config`, +`RequestDashCancel()`/`RequestJumpCancel()`, +`ForceResetCombo()`, +movement lock calls, +`Debug.LogError` if no animator |
+| `Combat/Movement/CharacterMotor.cs` | +`isAttackLocked` flag, +`SetAttackLock(bool)`, +guard in `ApplyMovement()` |
+| `Characters/CharacterInputHandler.cs` | +route dash/jump through ComboController when combo is active |
+| `Tests/EditMode/Combat/Combo/ComboStateMachineTests.cs` | +tests for hit-confirm, cancel properties, forced reset |
+| `ScriptableObjects/ComboDefinitions/Brutor_ComboDefinition.asset` | Update steps with cancel flags per original spec |
 
 ## Implementation Notes
 
@@ -113,20 +131,35 @@ The system is designed to be extended in T014 (Phase 2) for all 4 characters wit
 
 ## Acceptance Criteria
 
-- [x] Branching combo tree with light/heavy paths per step (ComboStep struct with nextOnLight/nextOnHeavy indices)
-- [x] ComboStep supports branching to different nodes based on AttackType (Light/Heavy)
-- [x] ComboStateMachine: Idle → Attacking → ComboWindow → Finisher (4-state machine)
-- [x] Brutor's 7-step branching tree: L→L→L (sweep), L→H→H (launcher→slam), L→L→H (slam), H→H (ground pound)
-- [x] Each step has configurable combo window duration (per-step override or definition default)
-- [x] Input buffering during attack animations (built into ComboStateMachine)
-- [x] Animation-event-driven transitions (OnComboWindowOpen, OnFinisherEnd)
-- [x] Finisher detection when chain reaches terminal step
-- [x] Local C# events: AttackStarted, ComboDropped, FinisherStarted, ComboEnded
+### Original Requirements (from spec)
+- [x] ComboNode class with AttackData reference, input branches, input window, and cancel flags — *Partially done: ComboStep struct has branches + window + finisher flag. Missing: AttackData ref, cancel flags (see below)*
+- [x] ComboNode supports branching to different nodes based on input type — *Done via DD-1: AttackType (Light/Heavy) instead of BufferedInputType*
+- [x] ComboSystem state machine: Idle → Attacking → WindowOpen → Recovering → Idle — *Done as Idle → Attacking → ComboWindow → Finisher. Missing: Recovering state (goes direct to Idle)*
+- [x] Brutor's combo tree — *Done: 7-step branching tree (upgraded from original 4-node linear chain)*
+- [x] Each node has configurable input window duration — *Done: per-step override + definition default*
+- [x] Hit-confirm callback (`OnHitConfirmed`) enables dash-cancel and jump-cancel flags
+- [x] Dash-cancel on hit-confirm: instant check via ComboController.RequestDashCancel() (DD-5, DD-10)
+- [x] Jump-cancel on hit-confirm: instant check via ComboController.RequestJumpCancel() (DD-5, DD-10)
+- [ ] InputBufferSystem integration — *Deferred to T003 reopen (DD-10). Cancel inputs use instant checks, combo chaining keeps internal 1-slot buffer*
+- [x] CharacterMotor movement lock: ComboController calls motor.SetAttackLock(bool) (DD-6)
+- [x] ComboInteractionConfig SO: cancel priority, reset triggers, movement lock flags (DD-7)
+- [ ] Animation-driven timing via AttackData frame data — *Deferred to T005 (AttackData SO doesn't exist yet). Has animation event callbacks*
+- [x] Combo resets on: window expiry, stagger, death, dash-cancel — *ForceResetCombo() public method + config-driven reset triggers (DD-7)*
+- [x] `isFinisher` flag on final combo node — *Done*
+- [x] Compiles with zero warnings — *Done*
+
+### Implemented Beyond Original Spec
 - [x] ComboDefinition ScriptableObject with flat step array (DD-2)
 - [x] Plain C# ComboStateMachine testable without Unity runtime (DD-4)
 - [x] ComboController MonoBehaviour bridges input → state machine → animation → events
-- [x] 25 edit-mode unit tests for ComboStateMachine
-- [x] Compiles with zero warnings
+- [x] Local C# events: AttackStarted, ComboDropped, FinisherStarted, ComboEnded (DD-3)
+- [x] ComboDebugUI with auto-advance (simulates animation events without Animator)
+- [x] 29 edit-mode unit tests for ComboStateMachine
+
+### Missing Fields on ComboStep
+- [x] `canDashCancelOnHit` — bool flag per step
+- [x] `canJumpCancelOnHit` — bool flag per step
+- [ ] `AttackData` reference (or placeholder until T005 delivers the SO)
 
 ## Design Decisions
 
@@ -142,6 +175,24 @@ ComboController fires `AttackStarted`, `ComboDropped`, `FinisherStarted`, `Combo
 **DD-4: Plain C# state machine with Tick(dt)**
 ComboStateMachine is a plain C# class. Combo window timer ticks via `Tick(deltaTime)` called from ComboController.Update(). All other transitions are animation-event-driven. Keeps combo logic testable without Unity runtime.
 
+**DD-5: State machine exposes cancel properties, Controller orchestrates**
+ComboStateMachine exposes `CanDashCancel`/`CanJumpCancel` read-only properties (checks `hitConfirmed` + step flags). ComboController checks these when dash/jump input arrives and orchestrates the cancel. Keeps state machine focused on sequencing per DD-4.
+
+**DD-6: ComboController calls motor.SetAttackLock(bool), motor is passive**
+ComboController holds a `[SerializeField] CharacterMotor` reference and calls `SetAttackLock(true)` on attack start, `SetAttackLock(false)` on combo end/drop/cancel. Motor just stores a bool and guards movement — no back-reference to combo. Null-conditional (`motor?.`) calls for safety since `SetAttackLock` is just a bool write with no dependencies.
+
+**DD-7: ComboInteractionConfig ScriptableObject**
+Broad config SO covering all combo interactions: cancel behavior (`dashCancelResetsCombo`, `jumpCancelResetsCombo`, `cancelPriority`), reset triggers (`resetOnStagger`, `resetOnDeath`, `resetOnDashCancel`), movement lock (`lockMovementDuringAttack`, `lockMovementDuringFinisher`). One SO per character, tunable in Inspector.
+
+**DD-8: No animator = Debug.LogError on Awake**
+If `animator` is null in ComboController.Awake(), log a red error with `Debug.LogError` (clickable reference to the GameObject). Does not crash — ComboDebugUI auto-advance still works for testing. Later, swap to `[RequireComponent(typeof(Animator))]` when animations are mandatory.
+
+**DD-9: ComboDebugUI stays dumb**
+Debug component doesn't read ComboInteractionConfig. It only advances combo state via timers. Config interactions are tested through real gameplay or targeted unit tests.
+
+**DD-10: InputBufferSystem deferred to T003 reopen**
+Cancel inputs (dash/jump) are handled as instant checks — player presses Dash while `CanDashCancel` is true, it fires immediately via CharacterInputHandler → ComboController.RequestDashCancel(). No buffering needed. T003 should be reopened separately to build the full standalone InputBufferSystem with circular buffer and multi-input-type support.
+
 ## Implementation Notes (Completed)
 
 **Files created (7 code files + 1 test file + editor updates):**
@@ -152,7 +203,7 @@ ComboStateMachine is a plain C# class. Combo window timer ticks via `Tick(deltaT
 - `Combat/Combo/ComboStateMachine.cs` — plain C# class: state tracking, input buffering, combo window timer, animation event callbacks
 - `Combat/Combo/ComboController.cs` — MonoBehaviour: wires input → state machine → animation → events
 - `Combat/Combo/ComboDebugUI.cs` — debug overlay with auto-advance (simulates animation events when no Animator present)
-- `Tests/EditMode/Combat/Combo/ComboStateMachineTests.cs` — 25 unit tests
+- `Tests/EditMode/Combat/Combo/ComboStateMachineTests.cs` — 44 unit tests (25 original + 15 hit-confirm/cancel + 4 other)
 - `Characters/CharacterInputHandler.cs` — updated with lightAttackAction/heavyAttackAction
 - `Editor/Prefabs/MovementTestSceneCreator.cs` — updated with combo wiring
 - `Editor/Prefabs/PlayerPrefabCreator.cs` — updated with ComboController on prefab

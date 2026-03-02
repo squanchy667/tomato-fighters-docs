@@ -1,5 +1,23 @@
 # Changelog
 
+## [Phase 1] — 2026-03-02 (Docs sync + T004 audit)
+
+### Status Updates
+- **T004: reopened as IN PROGRESS** — audit revealed acceptance criteria were retroactively rewritten to hide missing features. Original spec requires: hit-confirm system, cancel flags, movement lock, InputBufferSystem integration, stagger/death resets. None were implemented. Acceptance criteria restored to originals with honest status.
+
+### Design Decisions (T004 planning session)
+- DD-5: State machine exposes cancel properties, Controller orchestrates
+- DD-6: ComboController calls motor.SetAttackLock(bool), motor is passive
+- DD-7: ComboInteractionConfig SO — broad config for cancels, resets, movement lock
+- DD-8: No animator = Debug.LogError on Awake, not silent fail
+- DD-9: ComboDebugUI stays dumb — no config awareness
+- DD-10: InputBufferSystem deferred to T003 reopen — cancel inputs are instant checks
+
+### Notes
+- T003 also likely needs reopening — original spec called for standalone InputBufferSystem with circular buffer, BufferedInputType enum (Strike/Skill/Arcana/Dash/Jump), TryConsumeInput API. Was retroactively marked DONE with rewritten acceptance criteria matching the 1-slot buffer inside ComboStateMachine.
+
+---
+
 ## [Phase 1] — 2026-03-02 (T002 CharacterController + T003/T004 ComboSystem — DONE)
 
 ### Completed
