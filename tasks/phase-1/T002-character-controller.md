@@ -10,8 +10,9 @@
 | **Agent** | combat-agent |
 | **Depends On** | T001 |
 | **Blocks** | T004, T013 |
-| **Status** | PENDING |
-| **Branch** | `pillar1/T002-character-controller` |
+| **Status** | DONE |
+| **Completed** | 2026-03-02 |
+| **Branch** | `tal` |
 
 ## Objective
 Build the core 2D character controller that handles 8-directional movement, jumping with gravity, and forward dashing — initially tuned for Brutor's heavy, tanky feel. This controller is the physical foundation that every combat action builds on top of.
@@ -85,22 +86,47 @@ Brutor's base stats: SPD 0.7 (lowest of 4 characters). His dash is a short armor
 
 ## Acceptance Criteria
 
-- [ ] 8-directional movement with configurable speed via `[SerializeField]`
-- [ ] Diagonal movement normalized (no faster diagonal speed)
-- [ ] Jump with configurable gravity and fall multiplier
-- [ ] Ground check with configurable layer and radius
-- [ ] Coyote time window (configurable duration)
-- [ ] Dash with configurable speed, duration, and cooldown
-- [ ] Dash locks movement input for its duration
-- [ ] Brutor's armored dash: `hasSuperArmor` flag active during dash startup
-- [ ] All physics through Rigidbody2D — zero `transform.position` writes
-- [ ] All values exposed in Inspector via `[SerializeField]` with `[Header]` groups
-- [ ] Sprite facing flips based on movement direction
-- [ ] Public read-only properties: `IsGrounded`, `IsDashing`, `HasSuperArmor`, `CanMove`, `CanDash`, `CanJump`
-- [ ] `SetMovementLock` method for external systems
-- [ ] Dash start/end events for other systems to hook into
-- [ ] Null-safe `IBuffProvider` access (falls back to 1.0x multipliers)
-- [ ] Compiles with zero warnings
+- [x] 8-directional movement with configurable speed via `[SerializeField]`
+- [x] Diagonal movement normalized (no faster diagonal speed)
+- [x] Jump with configurable gravity and fall multiplier
+- [x] Ground check — belt-scroll model: grounded = `jumpHeight <= 0` (no collider needed)
+- [x] Coyote time window (configurable duration)
+- [x] Dash with configurable speed, duration, and cooldown
+- [x] Dash locks movement input for its duration
+- [x] Brutor's armored dash: `hasSuperArmor` flag active during dash startup
+- [x] All physics through Rigidbody2D — zero `transform.position` writes
+- [x] All values exposed in Inspector via `[SerializeField]` with `[Header]` groups
+- [x] Sprite facing flips based on movement direction
+- [x] Public read-only properties: `IsGrounded`, `IsDashing`, `HasSuperArmor`, `CanMove`, `CanDash`, `CanJump`
+- [x] `SetMovementLock` method for external systems
+- [x] Dash start/end events for other systems to hook into
+- [x] Null-safe `IBuffProvider` access (falls back to 1.0x multipliers)
+- [x] Compiles with zero warnings
+
+## Implementation Notes (Completed)
+
+**Belt-scroll rework:** The original spec described a platformer-style controller with gravity. During implementation, this was reworked to a belt-scroll model (Streets of Rage style):
+- X = horizontal movement, Y = depth movement (walk into/out of screen)
+- Jump = sprite offset (visual only), collider stays on ground plane
+- `Rigidbody2D.gravityScale = 0` always; jump arc simulated with manual `jumpVelocity` / `jumpGravity`
+- No ground collider needed — grounded is purely `jumpHeight <= 0`
+- Shadow child stays at feet while sprite child offsets by jumpHeight
+
+**Files created (6 code files + 3 editor/test files):**
+- `Characters/CharacterMotor.cs` — MonoBehaviour: belt-scroll movement, jump, dash with Rigidbody2D
+- `Characters/MovementStateMachine.cs` — Plain C# state machine (Grounded/Airborne/Dashing)
+- `Characters/MovementConfig.cs` — ScriptableObject with all tuning params
+- `Characters/CharacterInputHandler.cs` — Unity new Input System (InputActionReference)
+- `Characters/MovementState.cs` — 3-state enum
+- `Editor/Prefabs/PlayerPrefabCreator.cs` — Editor menu script for player prefab
+- `Editor/Prefabs/MovementTestSceneCreator.cs` — Editor menu script for test scene
+- `Tests/EditMode/Characters/MovementStateMachineTests.cs` — 17 unit tests
+
+**Design decisions:**
+- Belt-scroll movement model (no gravity, XY ground plane, simulated jump)
+- Plain C# MovementStateMachine with Tick(dt) for testability
+- GroundDetector deleted — grounded is purely `jumpHeight <= 0`
+- Default prefab character = Brutor (SPD 0.7, tankiest)
 
 ## References
 

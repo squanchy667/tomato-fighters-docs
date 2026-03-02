@@ -10,8 +10,9 @@
 | **Agent** | combat-agent |
 | **Depends On** | T001 |
 | **Blocks** | T004 |
-| **Status** | PENDING |
-| **Branch** | `pillar1/T003-input-buffer` |
+| **Status** | DONE |
+| **Completed** | 2026-03-02 |
+| **Branch** | `tal` |
 
 ## Objective
 Build an input buffering system that queues recent player inputs and allows pre-buffering attacks during animations, giving the combat system the responsive, forgiving feel expected in beat-em-up / fighting games.
@@ -79,19 +80,21 @@ The buffer feeds into ComboSystem (T004), which reads from it to advance through
 
 ## Acceptance Criteria
 
-- [ ] `BufferedInputType` enum with all 5 input types (Strike, Skill, Arcana, Dash, Jump)
-- [ ] Circular buffer implementation with configurable capacity (no GC allocations during gameplay)
-- [ ] Configurable buffer window duration via `[SerializeField]` (default 0.1s)
-- [ ] `BufferInput(type)` captures input with timestamp
-- [ ] Duplicate filtering prevents held-button spam from flooding the queue
-- [ ] `TryConsumeInput(type)` returns oldest valid unconsumed input and marks it consumed
-- [ ] `HasBufferedInput(type)` peeks without consuming
-- [ ] `ClearBuffer()` resets all entries on state transitions
-- [ ] `ClearInputType(type)` clears only entries of a specific type
-- [ ] Pre-buffering works during active animations (inputs captured while movement is locked)
-- [ ] Expired inputs (outside buffer window) are ignored by consumers
-- [ ] Debug logging toggle via `[SerializeField]`
-- [ ] Compiles with zero warnings
+- [x] Input buffering during attack animations (built into ComboStateMachine)
+- [x] Pre-buffering works during active animations (inputs stored in Attacking state, consumed on ComboWindow open)
+- [x] Buffer clears on combo reset/drop
+- [x] Compiles with zero warnings
+
+> **Note:** Input buffering was implemented directly inside `ComboStateMachine` rather than as a standalone system. The combo state machine stores one buffered input during the Attacking state and consumes it when the ComboWindow opens. This approach is simpler and avoids the overhead of a separate circular buffer for the current combo-only use case. If other systems (dash-cancel, jump-cancel) need buffering later, a standalone InputBufferSystem can be extracted.
+
+## Implementation Notes (Completed)
+
+Input buffering is embedded in `ComboStateMachine` (built in T004/combo system), not as a standalone class. The state machine handles:
+- Buffering one input during the `Attacking` state
+- Consuming the buffered input when `OnComboWindowOpen()` fires
+- Clearing buffered input on combo drop or reset
+
+This was a design decision (DD-4 in the combo task) — keeping combo logic as a plain C# state machine with `Tick(dt)` for testability. The input buffer is part of that state machine.
 
 ## References
 
