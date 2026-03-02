@@ -2,7 +2,7 @@
 
 ## [Phase 1] — 2026-03-02 (updated)
 
-### In Progress
+### Completed
 - T006: CharacterBaseStats ScriptableObject — branch `pillar2/T006-character-base-stats`
   - `CharacterBaseStats.cs` — 9-field SO (health, defense, attack, rangedAttack, speed,
     mana, manaRegen, critChance, stunRate) with full `[Header]`/`[Tooltip]`/`[Range]` annotations
@@ -12,6 +12,7 @@
   - `stunRate` / `StatType.StunRate` is canonical name for pressure rate stat (DD-1)
   - `CreateAssetMenu` path: `TomatoFighters/Data/` — sets convention for all future data SOs (DD-3)
   - Fixed GUIDs in `.meta` files so `.asset` files link without requiring Unity open on each machine
+  - Unblocks: T007 (CharacterStatCalculator), T008 (PathData)
 
 ## [Phase 1] — 2026-03-02
 

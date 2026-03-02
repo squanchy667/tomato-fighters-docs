@@ -1,11 +1,11 @@
 # Tomato Fighters — Task Board
 
-> 1/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 2/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
 ## Phase 1: Foundation
-> Status: IN_PROGRESS | Tasks: 1/13 | Weeks: 1-2
+> Status: IN_PROGRESS | Tasks: 2/13 | Weeks: 1-2
 > Goal: Shared contracts established, one character moves and hits a dummy enemy, camera follows
 
 ### T001: Shared Interfaces, Enums, and Data Structures [DONE]
@@ -65,7 +65,7 @@
   - [ ] TelegraphType field (Normal/Unstoppable)
   - [ ] CreateAssetMenu attribute for easy creation
 
-### T006: CharacterBaseStats ScriptableObject [IN_PROGRESS]
+### T006: CharacterBaseStats ScriptableObject [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 2 | **Depends on:** T001
 - **Files:** `Shared/Data/CharacterBaseStats.cs`, `ScriptableObjects/Characters/BrutorStats.asset`, `SlasherStats.asset`, `MysticaStats.asset`, `ViperStats.asset`
 - **Description:** ScriptableObject defining the 8 base stats per character (HP, DEF, ATK, SPD, MNA, MRG, CRT, PRS). Create all 4 character stat assets with the values from CHARACTER-ARCHETYPES.md. Include passive ability identifier.

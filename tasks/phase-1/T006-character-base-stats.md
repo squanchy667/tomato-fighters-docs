@@ -10,7 +10,7 @@
 | **Agent** | so-architect |
 | **Depends On** | T001 |
 | **Blocks** | T007, T008 |
-| **Status** | PENDING |
+| **Status** | DONE |
 | **Branch** | `pillar2/T006-character-base-stats` |
 
 ## Objective
@@ -75,14 +75,14 @@ The project follows a strict no-singletons, ScriptableObject-for-data architectu
 - **Asset creation**: `.asset` files are created in Unity Editor via `Create > Tomato Fighters > Character Base Stats` (from CreateAssetMenu). The agent should create the C# class; asset creation requires Unity Editor (mark with implementation notes if CLI-only)
 
 ## Acceptance Criteria
-- [ ] `CharacterBaseStats` ScriptableObject class with all 8 stat fields
-- [ ] `passiveAbilityId` string field present
-- [ ] `CharacterType` enum field present
-- [ ] `[CreateAssetMenu]` attribute configured
-- [ ] 4 character stat assets created with correct values
-- [ ] Stat values match CHARACTER-ARCHETYPES.md exactly (see table above)
-- [ ] Compiles with zero warnings
-- [ ] No singleton patterns used
+- [x] `CharacterBaseStats` ScriptableObject class with all 8 stat fields
+- [x] `passiveAbilityId` string field present
+- [x] `CharacterType` enum field present
+- [x] `[CreateAssetMenu]` attribute configured
+- [x] 4 character stat assets created with correct values
+- [x] Stat values match CHARACTER-ARCHETYPES.md exactly (see table above)
+- [x] Compiles with zero warnings
+- [x] No singleton patterns used
 
 ## Design Decisions
 
