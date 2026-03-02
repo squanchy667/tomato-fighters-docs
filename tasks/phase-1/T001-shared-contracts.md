@@ -116,20 +116,76 @@ Reference the full interface specs in `architecture/interface-contracts.md` and 
 | `Shared/Enums/RitualFamily.cs` | Ritual family enum (8 values) |
 | `Shared/Enums/RitualCategory.cs` | Ritual category enum (4 values) |
 | `Shared/Data/DamagePacket.cs` | Damage payload struct |
+| `Shared/Data/AttackData.cs` | Empty SO stub (filled in T005) |
+| `Shared/Data/PathData.cs` | Empty SO stub (filled in T008) |
 | `Shared/Data/CombatEventData.cs` | All 13 combat event data structs |
 | `Shared/Data/RunEventData.cs` | All 7 run progression event data structs |
 | `Shared/Data/PlaceholderTypes.cs` | OnHitEffect, OnTriggerEffect, PathAbility stubs |
 
+## Design Decisions
+
+These decisions were agreed during task planning:
+
+### DD-1: Event data structs → `readonly struct`
+Combat events (`OnStrike`, etc.) fire every attack frame. Using `readonly struct` avoids GC allocations in the hot path. Subscribers that need to modify data do so in their own scope — event data is fire-and-forget.
+
+```csharp
+public readonly struct StrikeEventData
+{
+    public readonly CharacterType Source;
+    public readonly float Damage;
+    public readonly Vector2 Position;
+    public readonly int ComboStep;
+    public readonly DamageType DamageType;
+}
+```
+
+### DD-2: One file per struct group, not per struct
+- `CombatEventData.cs` — all 13 combat event structs (3-5 fields each, semantically related)
+- `RunEventData.cs` — all 7 run event structs
+- Enums stay one-file-per-enum (8 files) to minimize merge conflicts across 3 devs
+
+### DD-3: Forward-declare `AttackData` and `PathData` as empty SO stubs
+`IAttacker.CurrentAttack` returns `AttackData` (defined in T005) and `IPathProvider.MainPath` returns `PathData` (defined in T008). Declare both as empty ScriptableObject stubs in `Shared/Data/` so interfaces compile now. Real fields added in their respective tasks.
+
+```csharp
+// Shared/Data/AttackData.cs — stub, filled in T005
+[CreateAssetMenu(menuName = "TomatoFighters/AttackData")]
+public class AttackData : ScriptableObject { }
+
+// Shared/Data/PathData.cs — stub, filled in T008
+[CreateAssetMenu(menuName = "TomatoFighters/PathData")]
+public class PathData : ScriptableObject { }
+```
+
+### DD-4: Event data field definitions
+
+| Event Struct | Fields | Reasoning |
+|-------------|--------|-----------|
+| `StrikeEventData` | source, damage, position, comboStep, damageType | Roguelite needs damage type for ritual triggers |
+| `SkillEventData` | source, damage, position, damageType | Heavy/skill attack data |
+| `ArcanaEventData` | source, damage, position, damageType, manaCost | Mana tracking for Mystica synergies |
+| `DashEventData` | source, startPosition, endPosition | Dash distance matters for Viper's Distance Bonus |
+| `DeflectEventData` | source, attacker, timing (early/perfect/late) | Timing affects ritual bonuses |
+| `ClashEventData` | source, opponent, result (won/lost/draw) | Different triggers for win vs lose |
+| `PunishEventData` | source, target, damage, wasFinisher | Finisher triggers separate from normal punish |
+| `KillEventData` | source, enemyType, overkillAmount, position | Overkill could trigger ritual effects |
+| `FinisherEventData` | source, target, damage, position | Separate from Kill for ritual tracking |
+| `JumpEventData` | source, position | Simple — jump tracking for ritual triggers |
+| `DodgeEventData` | source, position, dodgedAttackType | What was dodged matters for counter-triggers |
+| `TakeDamageEventData` | target, damage, source, wasBlocked, remainingHP | HP thresholds trigger path abilities |
+| `PathAbilityEventData` | source, abilityId, pathType, tier | Track which path ability was used |
+
+### DD-5: `PathData` forward-declare pattern
+Same as AttackData — `IPathProvider` returns `PathData` which is defined in T008. Declare as empty SO stub here.
+
 ## Implementation Notes
 
 - **Namespace convention:** All files use `TomatoFighters.Shared.Interfaces`, `TomatoFighters.Shared.Enums`, `TomatoFighters.Shared.Data`
-- **No MonoBehaviour dependencies** — interfaces and data structs are pure C#. Only exception: `DamagePacket` uses `Vector2` from `UnityEngine`
-- **Event data structs should be readonly** — use `readonly struct` where possible for GC-friendly combat-frame usage
-- **Keep event data minimal** — only fields that the subscriber genuinely needs. Don't dump the entire combat state into every event
+- **No MonoBehaviour dependencies** — interfaces and data structs are pure C#. Only exception: `DamagePacket` and event structs use `Vector2` from `UnityEngine`
 - **XML doc comments on every public member** — these interfaces are the project's contract; clarity is non-negotiable
 - **Enums: one file per enum** — separate files keep merges clean when all 3 devs touch Shared/
-- **AttackData is NOT defined here** — it's a ScriptableObject defined in T005. Only reference it by type in IAttacker
-- **Forward-declare types** — if IBuffProvider references `PathAbility` which isn't fleshed out yet, create a placeholder class. Fill in the real fields when T018 (PathSystem) lands
+- **Forward-declare types** — `AttackData`, `PathData`, `OnHitEffect`, `OnTriggerEffect`, `PathAbility` are stubs here, filled in by later tasks
 
 ## Acceptance Criteria
 
