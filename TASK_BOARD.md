@@ -1,11 +1,11 @@
 # Tomato Fighters — Task Board
 
-> 7/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 8/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
 ## Phase 1: Foundation
-> Status: IN_PROGRESS | Tasks: 7/13 | Weeks: 1-2
+> Status: IN_PROGRESS | Tasks: 8/13 | Weeks: 1-2
 > Goal: Shared contracts established, one character moves and hits a dummy enemy, camera follows
 
 ### T001: Shared Interfaces, Enums, and Data Structures [DONE]
@@ -85,16 +85,17 @@
   - [x] Returns FinalStats with all 8 stats
   - [x] Unit testable with mock inputs
 
-### T008: PathData ScriptableObject — 12 Paths [PENDING]
+### T008: PathData ScriptableObject — 12 Paths [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 2 | **Depends on:** T001, T006
-- **Files:** `Shared/Data/PathData.cs`, `ScriptableObjects/Paths/{Character}/{PathName}Path.asset` (12 total)
+- **Files:** `Shared/Data/PathData.cs`, `Shared/Data/PathTierBonuses.cs`, `Editor/PathDataCreator.cs`, `ScriptableObjects/Paths/{Character}/{PathName}Path.asset` (12 total)
 - **Description:** ScriptableObject for upgrade path definitions. Fields: PathType enum, stat bonuses per tier (T1/T2/T3), ability unlock IDs per tier, description text. Create all 12 path assets matching CHARACTER-ARCHETYPES.md.
 - **Acceptance:**
-  - [ ] PathData SO with tier definitions (3 tiers)
-  - [ ] Stat bonus arrays per tier
-  - [ ] Ability unlock ID per tier
-  - [ ] All 12 path assets created with correct values
-  - [ ] T3 marked as Main-only
+  - [x] PathData SO with tier definitions (3 tiers)
+  - [x] Stat bonus arrays per tier (named PathTierBonuses struct — DD-1)
+  - [x] Ability unlock ID per tier
+  - [x] All 12 path assets defined in PathDataCreator editor script with correct values
+  - [x] T3 marked as Main-only via [Header] — no runtime bool (DD-2)
+  - [x] IPathProvider updated: object placeholders replaced with PathData
 
 ### T009: CurrencyManager [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T001

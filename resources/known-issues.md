@@ -1,6 +1,6 @@
 # Known Issues
 
-*(No issues yet — project has not started development)*
+*(No active bugs. 8 tasks completed in Phase 1.)*
 
 ## Expected Challenges
 

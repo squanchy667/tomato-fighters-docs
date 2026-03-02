@@ -1,5 +1,26 @@
 # Changelog
 
+## [Phase 1] — 2026-03-03 (T008 PathData ScriptableObject — DONE)
+
+### Completed
+- **T008: PathData ScriptableObject — 12 Paths** — branch `shared/T008-path-data-so`
+  - `PathTierBonuses`: serializable struct with named fields per stat (vs raw float[] — DD-1)
+  - `PathData`: SO with 3 incremental tier structs + `GetStatBonusArray(int tier)` for stat calculator
+  - Tier bonuses are stored as per-tier deltas; `GetStatBonusArray` accumulates up to the requested tier (DD-3)
+  - Tier 3 "Main Path Only" constraint documented via `[Header]` only — no redundant bool flag (DD-2)
+  - `GetAbilityIdForTier(int tier)` — clean accessor for ability ID lookup by tier
+  - `IPathProvider.MainPath` and `SecondaryPath` updated from `object` placeholders to `PathData`
+  - `PathDataCreator`: editor MenuItem (`TomatoFighters/Create All Path Assets`) creates all 12 assets
+  - All 12 path assets defined with exact values from CHARACTER-ARCHETYPES.md; run MenuItem in Unity to generate `.asset` files
+  - Unblocks: T018 (PathSystem), T028 (Path T1 Ability Execution — Dev 1)
+
+### Design Decisions
+- DD-1 (T008): `PathTierBonuses` uses named fields (not `float[]`) — prevents silent index errors, readable in Inspector
+- DD-2 (T008): No `isMainExclusive` bool — all T3s are Main-only by design; `[Header]` self-documents, PathSystem enforces
+- DD-3 (T008): Incremental tier deltas — each tier stores what it adds; `GetStatBonusArray` sums them — matches design doc wording
+
+---
+
 ## [Phase 1] — 2026-03-02 (T007 CharacterStatCalculator + T009 CurrencyManager — DONE)
 
 ### Completed
