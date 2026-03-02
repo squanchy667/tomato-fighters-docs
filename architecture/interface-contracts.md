@@ -118,9 +118,11 @@ public enum PathType
 
 public enum StatType
 {
-    Health, Defense, Attack, RangedAttack, Speed,
-    Mana, ManaRegen, CritChance,
-    StunRate,       // design docs call this "PRS / Pressure Rate" — code always uses StunRate (DD-1, T006)
+    Health, Defense, Attack,
+    RangedAttack,     // Viper ONLY — stores -1 on Brutor/Slasher/Mystica (sentinel for "not a ranged specialist")
+    ThrowableAttack,  // ALL characters — scales damage from ground-pickup throwable items
+    Speed, Mana, ManaRegen, CritChance,
+    StunRate,         // design docs call this "PRS / Pressure Rate" — code always uses StunRate (DD-1, T006)
     CancelWindow
 }
 

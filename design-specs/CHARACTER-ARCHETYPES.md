@@ -41,16 +41,20 @@ Each path has 3 tiers of power:
 
 All characters share these 8 base stats. Starting values differ dramatically per archetype.
 
-| Stat | Abbrev | What It Controls | Range |
-|------|--------|-----------------|-------|
-| **Health** | HP | Total hit points | 50-200 |
-| **Defense** | DEF | Flat damage reduction per hit | 0-30 |
-| **Attack** | ATK | Base physical damage multiplier | 0.5-2.0 |
-| **Speed** | SPD | Movement speed + dash distance | 0.7-1.5 |
-| **Mana** | MNA | Mana pool for Arcana + mana-based abilities | 30-150 |
-| **Mana Regen** | MRG | Mana restored per second | 1-8 |
-| **Crit Chance** | CRT | Chance for 1.5x damage | 0-25% |
-| **Pressure Rate** | PRS | How fast this character fills enemy pressure meters | 0.5-2.0 |
+| Stat | Abbrev | What It Controls | Range | Who |
+|------|--------|-----------------|-------|-----|
+| **Health** | HP | Total hit points | 50-200 | All |
+| **Defense** | DEF | Flat damage reduction per hit | 0-30 | All |
+| **Attack** | ATK | Base melee damage multiplier | 0.5-2.0 | All |
+| **Ranged Attack** | RATK | Base ranged/projectile damage multiplier | 0.6-2.0 | **Viper only** |
+| **Throwable Attack** | TATK | Damage multiplier for ground-pickup throwable items | 0.7-1.1 | All |
+| **Speed** | SPD | Movement speed + dash distance | 0.7-1.5 | All |
+| **Mana** | MNA | Mana pool for Arcana + mana-based abilities | 30-150 | All |
+| **Mana Regen** | MRG | Mana restored per second | 1-8 | All |
+| **Crit Chance** | CRT | Chance for 1.5x damage | 0-25% | All |
+| **Pressure Rate** | PRS | How fast this character fills enemy pressure meters | 0.5-2.0 | All |
+
+> **Note on Ranged vs Throwable:** `RangedAttack` is exclusive to Viper and scales her slingshot/crossbow projectile attacks. `ThrowableAttack` is universal — any character can pick up bottles, rocks, crates, and other ground items, and this stat scales that damage independently. Non-Viper characters store `-1` in `rangedAttack` as a sentinel value meaning "not a ranged specialist".
 
 ### Stat Growth
 Stats grow through:
@@ -76,6 +80,8 @@ Massive tomato warrior, thick skin, small limbs relative to body. Carries a riot
 | HP | **200** | Highest |
 | DEF | **25** | Highest |
 | ATK | 0.7 | Low |
+| RATK | — | N/A (not a ranged specialist) |
+| TATK | **1.1** | Highest (heavy thrower) |
 | SPD | 0.7 | Lowest |
 | MNA | 50 | Low |
 | MRG | 2 | Low |
@@ -179,6 +185,8 @@ Lean, fast tomato with blade-like leaf appendages. Dual-wields kitchen knives. W
 | HP | 100 | Medium-Low |
 | DEF | 8 | Lowest |
 | ATK | **2.0** | **Highest** |
+| RATK | — | N/A (not a ranged specialist) |
+| TATK | 1.0 | Medium |
 | SPD | **1.3** | High |
 | MNA | 60 | Medium-Low |
 | MRG | 3 | Medium |
@@ -282,6 +290,8 @@ Ethereal tomato with glowing interior. Wears a wizard hat made from a leaf. Floa
 | HP | **50** | **Lowest** |
 | DEF | 5 | Very Low |
 | ATK | 0.5 | Lowest |
+| RATK | — | N/A (not a ranged specialist) |
+| TATK | 0.7 | Lowest (fragile caster) |
 | SPD | 1.0 | Medium |
 | MNA | **150** | **Highest** |
 | MRG | **8** | **Highest** |
@@ -384,7 +394,9 @@ Sleek, serpentine tomato with elongated form. Uses a slingshot (or crossbow made
 |------|-------|----------|
 | HP | 80 | Low |
 | DEF | 10 | Low |
-| ATK | 0.6 (melee) / **1.8 (ranged)** | Split scaling |
+| ATK | 0.6 | Low (melee fallback) |
+| RATK | **1.8** | **Highest (ranged specialist)** |
+| TATK | 1.1 | High (natural projectile user) |
 | SPD | 1.1 | Medium-High |
 | MNA | **120** | High |
 | MRG | **6** | High |
@@ -502,7 +514,9 @@ Ranged attacks deal +2% damage per unit of distance from the target (max +30% at
 |------|--------|---------|---------|-------|
 | HP | **200** | 100 | 50 | 80 |
 | DEF | **25** | 8 | 5 | 10 |
-| ATK | 0.7 | **2.0** | 0.5 | 0.6m / 1.8r |
+| ATK (melee) | 0.7 | **2.0** | 0.5 | 0.6 |
+| RATK (ranged) | — | — | — | **1.8** |
+| TATK (throwable) | **1.1** | 1.0 | 0.7 | 1.1 |
 | SPD | 0.7 | **1.3** | 1.0 | 1.1 |
 | MNA | 50 | 60 | **150** | 120 |
 | MRG | 2 | 3 | **8** | 6 |
@@ -617,7 +631,12 @@ public enum PathType
 
 public enum StatType
 {
-    Health, Defense, Attack, Speed, Mana, ManaRegen, CritChance, PressureRate
+    Health, Defense, Attack,
+    RangedAttack,     // Viper only — -1 on non-Viper characters
+    ThrowableAttack,  // All characters
+    Speed, Mana, ManaRegen, CritChance,
+    StunRate,         // "PRS / Pressure Rate" in design docs
+    CancelWindow
 }
 ```
 
