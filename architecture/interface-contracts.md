@@ -119,7 +119,9 @@ public enum PathType
 public enum StatType
 {
     Health, Defense, Attack, RangedAttack, Speed,
-    Mana, ManaRegen, CritChance, PressureRate
+    Mana, ManaRegen, CritChance,
+    StunRate,       // design docs call this "PRS / Pressure Rate" — code always uses StunRate (DD-1, T006)
+    CancelWindow
 }
 
 public enum DamageType { Physical, Fire, Lightning, Water, Thorn, Gale, Time, Cosmic, Necro }

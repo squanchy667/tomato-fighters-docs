@@ -65,7 +65,7 @@
   - [ ] TelegraphType field (Normal/Unstoppable)
   - [ ] CreateAssetMenu attribute for easy creation
 
-### T006: CharacterBaseStats ScriptableObject [PENDING]
+### T006: CharacterBaseStats ScriptableObject [IN_PROGRESS]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 2 | **Depends on:** T001
 - **Files:** `Shared/Data/CharacterBaseStats.cs`, `ScriptableObjects/Characters/BrutorStats.asset`, `SlasherStats.asset`, `MysticaStats.asset`, `ViperStats.asset`
 - **Description:** ScriptableObject defining the 8 base stats per character (HP, DEF, ATK, SPD, MNA, MRG, CRT, PRS). Create all 4 character stat assets with the values from CHARACTER-ARCHETYPES.md. Include passive ability identifier.

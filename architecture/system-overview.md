@@ -91,7 +91,7 @@ Assets/Scripts/
 │   └── UI/              (HUD files)
 └── Shared/              (ALL) — 15+ files, ~600 LOC target
     ├── Interfaces/      (6 interface files)
-    ├── Data/            (AttackData, DamagePacket, PathData, etc.)
+    ├── Data/            (CharacterBaseStats ✓, AttackData, DamagePacket, PathData, etc.)
     ├── Enums/           (all shared enums)
     └── Events/          (SO-based event channels)
 ```
@@ -107,6 +107,22 @@ Assets/Scripts/
 | World | 15+ | ~3,000 | Dev 3 |
 | Shared | 15+ | ~600 | ALL |
 | **Total** | **~72+** | **~11,400** | |
+
+## Asset Directory
+
+ScriptableObject assets live outside `Scripts/` to separate code from authored data:
+
+```
+Assets/ScriptableObjects/         ← all .asset files (git tracked)
+└── Characters/                   ← CharacterBaseStats assets (T006 ✓)
+    ├── BrutorStats.asset
+    ├── SlasherStats.asset
+    ├── MysticaStats.asset
+    └── ViperStats.asset
+    (future: Paths/, Rituals/, Enemies/, Trinkets/, Inspirations/)
+```
+
+Convention: `CreateAssetMenu` paths use `"TomatoFighters/Data/<Name>"` for all Shared/Data SOs.
 
 ## Key Design Decisions
 

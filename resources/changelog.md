@@ -1,5 +1,18 @@
 # Changelog
 
+## [Phase 1] — 2026-03-02 (updated)
+
+### In Progress
+- T006: CharacterBaseStats ScriptableObject — branch `pillar2/T006-character-base-stats`
+  - `CharacterBaseStats.cs` — 9-field SO (health, defense, attack, rangedAttack, speed,
+    mana, manaRegen, critChance, stunRate) with full `[Header]`/`[Tooltip]`/`[Range]` annotations
+  - 4 character assets: BrutorStats, SlasherStats, MysticaStats, ViperStats with exact values
+    from CHARACTER-ARCHETYPES.md
+  - `rangedAttack` is first-class on all 4 characters — throwable system future-proofed (DD-2)
+  - `stunRate` / `StatType.StunRate` is canonical name for pressure rate stat (DD-1)
+  - `CreateAssetMenu` path: `TomatoFighters/Data/` — sets convention for all future data SOs (DD-3)
+  - Fixed GUIDs in `.meta` files so `.asset` files link without requiring Unity open on each machine
+
 ## [Phase 1] — 2026-03-02
 
 ### Completed
