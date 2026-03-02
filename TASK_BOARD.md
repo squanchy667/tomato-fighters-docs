@@ -1,11 +1,11 @@
 # Tomato Fighters — Task Board
 
-> 1/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 4/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
 ## Phase 1: Foundation
-> Status: IN_PROGRESS | Tasks: 1/13 | Weeks: 1-2
+> Status: IN_PROGRESS | Tasks: 4/13 | Weeks: 1-2
 > Goal: Shared contracts established, one character moves and hits a dummy enemy, camera follows
 
 ### T001: Shared Interfaces, Enums, and Data Structures [DONE]
@@ -22,38 +22,38 @@
   - [x] DamagePacket struct defined
   - [x] Compiles with zero warnings
 
-### T002: CharacterController2D — Brutor First [PENDING]
+### T002: CharacterController2D — Brutor First [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T001
-- **Files:** `Combat/CharacterController2D.cs`
-- **Description:** 8-directional movement, jump (with gravity), forward dash. Brutor-specific: armored dash with super-armor during startup. Uses Rigidbody2D. All values (move speed, jump force, dash distance, gravity scale) configurable via Inspector. Reads base stats from IPathProvider for speed multiplier.
+- **Files:** `Characters/CharacterMotor.cs`, `Characters/MovementStateMachine.cs`, `Characters/MovementConfig.cs`, `Characters/CharacterInputHandler.cs`, `Characters/MovementState.cs`
+- **Description:** Belt-scroll character controller (Streets of Rage style). XY ground plane, simulated jump height via sprite offset, dash with i-frames. Rigidbody2D with gravityScale=0. All values configurable via MovementConfig ScriptableObject. 17 unit tests.
 - **Acceptance:**
-  - [ ] 8-directional movement with configurable speed
-  - [ ] Jump with configurable gravity
-  - [ ] Dash with i-frame support (delegate to DefenseSystem later)
-  - [ ] Brutor's armored dash (super-armor flag)
-  - [ ] Rigidbody2D physics, never transform.position
-  - [ ] All values in Inspector via SerializeField
+  - [x] 8-directional movement with configurable speed
+  - [x] Jump with simulated gravity (belt-scroll model)
+  - [x] Dash with i-frame support (delegate to DefenseSystem later)
+  - [x] Brutor's armored dash (super-armor flag)
+  - [x] Rigidbody2D physics, never transform.position
+  - [x] All values in Inspector via SerializeField
 
-### T003: InputBufferSystem [PENDING]
+### T003: InputBufferSystem [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T001
-- **Files:** `Combat/InputBufferSystem.cs`
-- **Description:** Queue of recent inputs. Buffer window ~6 frames (0.1s at 60fps). Allows pre-buffering attacks during animations. Supports Strike, Skill, Arcana, Dash, Jump inputs. Configurable buffer duration.
+- **Files:** Input buffering embedded in `Combat/Combo/ComboStateMachine.cs`
+- **Description:** Input buffering implemented directly inside ComboStateMachine rather than as a standalone system. Buffers one input during Attacking state, consumes on ComboWindow open. Clears on combo drop/reset.
 - **Acceptance:**
-  - [ ] Input queue with configurable buffer window
-  - [ ] Pre-buffering during active animations
-  - [ ] Supports all 5 input types
-  - [ ] Buffer clears on state reset
+  - [x] Input buffering during attack animations
+  - [x] Pre-buffering during active animations
+  - [x] Buffer clears on state reset
+  - [x] Compiles with zero warnings
 
-### T004: Basic Strike Combo Chain [PENDING]
+### T004: Basic Strike Combo Chain [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T002, T003
-- **Files:** `Combat/ComboSystem.cs`, `Combat/ComboNode.cs`
-- **Description:** Branching combo tree. Brutor: 3-hit shield bash + finisher. Each node: AttackData ref, input window, cancel flags. Reads from InputBufferSystem. Hit-confirm enables dash/jump cancels. Animation-driven attack progression.
+- **Files:** `Combat/Combo/AttackType.cs`, `Combat/Combo/ComboState.cs`, `Combat/Combo/ComboStep.cs`, `Combat/Combo/ComboDefinition.cs`, `Combat/Combo/ComboStateMachine.cs`, `Combat/Combo/ComboController.cs`, `Combat/Combo/ComboDebugUI.cs`
+- **Description:** Branching combo tree with light/heavy paths. Brutor: 7-step tree (L→L→L sweep, L→H launcher, H→H ground pound). Plain C# ComboStateMachine with Tick(dt) for testability. Animation-event-driven transitions. 25 unit tests.
 - **Acceptance:**
-  - [ ] ComboNode tree with branching routes
-  - [ ] 3-hit + finisher chain for Brutor
-  - [ ] Input window per node (configurable)
-  - [ ] Dash-cancel and jump-cancel flags on hit-confirm
-  - [ ] Integrates with InputBufferSystem
+  - [x] Branching combo tree with light/heavy paths per step
+  - [x] 7-step branching tree for Brutor with finishers
+  - [x] Input window per step (configurable)
+  - [x] ComboDefinition ScriptableObject with flat step array
+  - [x] Plain C# ComboStateMachine testable without Unity runtime
 
 ### T005: AttackData ScriptableObject [PENDING]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T001

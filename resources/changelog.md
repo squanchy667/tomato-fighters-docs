@@ -1,5 +1,39 @@
 # Changelog
 
+## [Phase 1] — 2026-03-02 (T002 CharacterController + T003/T004 ComboSystem — DONE)
+
+### Completed
+- **T002: CharacterController2D — belt-scroll rework** — 5 code files + 3 editor/test files
+  - CharacterMotor: belt-scroll movement (XY ground plane, simulated jump height, no gravity)
+  - MovementStateMachine: plain C# state machine (Grounded/Airborne/Dashing)
+  - MovementConfig: ScriptableObject with all tuning params
+  - CharacterInputHandler: Unity new Input System (InputActionReference)
+  - MovementState: 3-state enum
+  - 17 edit-mode unit tests for MovementStateMachine
+
+- **T003: InputBufferSystem** — embedded in ComboStateMachine
+  - Input buffering during Attacking state, consumed on ComboWindow open
+
+- **T004: ComboSystem — light/heavy chains, finishers** — 7 code files + 1 test file
+  - AttackType: Light/Heavy enum
+  - ComboState: Idle/Attacking/ComboWindow/Finisher enum
+  - ComboStep: serializable struct with branching tree indices (nextOnLight/nextOnHeavy)
+  - ComboDefinition: ScriptableObject with flat step array, root indices, per-step window overrides
+  - ComboStateMachine: plain C# state machine — input buffering, combo window timer, animation event callbacks
+  - ComboController: MonoBehaviour — input → state machine → animation → events
+  - ComboDebugUI: debug overlay with auto-advance (simulates animation events when no Animator present)
+  - 25 edit-mode unit tests for ComboStateMachine
+
+### Design Decisions
+- Belt-scroll movement model (Streets of Rage style): X=horizontal, Y=depth, jump=sprite offset
+- No ground collider — grounded is purely `jumpHeight <= 0`
+- DD-1: Branching combo tree (L→L→H vs L→L→L) for deep combat variety
+- DD-2: Flat array with index pointers — simple inspector authoring
+- DD-3: Local C# events (AttackStarted/ComboDropped/FinisherStarted/ComboEnded)
+- DD-4: Plain C# state machine with Tick(dt) — testable without Unity runtime
+
+---
+
 ## [Phase 1] — 2026-03-02
 
 ### Completed

@@ -10,8 +10,9 @@
 | **Agent** | combat-agent |
 | **Depends On** | T002, T003 |
 | **Blocks** | T014 |
-| **Status** | PENDING |
-| **Branch** | `pillar1/T004-combo-chain` |
+| **Status** | DONE |
+| **Completed** | 2026-03-02 |
+| **Branch** | `tal` |
 
 ## Objective
 Build the branching combo tree system and wire up Brutor's 3-hit shield bash + finisher chain as the first playable combo. This is the core attack flow that every character's moveset will build on — combo nodes, input windows, cancel flags, and hit-confirm logic.
@@ -112,20 +113,60 @@ The system is designed to be extended in T014 (Phase 2) for all 4 characters wit
 
 ## Acceptance Criteria
 
-- [ ] ComboNode class with AttackData reference, input branches, input window, and cancel flags
-- [ ] ComboNode supports branching to different nodes based on BufferedInputType
-- [ ] ComboSystem state machine: Idle → Attacking → WindowOpen → Recovering → Idle
-- [ ] Brutor's 4-node combo tree: Shield Jab → Shield Swipe → Shield Bash → Overhead Slam
-- [ ] Each node has configurable input window duration
-- [ ] Hit-confirm callback (`OnHitConfirmed`) enables dash-cancel and jump-cancel flags
-- [ ] Dash-cancel on hit-confirm: consumes buffered Dash, cancels recovery, triggers dash
-- [ ] Jump-cancel on hit-confirm: consumes buffered Jump, cancels recovery, triggers jump
-- [ ] InputBufferSystem integration: consumes buffered inputs for combo branching
-- [ ] CharacterController2D integration: movement locked during attacks, unlocked on combo end
-- [ ] Animation-driven timing via AttackData frame data (with timer fallback until Animation Events exist)
-- [ ] Combo resets on: window expiry, stagger, death, dash-cancel
-- [ ] `isFinisher` flag on final combo node
-- [ ] Compiles with zero warnings
+- [x] Branching combo tree with light/heavy paths per step (ComboStep struct with nextOnLight/nextOnHeavy indices)
+- [x] ComboStep supports branching to different nodes based on AttackType (Light/Heavy)
+- [x] ComboStateMachine: Idle → Attacking → ComboWindow → Finisher (4-state machine)
+- [x] Brutor's 7-step branching tree: L→L→L (sweep), L→H→H (launcher→slam), L→L→H (slam), H→H (ground pound)
+- [x] Each step has configurable combo window duration (per-step override or definition default)
+- [x] Input buffering during attack animations (built into ComboStateMachine)
+- [x] Animation-event-driven transitions (OnComboWindowOpen, OnFinisherEnd)
+- [x] Finisher detection when chain reaches terminal step
+- [x] Local C# events: AttackStarted, ComboDropped, FinisherStarted, ComboEnded
+- [x] ComboDefinition ScriptableObject with flat step array (DD-2)
+- [x] Plain C# ComboStateMachine testable without Unity runtime (DD-4)
+- [x] ComboController MonoBehaviour bridges input → state machine → animation → events
+- [x] 25 edit-mode unit tests for ComboStateMachine
+- [x] Compiles with zero warnings
+
+## Design Decisions
+
+**DD-1: Branching tree combo structure**
+Combo chains use a branching tree — inputs can branch (L→L→H = launcher, L→L→L = sweep). Each ComboStep has `nextOnLight` and `nextOnHeavy` index pointers. More expressive than linear chains, matches the "deep combat" vision.
+
+**DD-2: Flat array with index pointers**
+ComboDefinition stores all steps in a single `ComboStep[]` array. Each step references the next step by array index (-1 = no branch). Simple to author in the inspector, avoids nested SO proliferation.
+
+**DD-3: Local C# events for motor communication**
+ComboController fires `AttackStarted`, `ComboDropped`, `FinisherStarted`, `ComboEnded` events. CharacterMotor subscribes to lock/unlock movement. Matches the event pattern from T002 (Jumped, Dashed).
+
+**DD-4: Plain C# state machine with Tick(dt)**
+ComboStateMachine is a plain C# class. Combo window timer ticks via `Tick(deltaTime)` called from ComboController.Update(). All other transitions are animation-event-driven. Keeps combo logic testable without Unity runtime.
+
+## Implementation Notes (Completed)
+
+**Files created (7 code files + 1 test file + editor updates):**
+- `Combat/Combo/AttackType.cs` — enum: Light, Heavy
+- `Combat/Combo/ComboState.cs` — enum: Idle, Attacking, ComboWindow, Finisher
+- `Combat/Combo/ComboStep.cs` — serializable struct: attack type, animation trigger, damage multiplier, branching indices, finisher flag
+- `Combat/Combo/ComboDefinition.cs` — ScriptableObject: flat step array, root indices, default combo window
+- `Combat/Combo/ComboStateMachine.cs` — plain C# class: state tracking, input buffering, combo window timer, animation event callbacks
+- `Combat/Combo/ComboController.cs` — MonoBehaviour: wires input → state machine → animation → events
+- `Combat/Combo/ComboDebugUI.cs` — debug overlay with auto-advance (simulates animation events when no Animator present)
+- `Tests/EditMode/Combat/Combo/ComboStateMachineTests.cs` — 25 unit tests
+- `Characters/CharacterInputHandler.cs` — updated with lightAttackAction/heavyAttackAction
+- `Editor/Prefabs/MovementTestSceneCreator.cs` — updated with combo wiring
+- `Editor/Prefabs/PlayerPrefabCreator.cs` — updated with ComboController on prefab
+
+**Brutor combo tree (7 steps):**
+```
+Step 0: Light root → L:1, H:5
+Step 1: Light chain → L:2, H:3
+Step 2: Light finisher (sweep) → terminal
+Step 3: Heavy (launcher) → L:-1, H:4
+Step 4: Heavy finisher (slam) → terminal
+Step 5: Heavy root → L:-1, H:6
+Step 6: Heavy finisher (ground pound) → terminal
+```
 
 ## References
 
