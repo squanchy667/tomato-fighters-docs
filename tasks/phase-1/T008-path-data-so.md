@@ -10,8 +10,10 @@
 | **Agent** | so-architect |
 | **Depends On** | T001, T006 |
 | **Blocks** | T018 |
-| **Status** | PENDING |
-| **Branch** | `pillar2/T008-path-data-so` |
+| **Status** | DONE |
+| **Branch** | `shared/T008-path-data-so` |
+| **Merged** | 2026-03-03 → `gal` |
+| **Detailed Spec** | [T008-path-data-scriptable-object.md](T008-path-data-scriptable-object.md) |
 
 ## Objective
 Create the `PathData` ScriptableObject class defining upgrade path definitions with per-tier stat bonuses and ability unlock IDs, and produce all 12 path assets with values from CHARACTER-ARCHETYPES.md. This data drives the Main + Secondary path system that is the core build-crafting mechanic.

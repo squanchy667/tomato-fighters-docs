@@ -32,6 +32,57 @@
 
 ---
 
+## [Phase 1] — 2026-03-03 (T008 PathData ScriptableObject — DONE)
+
+### Completed
+- **T008: PathData ScriptableObject — 12 Paths** — branch `shared/T008-path-data-so`
+  - `PathTierBonuses`: serializable struct with named fields per stat (vs raw float[] — DD-1)
+  - `PathData`: SO with 3 incremental tier structs + `GetStatBonusArray(int tier)` for stat calculator
+  - Tier bonuses are stored as per-tier deltas; `GetStatBonusArray` accumulates up to the requested tier (DD-3)
+  - Tier 3 "Main Path Only" constraint documented via `[Header]` only — no redundant bool flag (DD-2)
+  - `GetAbilityIdForTier(int tier)` — clean accessor for ability ID lookup by tier
+  - `IPathProvider.MainPath` and `SecondaryPath` updated from `object` placeholders to `PathData`
+  - `PathDataCreator`: editor MenuItem (`TomatoFighters/Create All Path Assets`) creates all 12 assets
+  - All 12 path assets defined with exact values from CHARACTER-ARCHETYPES.md; run MenuItem in Unity to generate `.asset` files
+  - Unblocks: T018 (PathSystem), T028 (Path T1 Ability Execution — Dev 1)
+
+### Design Decisions
+- DD-1 (T008): `PathTierBonuses` uses named fields (not `float[]`) — prevents silent index errors, readable in Inspector
+- DD-2 (T008): No `isMainExclusive` bool — all T3s are Main-only by design; `[Header]` self-documents, PathSystem enforces
+- DD-3 (T008): Incremental tier deltas — each tier stores what it adds; `GetStatBonusArray` sums them — matches design doc wording
+
+---
+
+## [Phase 1] — 2026-03-02 (T007 CharacterStatCalculator + T009 CurrencyManager — DONE)
+
+### Completed
+- **T007: CharacterStatCalculator** — branch `pillar2/T007-stat-calculator`
+  - Pure C# class (no MonoBehaviour), fully unit-testable without Unity runtime
+  - `Calculate(StatModifierInput)` → `FinalStats` — all 10 stats in one call
+  - `CalculateSingleStat(StatType, StatModifierInput)` — on-demand single stat
+  - Formula: `(base + pathBonus) × ritualMultiplier × trinketMultiplier × soulTreeBonus`
+  - Special handling: RangedAttack returns -1 for non-Viper; CritChance clamped to [0,1]
+  - `StatModifierInput` flat-array design (indexed by `(int)StatType`) — zero allocations per query
+  - `FinalStats` struct with all 10 calculated values
+  - Unblocks: T017 (Passives), T025 (HUD), T030 (TrinketSystem), T038 (MetaProgression)
+
+- **T009: CurrencyManager** — branch `pillar2/T009-currency-manager`
+  - `CurrencyType` enum added to `Shared/Enums/` (Crystals, ImbuedFruits, PrimordialSeeds)
+  - `CurrencyChangeEventData` struct (type, previousAmount, newAmount, delta)
+  - `CurrencyManager` MonoBehaviour: injectable via `[SerializeField]`, no singleton
+  - Methods: `TryAdd` / `TryRemove` / `GetBalance` / `CanAfford` / `SetBalance` / `ResetPerRunCurrencies`
+  - `OnCurrencyChanged` event fired after every successful modification
+  - Lock-protected `Dictionary<CurrencyType, int>` backing store (safe for async save/load)
+  - Persistence metadata: Crystals persist, ImbuedFruits + PrimordialSeeds reset per run
+  - Unblocks: T038 (MetaProgression + SoulTree)
+
+### Design Decisions
+- DD-1 (T007): `StatModifierInput` uses flat `float[]` arrays indexed by `(int)StatType` — avoids Dictionary overhead in hot combat path
+- DD-1 (T009): `CurrencyType` placed in `Shared/Enums/` (not `Roguelite/`) so World pillar can reference currency types for drop events without crossing pillar boundaries
+- DD-2 (T009): MonoBehaviour (not pure C# class) — logic is thin integer arithmetic; no testability benefit from splitting; injection via `[SerializeField]` matches project pattern
+
+---
+
 ## [Phase 1] — 2026-03-02 (T002 CharacterController + T003/T004 ComboSystem — DONE)
 
 ### Completed
