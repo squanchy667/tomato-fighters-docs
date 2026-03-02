@@ -15,6 +15,7 @@
 ## Developer Guides
 
 * [Setup Guide](developer/setup-guide.md)
+* [Workflow Guide](developer/workflow-guide.md)
 * [Coding Standards](developer/coding-standards.md)
 * [Dev 1 Guide — Combat](developer/dev1-combat-guide.md)
 * [Dev 2 Guide — Roguelite](developer/dev2-roguelite-guide.md)
