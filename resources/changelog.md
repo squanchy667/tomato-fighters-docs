@@ -1,5 +1,35 @@
 # Changelog
 
+## [Phase 1] — 2026-03-02 (T007 CharacterStatCalculator + T009 CurrencyManager — DONE)
+
+### Completed
+- **T007: CharacterStatCalculator** — branch `pillar2/T007-stat-calculator`
+  - Pure C# class (no MonoBehaviour), fully unit-testable without Unity runtime
+  - `Calculate(StatModifierInput)` → `FinalStats` — all 10 stats in one call
+  - `CalculateSingleStat(StatType, StatModifierInput)` — on-demand single stat
+  - Formula: `(base + pathBonus) × ritualMultiplier × trinketMultiplier × soulTreeBonus`
+  - Special handling: RangedAttack returns -1 for non-Viper; CritChance clamped to [0,1]
+  - `StatModifierInput` flat-array design (indexed by `(int)StatType`) — zero allocations per query
+  - `FinalStats` struct with all 10 calculated values
+  - Unblocks: T017 (Passives), T025 (HUD), T030 (TrinketSystem), T038 (MetaProgression)
+
+- **T009: CurrencyManager** — branch `pillar2/T009-currency-manager`
+  - `CurrencyType` enum added to `Shared/Enums/` (Crystals, ImbuedFruits, PrimordialSeeds)
+  - `CurrencyChangeEventData` struct (type, previousAmount, newAmount, delta)
+  - `CurrencyManager` MonoBehaviour: injectable via `[SerializeField]`, no singleton
+  - Methods: `TryAdd` / `TryRemove` / `GetBalance` / `CanAfford` / `SetBalance` / `ResetPerRunCurrencies`
+  - `OnCurrencyChanged` event fired after every successful modification
+  - Lock-protected `Dictionary<CurrencyType, int>` backing store (safe for async save/load)
+  - Persistence metadata: Crystals persist, ImbuedFruits + PrimordialSeeds reset per run
+  - Unblocks: T038 (MetaProgression + SoulTree)
+
+### Design Decisions
+- DD-1 (T007): `StatModifierInput` uses flat `float[]` arrays indexed by `(int)StatType` — avoids Dictionary overhead in hot combat path
+- DD-1 (T009): `CurrencyType` placed in `Shared/Enums/` (not `Roguelite/`) so World pillar can reference currency types for drop events without crossing pillar boundaries
+- DD-2 (T009): MonoBehaviour (not pure C# class) — logic is thin integer arithmetic; no testability benefit from splitting; injection via `[SerializeField]` matches project pattern
+
+---
+
 ## [Phase 1] — 2026-03-02 (T002 CharacterController + T003/T004 ComboSystem — DONE)
 
 ### Completed
