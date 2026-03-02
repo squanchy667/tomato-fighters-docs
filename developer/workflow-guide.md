@@ -7,6 +7,9 @@ How to use the toolkit to plan, execute, and document tasks.
 ## The Command Chain
 
 ```
+/fetch                   Resume from where you (or a teammate) left off
+    │
+    ▼
 /plan-task T001          Plan it (interactive conversation)
     │
     ▼
@@ -23,6 +26,9 @@ How to use the toolkit to plan, execute, and document tasks.
     │
     ▼
 /sync-docs               Update TASK_BOARD.md statuses + changelog
+    │
+    ▼
+/dump                    Can't finish? Save context for next session
 ```
 
 ---
@@ -126,6 +132,12 @@ tomato-fighters-docs/tasks/phase-1/T001-shared-contracts.md
 | `/check-pillar` | Verify no cross-pillar import violations |
 | `/scan-repo` | Index codebase for smarter context selection |
 
+### Session Handoff
+| Command | What It Does |
+|---------|-------------|
+| `/dump` | Save task context before ending a session (creates handoff file) |
+| `/fetch` | Resume work by loading a dump file and project context |
+
 ### Documentation
 | Command | What It Does |
 |---------|-------------|
@@ -167,13 +179,43 @@ It will:
 
 ---
 
+## Session Handoff (Dump / Fetch)
+
+When you can't finish a task in one session, use `/dump` to save your progress:
+
+```
+# End of session — can't finish T014
+/dump T014
+> "What's blocking you?" → "ComboNode tree traversal has a bug in branch selection"
+> "Anything else?" → "Used recursive approach, might need to switch to iterative"
+
+Dump saved to: tomato-fighters-docs/tasks/phase-2/dumps/T014-dump-dev1-20260302.md
+```
+
+When you (or a teammate) resume:
+
+```
+# Next session — pick up where you left off
+/fetch T014
+> Loads dump → shows progress, blockers, next steps
+> Deletes the dump file (one-time use)
+> Offers to continue execution
+```
+
+**Multi-user dumps:** If multiple people dumped for different tasks, `/fetch` asks which one to load. Dump files are stored per-task in the docs repo so any teammate can pick them up.
+
+**Dump file location:** `tomato-fighters-docs/tasks/phase-{N}/dumps/T{XXX}-dump-{user}-{timestamp}.md`
+
+---
+
 ## Typical Session
 
 ```
-# Morning: check what's ready
-Open TASK_BOARD.md, find your next PENDING task
+# Start: check for existing dumps
+/fetch
+> No dumps found — starting fresh
 
-# Plan it
+# Pick your task from TASK_BOARD.md
 /plan-task T014
 > (discuss approach, agree on decisions)
 
@@ -193,4 +235,8 @@ Open TASK_BOARD.md, find your next PENDING task
 # Commit and push
 git add . && git commit -m "[Phase 2] T014: Combo system all characters"
 git push
+
+# If you can't finish:
+/dump T014
+> Context saved for next session
 ```
