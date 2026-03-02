@@ -10,7 +10,7 @@
 | **Agent** | shared-contracts |
 | **Depends On** | none |
 | **Blocks** | T002, T003, T005, T006, T008, T009, T010, T011, T012 |
-| **Status** | PENDING |
+| **Status** | DONE (2026-03-02) |
 | **Branch** | `shared/T001-shared-contracts` |
 
 ## Objective
