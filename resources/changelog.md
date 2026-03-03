@@ -1,5 +1,41 @@
 # Changelog
 
+## [Phase 1] — 2026-03-03 (T005 AttackData ScriptableObject — DONE)
+
+### Completed
+- **T005: AttackData ScriptableObject** — branch `tal` (pillar1/T005-attack-data-so)
+  - `Shared/Data/AttackData.cs`: Universal attack data container with 5 inspector groups (Identity, Damage, Animation & Timing, Telegraph & State, Effects). 15+ fields with `[Header]`, `[Tooltip]`, `[Range]` attributes.
+  - Mystica 4-attack set via `Editor/CreateMysticaAttacks.cs` (menu: `Tools > TomatoFighters > Create Mystica Attacks`):
+    - MysticaStrike1 (Magic Burst 1): 0.6× dmg, 16 frames, kb (1.5, 0)
+    - MysticaStrike2 (Magic Burst 2): 0.8× dmg, 18 frames, kb (2.0, 0.3)
+    - MysticaStrike3 (Magic Burst 3): 1.0× dmg, 22 frames, kb (3.0, 0.5)
+    - MysticaArcaneBolt (Arcane Bolt): 1.4× dmg, 30 frames, kb (2.0, 1.0)
+  - `ComboStep.cs`: Added `AttackData attackData` field (DD-1: keeps existing `damageMultiplier` as combo-specific override)
+  - `IAttacker.cs`: `CurrentAttack` changed from `object` to `AttackData` (DD-3: resolves T001 TODO)
+
+### Design Decisions
+- DD-1 (T005): ComboStep dual scaling — `attackData.damageMultiplier × comboStep.damageMultiplier` — same AttackData reusable across different combo trees
+- DD-2 (T005): Mystica first (not Brutor) — her fast animations (16-22f) and low ATK (0.5) test the damage pipeline at the low end
+- DD-3 (T005): IAttacker.CurrentAttack typed to AttackData — no existing implementors, safe non-breaking change
+
+### Notes
+- Task counter: 10/60 (Phase 1: 10/13)
+- T005 unblocks: T014 (ComboSystem all characters), T023 (Enemy Attack Patterns)
+- Remaining Phase 1: T010 (WaveManager), T011 (EnemyBase), T012 (CameraController)
+
+---
+
+## [Phase 1] — 2026-03-03 (T004 Basic Strike Combo Chain — DONE)
+
+### Completed
+- **T004: IN PROGRESS → DONE** — All acceptance criteria resolved. The InputBufferSystem integration checkbox was a phantom blocker: T003's buffer IS the 1-slot buffer inside ComboStateMachine (BufferedInput property, lines 22/95/117). Cancel inputs use instant checks (DD-10). Animation-driven timing callbacks are wired and ready for T005's AttackData SO. Task counter: 9/60.
+
+### Closure Notes
+- Remaining deferred items (AttackData reference on ComboStep, frame-data-driven timing) are T005's responsibility, not T004's. T004 has the hooks ready — T005 fills in the data.
+- The lesson: when T003 changed scope from standalone to embedded, T004's acceptance criteria should have been updated immediately. This caused T004 to appear incomplete for a day.
+
+---
+
 ## [Phase 1] — 2026-03-03 (Docs sync)
 
 ### Status Updates

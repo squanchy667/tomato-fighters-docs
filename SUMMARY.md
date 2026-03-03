@@ -11,6 +11,7 @@
 * [System Overview](architecture/system-overview.md)
 * [Interface Contracts](architecture/interface-contracts.md)
 * [Data Flow](architecture/data-flow.md)
+* [Animation Pipeline](architecture/animation-pipeline.md)
 
 ## Developer Guides
 

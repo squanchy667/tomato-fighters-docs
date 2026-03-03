@@ -1,11 +1,11 @@
 # Tomato Fighters — Task Board
 
-> 8/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 9/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
 ## Phase 1: Foundation
-> Status: IN_PROGRESS | Tasks: 8/13 | Weeks: 1-2
+> Status: IN_PROGRESS | Tasks: 9/13 | Weeks: 1-2
 > Goal: Shared contracts established, one character moves and hits a dummy enemy, camera follows
 
 ### T001: Shared Interfaces, Enums, and Data Structures [DONE]
@@ -44,7 +44,7 @@
   - [x] Buffer clears on state reset
   - [x] Compiles with zero warnings
 
-### T004: Basic Strike Combo Chain [IN PROGRESS]
+### T004: Basic Strike Combo Chain [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T002, T003
 - **Files:** `Combat/Combo/AttackType.cs`, `Combat/Combo/ComboState.cs`, `Combat/Combo/ComboStep.cs`, `Combat/Combo/ComboDefinition.cs`, `Combat/Combo/ComboStateMachine.cs`, `Combat/Combo/ComboController.cs`, `Combat/Combo/ComboDebugUI.cs`
 - **Description:** Branching combo tree with light/heavy paths. Brutor: 7-step tree (L→L→L sweep, L→H launcher, H→H ground pound). Plain C# ComboStateMachine with Tick(dt) for testability. Animation-event-driven transitions. Hit-confirm cancel system.
@@ -56,19 +56,22 @@
   - [x] Plain C# ComboStateMachine testable without Unity runtime
   - [x] Hit-confirm callback (`OnHitConfirmed`) with dash-cancel and jump-cancel
   - [x] `canDashCancelOnHit` / `canJumpCancelOnHit` fields on ComboStep
-  - [ ] InputBufferSystem integration (consume from T003 instead of internal buffer)
+  - [x] InputBufferSystem integration (T003 buffer is the 1-slot buffer inside ComboStateMachine — same system, see DD-10)
   - [x] Movement lock integration (CharacterMotor subscribes to combo events)
   - [x] Combo resets on stagger/death (not just window expiry)
 
-### T005: AttackData ScriptableObject [PENDING]
+### T005: AttackData ScriptableObject [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T001
-- **Files:** `Shared/Data/AttackData.cs`, `ScriptableObjects/Attacks/Brutor/BrutorStrike1.asset` (etc.)
-- **Description:** ScriptableObject definition for attack data: damage multiplier, knockback force, launch force, animation clip ref, hitbox timing (start frame, active frames), telegraph type (Normal/Unstoppable), combo branch links. Create initial Brutor attack data assets.
+- **Files:** `Shared/Data/AttackData.cs`, `ScriptableObjects/Attacks/Mystica/*.asset`, `Editor/CreateMysticaAttacks.cs`
+- **Description:** ScriptableObject definition for attack data: damage multiplier, knockback force, launch force, animation clip ref, hitbox timing (start frame, active frames), telegraph type (Normal/Unstoppable), VFX/SFX refs. Create Mystica's 4-attack set (DD-2: Mystica first). ComboStep gains AttackData reference (DD-1). IAttacker.CurrentAttack typed to AttackData (DD-3).
 - **Acceptance:**
-  - [ ] AttackData SO with all required fields
-  - [ ] Brutor basic attack chain data (4 attacks)
-  - [ ] TelegraphType field (Normal/Unstoppable)
-  - [ ] CreateAssetMenu attribute for easy creation
+  - [x] AttackData SO with all required fields
+  - [x] Mystica attack set: 4 assets (Strike1, Strike2, Strike3, ArcaneBolt)
+  - [x] TelegraphType field (Normal/Unstoppable)
+  - [x] CreateAssetMenu attribute for easy creation
+  - [x] ComboStep updated with AttackData field (DD-1)
+  - [x] IAttacker.CurrentAttack updated from object to AttackData (DD-3)
+  - [x] Editor script for programmatic asset creation
 
 ### T006: CharacterBaseStats ScriptableObject [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 2 | **Depends on:** T001

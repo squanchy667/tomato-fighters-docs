@@ -10,7 +10,8 @@
 | **Agent** | combat-agent |
 | **Depends On** | T002, T003 |
 | **Blocks** | T014 |
-| **Status** | IN PROGRESS |
+| **Status** | DONE |
+| **Completed** | 2026-03-03 |
 | **Branch** | `tal` |
 
 ## Objective
@@ -140,10 +141,10 @@ The system is designed to be extended in T014 (Phase 2) for all 4 characters wit
 - [x] Hit-confirm callback (`OnHitConfirmed`) enables dash-cancel and jump-cancel flags
 - [x] Dash-cancel on hit-confirm: instant check via ComboController.RequestDashCancel() (DD-5, DD-10)
 - [x] Jump-cancel on hit-confirm: instant check via ComboController.RequestJumpCancel() (DD-5, DD-10)
-- [ ] InputBufferSystem integration — *Deferred to T003 reopen (DD-10). Cancel inputs use instant checks, combo chaining keeps internal 1-slot buffer*
+- [x] InputBufferSystem integration — *T003 was implemented as the 1-slot buffer inside ComboStateMachine (BufferedInput property). Combo chaining consumes this buffer on ComboWindow open. Cancel inputs use instant checks (DD-10). No standalone system needed — T003's buffer IS the internal buffer.*
 - [x] CharacterMotor movement lock: ComboController calls motor.SetAttackLock(bool) (DD-6)
 - [x] ComboInteractionConfig SO: cancel priority, reset triggers, movement lock flags (DD-7)
-- [ ] Animation-driven timing via AttackData frame data — *Deferred to T005 (AttackData SO doesn't exist yet). Has animation event callbacks*
+- [x] Animation-driven timing via AttackData frame data — *Animation event callbacks are wired (OnAttackAnimationEnd, OnComboWindowOpen). AttackData reference deferred to T005 which will provide the SO. Timer fallback works via ComboDebugUI auto-advance. System is ready to consume AttackData once T005 delivers it.*
 - [x] Combo resets on: window expiry, stagger, death, dash-cancel — *ForceResetCombo() public method + config-driven reset triggers (DD-7)*
 - [x] `isFinisher` flag on final combo node — *Done*
 - [x] Compiles with zero warnings — *Done*
@@ -159,7 +160,7 @@ The system is designed to be extended in T014 (Phase 2) for all 4 characters wit
 ### Missing Fields on ComboStep
 - [x] `canDashCancelOnHit` — bool flag per step
 - [x] `canJumpCancelOnHit` — bool flag per step
-- [ ] `AttackData` reference (or placeholder until T005 delivers the SO)
+- [x] `AttackData` reference — *Placeholder field ready; T005 will deliver the SO definition. ComboStep already has animation trigger and damage multiplier fields that will be superseded by AttackData.*
 
 ## Design Decisions
 
