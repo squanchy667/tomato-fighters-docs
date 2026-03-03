@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 9/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 10/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -153,7 +153,7 @@
 ---
 
 ## Phase 2: Core Combat + Path Framework
-> Status: IN_PROGRESS | Tasks: 1/12 | Weeks: 3-4
+> Status: IN_PROGRESS | Tasks: 2/12 | Weeks: 3-4
 > Goal: All 4 characters playable with basic combos, path selection works, fight one wave
 
 ### T014: ComboSystem — All 4 Characters [PENDING]
@@ -221,15 +221,16 @@
   - [ ] Handles both Main and Secondary selection states
   - [ ] Confirmation before locking
 
-### T020: RitualData ScriptableObject + Families [PENDING]
+### T020: RitualData ScriptableObject + Families [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T001
-- **Files:** `Shared/Data/RitualData.cs`, `ScriptableObjects/Rituals/Fire/*.asset`, `Lightning/*.asset`
+- **Files:** `Roguelite/RitualData.cs`, `Editor/RitualDataCreator.cs`
+- **Branch:** `pillar2/T020-ritual-data-so` | **Merged:** 2026-03-03 → `gal`
 - **Description:** RitualData SO: name, family, category, secondFamily (Twin only), maxLevel, basePower per level, trigger, effect type, effect prefab. Create initial Fire and Lightning family rituals (4-5 each).
 - **Acceptance:**
-  - [ ] RitualData SO with all fields
-  - [ ] Fire family: Burn, Blazing Dash, Flame Strike, Ember Shield
-  - [ ] Lightning family: Chain Lightning, Lightning Strike, Shock Wave, Static Field
-  - [ ] Level 1-3 power values defined
+  - [x] RitualData SO with all fields
+  - [x] Fire family: Burn, Blazing Dash, Flame Strike, Ember Shield
+  - [x] Lightning family: Chain Lightning, Lightning Strike, Shock Wave, Static Field
+  - [x] Level 1-3 power values defined
 
 ### T021: RitualSystem — Trigger Pipeline [PENDING]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T020

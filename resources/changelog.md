@@ -1,5 +1,30 @@
 # Changelog
 
+## [Phase 2] — 2026-03-03 (T020 RitualData — DONE)
+
+### Completed
+- **T020: RitualData ScriptableObject + Families** — branch `pillar2/T020-ritual-data-so`
+  - `RitualData` SO in `Roguelite/` — placement overrides task board's `Shared/Data/` (DD-3: no Shared interface exposes RitualData directly)
+  - `RitualLevelData` struct: `baseValue`, `maxStacks`, `stackingMultiplier`, `ritualPower` — three explicit level fields mirroring PathTierBonuses (DD-2)
+  - `string effectId` dispatch key — matches PathData ability ID pattern; RitualSystem (T021) wires a `Dictionary<string, Action>` (DD-1)
+  - `BelongsToFamily(RitualFamily)` — handles Twin ritual dual-family membership
+  - `GetLevelData(int)` — clean level accessor, clamped 1–3
+  - `RitualDataCreator` editor MenuItem (`TomatoFighters/Create Ritual Assets`) — generates 8 assets
+  - Fire family: Burn (Core/OnStrike), Blazing Dash (General/OnDash), Flame Strike (Enhancement/OnFinisher), Ember Shield (Enhancement/OnDeflect)
+  - Lightning family: Chain Lightning (Core/OnStrike), Lightning Strike (General/OnSkill), Shock Wave (Enhancement/OnFinisher), Static Field (Enhancement/OnTakeDamage)
+  - Unblocks: T021 (RitualSystem)
+
+### Design Decisions
+- DD-1 (T020): `string effectId` — 36+ rituals would bloat an enum; string keys match PathData's ability ID pattern; dispatch via Dictionary in RitualSystem
+- DD-2 (T020): Three explicit `RitualLevelData` structs — mirrors PathTierBonuses; level multipliers (1.0/1.5/2.0) are fixed constants in RitualStackCalculator (T029)
+- DD-3 (T020): `Roguelite/` not `Shared/Data/` — `IBuffProvider.GetTriggerEffects` returns `OnTriggerEffect`, never `RitualData`; Roguelite is the rightful owner
+
+### Tests Added
+- `CharacterStatCalculatorTests.cs` — 17 edit-mode unit tests for T007 formula (path, ritual, trinket, soul tree stacking; crit clamp; Viper rangedAttack)
+- `PathSystemTests.cs` — 24 edit-mode unit tests for T018 selection rules, tier progression, run lifecycle, IPathProvider, and events
+
+---
+
 ## [Phase 2] — 2026-03-03 (T018 PathSystem — DONE)
 
 ### Completed
