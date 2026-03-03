@@ -65,3 +65,4 @@
 ## Testing
 
 * [Test Plan](testing/test-plan.md)
+* [Test Scene Guide](testing/test-scene-guide.md)
