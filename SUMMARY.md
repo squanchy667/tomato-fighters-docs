@@ -51,6 +51,10 @@
 * [T012: CameraController](tasks/phase-1/T012-camera-controller.md)
 * [T013: Test Scene](tasks/phase-1/T013-test-scene.md)
 
+## Tasks — Phase 2
+
+* [T018: PathSystem](tasks/phase-2/T018-path-system.md)
+
 ## Resources
 
 * [Tech Stack](resources/tech-stack.md)
