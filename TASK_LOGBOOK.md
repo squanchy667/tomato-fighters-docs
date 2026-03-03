@@ -63,7 +63,20 @@ After completing any task through the AgentPilot pipeline (via `/do-task`, `/tas
 
 ## Phase 2: Core Combat + Path Framework
 
-*(Pending Phase 1 completion)*
+### T014: ComboSystem — All 4 Characters [DONE]
+- **Date:** 2026-03-03
+- **Dev:** Dev 1
+- **Agent/Command Used:** /plan-task → manual execution
+- **Context Files:** `Combat/Combo/*.cs`, `Shared/Data/AttackData.cs`, `Editor/CreateMysticaAttacks.cs`, `CHARACTER-ARCHETYPES.md`
+- **Output Files:** `Editor/CreateAllCharacterAttacks.cs`, `Editor/CreateComboDefinitions.cs`, 22 AttackData .asset files, 3 ComboDefinition .asset files, 4 ComboInteractionConfig .asset files
+- **Issues:** None. Pure data authoring task — no infrastructure changes needed.
+- **Lesson Learned:** When the combo system is well-designed (T004), extending to all characters is a data-only task. Editor scripts for asset creation are essential since CLI can't create SOs directly.
+- **Deliverables:**
+  - Brutor: 7 AttackData assets (ShieldBash1-2, Sweep, Launcher, LauncherSlam, OverheadSlam, GroundPound)
+  - Slasher: 8-step combo tree with Heavy→Light re-entry (unique), 8 AttackData assets
+  - Mystica: 5-step combo tree with widest windows (0.4s), 1 new AttackData (EmpoweredBolt)
+  - Viper: 6-step combo tree, can move during normal attacks, 6 AttackData assets
+  - 4 ComboInteractionConfigs with per-character cancel/lock tuning
 
 ---
 

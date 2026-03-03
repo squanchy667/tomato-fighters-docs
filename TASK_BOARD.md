@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 9/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 10/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -161,18 +161,18 @@
 ---
 
 ## Phase 2: Core Combat + Path Framework
-> Status: PENDING | Tasks: 0/12 | Weeks: 3-4
+> Status: IN_PROGRESS | Tasks: 1/12 | Weeks: 3-4
 > Goal: All 4 characters playable with basic combos, path selection works, fight one wave
 
-### T014: ComboSystem — All 4 Characters [PENDING]
+### T014: ComboSystem — All 4 Characters [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T004, T005
 - **Files:** `Combat/ComboSystem.cs` (extended), character-specific AttackData assets
 - **Description:** Extend ComboSystem for all 4 characters. Brutor: 3-hit shield bash. Slasher: 4-hit fast slash. Mystica: 3-hit projectile burst. Viper: 3-shot burst. Each with unique finishers, timing, and cancel routes. Combo tree branching per character.
 - **Acceptance:**
-  - [ ] 4 distinct combo trees
-  - [ ] Character-specific timing windows
-  - [ ] All AttackData assets created
-  - [ ] Skill/Heavy attacks per character
+  - [x] 4 distinct combo trees
+  - [x] Character-specific timing windows
+  - [x] All AttackData assets created
+  - [x] Skill/Heavy attacks per character
 
 ### T015: HitboxManager [PENDING]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T014

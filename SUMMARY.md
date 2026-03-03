@@ -52,6 +52,10 @@
 * [T012: CameraController](tasks/phase-1/T012-camera-controller.md)
 * [T013: Test Scene](tasks/phase-1/T013-test-scene.md)
 
+## Tasks — Phase 2
+
+* [T014: ComboSystem — All 4 Characters](tasks/phase-2/T014-ComboSystem-All4Characters.md)
+
 ## Resources
 
 * [Tech Stack](resources/tech-stack.md)

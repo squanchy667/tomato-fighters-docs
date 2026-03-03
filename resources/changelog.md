@@ -1,5 +1,27 @@
 # Changelog
 
+## [Phase 2] — 2026-03-03 (T014 ComboSystem — All 4 Characters — DONE)
+
+### Completed
+- **T014: ComboSystem — All 4 Characters** — branch `tal`
+  - `Editor/CreateAllCharacterAttacks.cs`: Unified editor script creating 22 AttackData assets for Brutor (7), Slasher (8), Viper (6), Mystica extras (1)
+  - `Editor/CreateComboDefinitions.cs`: Creates 3 ComboDefinition SOs (Slasher 8-step, Mystica 5-step, Viper 6-step) + 4 ComboInteractionConfig SOs
+  - Brutor's existing 7-step tree from T004 retained; AttackData assets now created for all his steps
+  - No changes to combo infrastructure code (ComboStateMachine, ComboController, ComboStep, ComboDefinition)
+
+### Design Decisions
+- DD-1 (T014): Unified editor script (not per-character) — single menu item creates all assets
+- DD-2 (T014): Slasher 8-step (deepest, Heavy→Light re-entry unique to him), Mystica 5-step (shallowest, forgiving windows), Viper 6-step (medium, ranged flavor)
+- DD-3 (T014): Tuning values encode character identity — Brutor slow/heavy (20-30f), Slasher fast/snappy (12-18f), frame values are design intent for T024 animation work
+- DD-4 (T014): Per-character cancel configs — Slasher's dash doesn't reset combo (mid-chain dash), Mystica prioritizes jump-cancel (blink escape), Viper can move during normal attacks (kiting)
+
+### Notes
+- Task counter: 10/60 (Phase 1: 9/13, Phase 2: 1/12)
+- T014 unblocks: T015 (HitboxManager), T016 (DefenseSystem), T017 (Character Passives)
+- Phase 2 is now IN_PROGRESS
+
+---
+
 ## [Phase 1] — 2026-03-03 (T005 AttackData ScriptableObject — DONE)
 
 ### Completed
