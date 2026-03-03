@@ -1,6 +1,6 @@
 # Known Issues
 
-*(No active bugs. 8 tasks completed in Phase 1.)*
+*(No active bugs. 10 tasks completed across Phase 1–2.)*
 
 ## Expected Challenges
 

@@ -1,5 +1,6 @@
 # Tomato Fighters — Task Board
 
+> 10/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 > 12/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
@@ -207,17 +208,18 @@
   - [ ] Reads from CharacterStatCalculator
   - [ ] Fires through IBuffProvider pipeline
 
-### T018: PathSystem — Selection + Tier Progression [PENDING]
+### T018: PathSystem — Selection + Tier Progression [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 2 | **Depends on:** T008
-- **Files:** `Paths/PathSystem.cs`
+- **Files:** `Paths/PathSystem.cs`, `Paths/TomatoFighters.Paths.asmdef`
+- **Branch:** `pillar2/T018-path-system` | **Merged:** 2026-03-03 → `gal`
 - **Description:** Manages path selection state per character per run. Enforces: 1 Main + 1 Secondary, cannot select same path twice, 3rd path locked. Tier progression: T1 on select, T2 on boss defeat, T3 on island boss (Main only). Fires OnMainPathSelected, OnSecondaryPathSelected, OnPathTierUp events.
 - **Acceptance:**
-  - [ ] Main + Secondary path selection logic
-  - [ ] 3rd path enforced as locked
-  - [ ] Tier progression triggers
-  - [ ] T3 only for Main path
-  - [ ] Events fired on selection and tier-up
-  - [ ] IPathProvider interface implemented
+  - [x] Main + Secondary path selection logic
+  - [x] 3rd path enforced as locked
+  - [x] Tier progression triggers
+  - [x] T3 only for Main path
+  - [x] Events fired on selection and tier-up
+  - [x] IPathProvider interface implemented
 
 ### T019: PathSelectionUI [PENDING]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T018
@@ -229,15 +231,16 @@
   - [ ] Handles both Main and Secondary selection states
   - [ ] Confirmation before locking
 
-### T020: RitualData ScriptableObject + Families [PENDING]
+### T020: RitualData ScriptableObject + Families [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T001
-- **Files:** `Shared/Data/RitualData.cs`, `ScriptableObjects/Rituals/Fire/*.asset`, `Lightning/*.asset`
+- **Files:** `Roguelite/RitualData.cs`, `Editor/RitualDataCreator.cs`
+- **Branch:** `pillar2/T020-ritual-data-so` | **Merged:** 2026-03-03 → `gal`
 - **Description:** RitualData SO: name, family, category, secondFamily (Twin only), maxLevel, basePower per level, trigger, effect type, effect prefab. Create initial Fire and Lightning family rituals (4-5 each).
 - **Acceptance:**
-  - [ ] RitualData SO with all fields
-  - [ ] Fire family: Burn, Blazing Dash, Flame Strike, Ember Shield
-  - [ ] Lightning family: Chain Lightning, Lightning Strike, Shock Wave, Static Field
-  - [ ] Level 1-3 power values defined
+  - [x] RitualData SO with all fields
+  - [x] Fire family: Burn, Blazing Dash, Flame Strike, Ember Shield
+  - [x] Lightning family: Chain Lightning, Lightning Strike, Shock Wave, Static Field
+  - [x] Level 1-3 power values defined
 
 ### T021: RitualSystem — Trigger Pipeline [PENDING]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T020
