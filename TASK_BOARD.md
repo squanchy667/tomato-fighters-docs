@@ -1,7 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 10/60 tasks DONE | 6 phases | 3 developers + AgentPilot
-> 12/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 14/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -162,7 +161,7 @@
 ---
 
 ## Phase 2: Core Combat + Path Framework
-> Status: IN_PROGRESS | Tasks: 2/12 | Weeks: 3-4
+> Status: IN_PROGRESS | Tasks: 4/12 | Weeks: 3-4
 > Goal: All 4 characters playable with basic combos, path selection works, fight one wave
 
 ### T014: ComboSystem — All 4 Characters [DONE]
