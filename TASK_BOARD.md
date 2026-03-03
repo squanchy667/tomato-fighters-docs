@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 8/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 9/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -153,7 +153,7 @@
 ---
 
 ## Phase 2: Core Combat + Path Framework
-> Status: PENDING | Tasks: 0/12 | Weeks: 3-4
+> Status: IN_PROGRESS | Tasks: 1/12 | Weeks: 3-4
 > Goal: All 4 characters playable with basic combos, path selection works, fight one wave
 
 ### T014: ComboSystem — All 4 Characters [PENDING]
@@ -198,17 +198,18 @@
   - [ ] Reads from CharacterStatCalculator
   - [ ] Fires through IBuffProvider pipeline
 
-### T018: PathSystem — Selection + Tier Progression [PENDING]
+### T018: PathSystem — Selection + Tier Progression [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 2 | **Depends on:** T008
-- **Files:** `Paths/PathSystem.cs`
+- **Files:** `Paths/PathSystem.cs`, `Paths/TomatoFighters.Paths.asmdef`
+- **Branch:** `pillar2/T018-path-system` | **Merged:** 2026-03-03 → `gal`
 - **Description:** Manages path selection state per character per run. Enforces: 1 Main + 1 Secondary, cannot select same path twice, 3rd path locked. Tier progression: T1 on select, T2 on boss defeat, T3 on island boss (Main only). Fires OnMainPathSelected, OnSecondaryPathSelected, OnPathTierUp events.
 - **Acceptance:**
-  - [ ] Main + Secondary path selection logic
-  - [ ] 3rd path enforced as locked
-  - [ ] Tier progression triggers
-  - [ ] T3 only for Main path
-  - [ ] Events fired on selection and tier-up
-  - [ ] IPathProvider interface implemented
+  - [x] Main + Secondary path selection logic
+  - [x] 3rd path enforced as locked
+  - [x] Tier progression triggers
+  - [x] T3 only for Main path
+  - [x] Events fired on selection and tier-up
+  - [x] IPathProvider interface implemented
 
 ### T019: PathSelectionUI [PENDING]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T018

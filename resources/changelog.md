@@ -1,5 +1,29 @@
 # Changelog
 
+## [Phase 2] — 2026-03-03 (T018 PathSystem — DONE)
+
+### Completed
+- **T018: PathSystem — Selection + Tier Progression** — branch `pillar2/T018-path-system`
+  - `PathSystem` MonoBehaviour implementing `IPathProvider` — single source of truth for run path state
+  - `SelectMainPath` / `SelectSecondaryPath` return bool, no throws — UI responsible for valid options (DD-3)
+  - 5-condition guard on `SelectSecondaryPath`: null, wrong character, no main yet, already selected, same as main
+  - `HandleBossDefeated` → both paths T1→T2; `HandleIslandCompleted` → main only T2→T3
+  - `TryAdvanceTier` private helper: idempotent — calling twice at same tier is a no-op
+  - `IRunProgressionEvents` subscribed via `[SerializeField] MonoBehaviour` cast in `Awake()`, null-safe (DD-2)
+  - Own `Action<PathSelectedData>` + `Action<PathTierUpData>` events — not piped through `IRunProgressionEvents` (DD-5)
+  - `ResetForNewRun()` clears all four state fields
+  - `TomatoFighters.Paths.asmdef` added — Paths folder was missing assembly definition
+  - Unblocks: T019 (PathSelectionUI), T028 (Path T1 Ability Execution), T041 (InspirationSystem)
+
+### Design Decisions
+- DD-1 (T018): MonoBehaviour (not pure C# class) — holds per-run state, Unity lifecycle for subscribe/unsubscribe, `[SerializeField]` injection pattern matches CurrencyManager
+- DD-2 (T018): Subscribe to `IRunProgressionEvents` via SerializeField cast — null-safe until Dev 3 ships RunManager; direct `HandleBossDefeated/HandleIslandCompleted` methods remain callable for interim testing
+- DD-3 (T018): Selection returns bool, no throws — combat/game code must never throw
+- DD-4 (T018): PathSystem does not hold available path list — "which options to show" is a UI concern (T019)
+- DD-5 (T018): Own C# events — C# events can only be raised by their declaring class; uses same shared data types
+
+---
+
 ## [Phase 1] — 2026-03-03 (T008 PathData ScriptableObject — DONE)
 
 ### Completed
