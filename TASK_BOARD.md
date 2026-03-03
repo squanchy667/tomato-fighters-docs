@@ -174,7 +174,7 @@
   - [x] All AttackData assets created
   - [x] Skill/Heavy attacks per character
 
-### T015: HitboxManager [PENDING]
+### T015: HitboxManager [IN_PROGRESS]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T014
 - **Files:** `Combat/HitboxManager.cs`
 - **Description:** Activate/deactivate attack colliders via Animation Events. Never in Update(). Reports hit-confirm to ComboSystem for cancel enabling. Supports multiple hitbox shapes per attack. Collision layer filtering. **Unlocks cancel system end-to-end testing** — wires collision → `ComboController.OnHitConfirmed()` → cancel window opens.

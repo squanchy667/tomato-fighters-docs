@@ -55,6 +55,7 @@
 ## Tasks — Phase 2
 
 * [T014: ComboSystem — All 4 Characters](tasks/phase-2/T014-ComboSystem-All4Characters.md)
+* [T015: HitboxManager](tasks/phase-2/T015-HitboxManager.md)
 
 ## Resources
 

@@ -1,5 +1,28 @@
 # Changelog
 
+## [Phase 2] — 2026-03-03 (T015 HitboxManager — IN_PROGRESS)
+
+### In Progress
+- **T015: HitboxManager** — branch `pillar1/T015-hitbox-manager`
+  - `Combat/Hitbox/HitDetectionData.cs`: Readonly struct payload (IDamageable target, AttackData, Vector2 hitPoint, CharacterType attacker)
+  - `Combat/Hitbox/HitboxDamage.cs`: MonoBehaviour on each hitbox child GO. `HashSet<IDamageable>` per-activation tracking (cleared on OnEnable). `OnTriggerEnter2D` detection, fires event with target + hitPoint. Pure detection — no damage resolution
+  - `Combat/Hitbox/HitboxManager.cs`: Orchestrator on player root. `ActivateHitbox()`/`DeactivateHitbox()` Animation Event callbacks. Reads `hitboxId` from current ComboStep's AttackData, looks up `Hitbox_{id}` child GO. Subscribes to HitboxDamage events, forwards hit-confirm to `ComboController.OnHitConfirmed()`. Temporary damage shim (builds DamagePacket, calls IDamageable.TakeDamage) clearly marked for T016 replacement
+  - `Shared/Data/AttackData.cs`: Added `string hitboxId` field in Animation & Timing section
+  - **Remaining**: Prefab setup (hitbox child GOs), Animation Event wiring, physics layer configuration — all require Unity Editor
+
+### Design Decisions
+- DD-2 (T015): AttackData holds `hitboxId`, Animation Events call generic `ActivateHitbox()` — no string args. HitboxManager reads hitboxId from current combo step's AttackData
+- DD-3 (T015): HashSet tracking by `IDamageable` (not GameObject) — prevents double-damage from entities with multiple colliders
+- DD-4 (T015): Event chain: HitboxDamage.OnHitDetected → HitboxManager → ComboController.OnHitConfirmed()
+- DD-5 (T015): Detection-only pattern — HitboxDamage reports collisions, temp shim in HitboxManager applies damage directly until T016
+
+### Notes
+- Task counter: 10/60 (Phase 1: 9/13, Phase 2: 1/12 DONE + T015 in progress)
+- T015 code deliverables complete; Unity Editor work (prefab, layers, animation events) remains
+- T018 (PathSystem) and T020 (RitualData) appear completed on `gal` branch per git log — board may need separate update
+
+---
+
 ## [Phase 2] — 2026-03-03 (T014 ComboSystem — All 4 Characters — DONE)
 
 ### Completed
