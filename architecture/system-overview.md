@@ -70,10 +70,11 @@ Assets/Scripts/
 │   ├── PathSelectionUI.cs
 │   ├── RewardSelectorUI.cs
 │   └── DifficultyScaling.cs
-├── Paths/               (Dev 2) — 3 files, ~800 LOC target
+├── Paths/               (Dev 2) — 4 files, ~800 LOC target
 │   ├── PathSystem.cs
 │   ├── CharacterStatCalculator.cs
-│   └── PathData.cs (SO definition)
+│   ├── FinalStats.cs
+│   └── StatModifierInput.cs
 ├── World/               (Dev 3) — 15+ files, ~3,000 LOC target
 │   ├── WaveManager.cs
 │   ├── EnemyBase.cs
@@ -91,7 +92,7 @@ Assets/Scripts/
 │   └── UI/              (HUD files)
 └── Shared/              (ALL) — 15+ files, ~600 LOC target
     ├── Interfaces/      (6 interface files)
-    ├── Data/            (CharacterBaseStats ✓, AttackData, DamagePacket, PathData, etc.)
+    ├── Data/            (CharacterBaseStats ✓, PathData ✓, PathTierBonuses ✓, AttackData, DamagePacket, etc.)
     ├── Enums/           (all shared enums)
     └── Events/          (SO-based event channels)
 ```
