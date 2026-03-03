@@ -162,7 +162,7 @@
 ---
 
 ## Phase 2: Core Combat + Path Framework
-> Status: IN_PROGRESS | Tasks: 2/12 | Weeks: 3-4
+> Status: IN_PROGRESS | Tasks: 5/12 | Weeks: 3-4
 > Goal: All 4 characters playable with basic combos, path selection works, fight one wave
 
 ### T014: ComboSystem — All 4 Characters [DONE]
@@ -186,17 +186,18 @@
   - [x] Layer filtering (player vs enemy)
   - [x] Cancel system integration tests: hit → cancel window → dash/jump cancel executes (see `.claude/dumps/cancel-buffer-tests-dump.md`)
 
-### T016: DefenseSystem — Deflect/Clash/Dodge [PENDING]
+### T016: DefenseSystem — Deflect/Clash/Dodge [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T014
-- **Files:** `Combat/DefenseSystem.cs`
+- **Files:** `Combat/Defense/DefenseSystem.cs`, `Combat/Defense/DefenseResolver.cs`, `Combat/Defense/DefenseConfig.cs`, `Combat/Defense/DefenseBonus.cs`, `Combat/Defense/Bonuses/*`, `Shared/Interfaces/IDefenseProvider.cs`
+- **Branch:** `pillar1/T016-defense-system` | **Merged:** 2026-03-03 → `tal`
 - **Description:** Per-character defense timing. Deflect (on dash, generous: 0-150ms), Clash (on heavy, tight: 20-80ms), Dodge (i-frames: 50-300ms). Returns DamageResponse enum. Character-specific bonuses: Brutor no-slideback on deflect, Slasher crit-on-deflect, Mystica mana-on-deflect, Viper projectile-reflect.
 - **Acceptance:**
-  - [ ] Deflect with configurable window per character
-  - [ ] Clash with tighter window
-  - [ ] Dodge i-frames
-  - [ ] Unstoppable attacks bypass deflect/clash
-  - [ ] Character-specific deflect bonuses
-  - [ ] DamageResponse enum (Hit, Deflected, Clashed, Dodged)
+  - [x] Deflect with configurable window per character
+  - [x] Clash with tighter window
+  - [x] Dodge i-frames
+  - [x] Unstoppable attacks bypass deflect/clash
+  - [x] Character-specific deflect bonuses
+  - [x] DamageResponse enum (Hit, Deflected, Clashed, Dodged)
 
 ### T017: Character Passives [PENDING]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 1 | **Depends on:** T007, T014
