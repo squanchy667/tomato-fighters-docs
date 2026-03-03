@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 10/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 11/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -161,7 +161,7 @@
 ---
 
 ## Phase 2: Core Combat + Path Framework
-> Status: IN_PROGRESS | Tasks: 1/12 | Weeks: 3-4
+> Status: IN_PROGRESS | Tasks: 2/12 | Weeks: 3-4
 > Goal: All 4 characters playable with basic combos, path selection works, fight one wave
 
 ### T014: ComboSystem — All 4 Characters [DONE]
@@ -174,7 +174,7 @@
   - [x] All AttackData assets created
   - [x] Skill/Heavy attacks per character
 
-### T015: HitboxManager [IN_PROGRESS]
+### T015: HitboxManager [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T014
 - **Files:** `Combat/HitboxManager.cs`
 - **Description:** Activate/deactivate attack colliders via Animation Events. Never in Update(). Reports hit-confirm to ComboSystem for cancel enabling. Supports multiple hitbox shapes per attack. Collision layer filtering. **Unlocks cancel system end-to-end testing** — wires collision → `ComboController.OnHitConfirmed()` → cancel window opens.

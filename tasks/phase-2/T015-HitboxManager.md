@@ -1,8 +1,9 @@
 # T015: HitboxManager
 
 **Phase:** 2 | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T014
-**Status:** IN_PROGRESS
+**Status:** DONE
 **Branch:** `pillar1/T015-hitbox-manager`
+**Completed:** 2026-03-03
 
 ---
 

@@ -1,14 +1,16 @@
 # Changelog
 
-## [Phase 2] — 2026-03-03 (T015 HitboxManager — IN_PROGRESS)
+## [Phase 2] — 2026-03-03 (T015 HitboxManager — DONE)
 
-### In Progress
+### Completed
 - **T015: HitboxManager** — branch `pillar1/T015-hitbox-manager`
   - `Combat/Hitbox/HitDetectionData.cs`: Readonly struct payload (IDamageable target, AttackData, Vector2 hitPoint, CharacterType attacker)
   - `Combat/Hitbox/HitboxDamage.cs`: MonoBehaviour on each hitbox child GO. `HashSet<IDamageable>` per-activation tracking (cleared on OnEnable). `OnTriggerEnter2D` detection, fires event with target + hitPoint. Pure detection — no damage resolution
   - `Combat/Hitbox/HitboxManager.cs`: Orchestrator on player root. `ActivateHitbox()`/`DeactivateHitbox()` Animation Event callbacks. Reads `hitboxId` from current ComboStep's AttackData, looks up `Hitbox_{id}` child GO. Subscribes to HitboxDamage events, forwards hit-confirm to `ComboController.OnHitConfirmed()`. Temporary damage shim (builds DamagePacket, calls IDamageable.TakeDamage) clearly marked for T016 replacement
   - `Shared/Data/AttackData.cs`: Added `string hitboxId` field in Animation & Timing section
-  - **Remaining**: Prefab setup (hitbox child GOs), Animation Event wiring, physics layer configuration — all require Unity Editor
+  - `Editor/SetupMysticaCharacter.cs`: One-click prefab setup — creates 3 hitbox children (Burst, BigBurst, Bolt), wires HitboxManager + ComboController, assigns hitboxId on all 5 Mystica AttackData assets
+  - `Editor/AssignAllHitboxIds.cs`: Bulk assigns hitboxId on all 26 AttackData assets across 4 characters
+  - `developer/unity-editor-scripts.md`: Documentation for all editor setup scripts
 
 ### Design Decisions
 - DD-2 (T015): AttackData holds `hitboxId`, Animation Events call generic `ActivateHitbox()` — no string args. HitboxManager reads hitboxId from current combo step's AttackData
@@ -17,8 +19,8 @@
 - DD-5 (T015): Detection-only pattern — HitboxDamage reports collisions, temp shim in HitboxManager applies damage directly until T016
 
 ### Notes
-- Task counter: 10/60 (Phase 1: 9/13, Phase 2: 1/12 DONE + T015 in progress)
-- T015 code deliverables complete; Unity Editor work (prefab, layers, animation events) remains
+- Task counter: 11/60 (Phase 1: 9/13, Phase 2: 2/12)
+- T015 unblocks: T016 (DefenseSystem), T017 (Character Passives)
 - T018 (PathSystem) and T020 (RitualData) appear completed on `gal` branch per git log — board may need separate update
 
 ---

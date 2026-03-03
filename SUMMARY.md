@@ -21,6 +21,7 @@
 * [Dev 1 Guide — Combat](developer/dev1-combat-guide.md)
 * [Dev 2 Guide — Roguelite](developer/dev2-roguelite-guide.md)
 * [Dev 3 Guide — World](developer/dev3-world-guide.md)
+* [Unity Editor Scripts](developer/unity-editor-scripts.md)
 
 ## Design Specs
 
