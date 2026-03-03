@@ -1,5 +1,34 @@
 # Changelog
 
+## [Tooling] — 2026-03-03 (Plan → Execute workflow)
+
+### Changed
+- **`/plan-task`** — Step 4 now **mandates** writing the spec to disk before finishing. Step 5 (offering to execute in the same session) removed. Planning agent always writes `## Design Decisions` to the spec file and directs you to execute in a new session.
+
+### Added
+- **`/save-spec`** — New command to invoke mid-conversation during `/plan-task`. Triggers spec-writing and stops. Use when the planning agent jumps ahead to "should I execute?" before persisting decisions.
+
+### Workflow
+```
+Session 1:  /plan-task TXXX  →  discuss  →  /save-spec  →  done
+Session 2:  /task-execute TXXX  →  clean context execution
+```
+
+---
+
+## [Misc] — 2026-03-03 (Animation updates + editor fixes)
+
+### Changes
+- Animation updates: purple mage assets integrated
+- `AttackData.hitboxId` serialization fix
+- Project settings updates
+- `DebugHealthBar` temp component added to `Shared/Components/` for visual debug (replaced by T025)
+- `PlayerPrefabCreator` updated: standing collider (0.8×1.2), PlayerHurtbox layer, PlayerDamageable + DebugHealthBar baked in, missing script cleanup + hitbox child repair
+- `TestDummyPrefabCreator` updated: DebugHealthBar (red) baked into prefab
+- `MovementTestSceneCreator` updated: DebugHealthBar on both player (green) and enemy (red)
+
+---
+
 ## [Phase 1] — 2026-03-03 (T011 EnemyBase — DONE)
 
 ### Completed

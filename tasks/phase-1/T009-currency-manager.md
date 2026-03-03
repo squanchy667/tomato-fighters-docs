@@ -10,7 +10,7 @@
 | **Agent** | roguelite-agent |
 | **Depends On** | T001 |
 | **Blocks** | T038 |
-| **Status** | PENDING |
+| **Status** | DONE |
 | **Branch** | `pillar2/T009-currency-manager` |
 
 ## Objective

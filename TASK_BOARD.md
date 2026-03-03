@@ -1,11 +1,11 @@
 # Tomato Fighters — Task Board
 
-> 11/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 12/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
 ## Phase 1: Foundation
-> Status: IN_PROGRESS | Tasks: 9/13 | Weeks: 1-2
+> Status: IN_PROGRESS | Tasks: 10/13 | Weeks: 1-2
 > Goal: Shared contracts established, one character moves and hits a dummy enemy, camera follows
 
 ### T001: Shared Interfaces, Enums, and Data Structures [DONE]
@@ -179,11 +179,11 @@
 - **Files:** `Combat/HitboxManager.cs`
 - **Description:** Activate/deactivate attack colliders via Animation Events. Never in Update(). Reports hit-confirm to ComboSystem for cancel enabling. Supports multiple hitbox shapes per attack. Collision layer filtering. **Unlocks cancel system end-to-end testing** — wires collision → `ComboController.OnHitConfirmed()` → cancel window opens.
 - **Acceptance:**
-  - [ ] Animation Event-driven activation
-  - [ ] Hit-confirm callback to ComboSystem
-  - [ ] Multiple hitbox shapes supported
-  - [ ] Layer filtering (player vs enemy)
-  - [ ] Cancel system integration tests: hit → cancel window → dash/jump cancel executes (see `.claude/dumps/cancel-buffer-tests-dump.md`)
+  - [x] Animation Event-driven activation
+  - [x] Hit-confirm callback to ComboSystem
+  - [x] Multiple hitbox shapes supported
+  - [x] Layer filtering (player vs enemy)
+  - [x] Cancel system integration tests: hit → cancel window → dash/jump cancel executes (see `.claude/dumps/cancel-buffer-tests-dump.md`)
 
 ### T016: DefenseSystem — Deflect/Clash/Dodge [PENDING]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T014
