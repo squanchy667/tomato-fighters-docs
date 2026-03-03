@@ -125,17 +125,17 @@
   - [ ] Events: OnWaveStart, OnWaveCleared, OnAreaComplete
   - [ ] Optional waves (side paths)
 
-### T011: EnemyBase — IDamageable + IAttacker [PENDING]
-- **Type:** implementation | **Priority:** P0 | **Owner:** Dev 3 | **Depends on:** T001
-- **Files:** `World/EnemyBase.cs`
-- **Description:** Base class all enemies inherit. Implements IDamageable (health, pressure meter, knockback, launch, invulnerability) and IAttacker (current attack, telegraph type, punish state). Reads from EnemyData ScriptableObject.
+### T011: EnemyBase — IDamageable + IAttacker [DONE]
+- **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T001
+- **Files:** `World/EnemyBase.cs`, `World/EnemyData.cs`, `World/TestDummyEnemy.cs`, `Combat/PlayerDamageable.cs`, `Shared/Components/HitboxDamage.cs`
+- **Description:** Abstract base class all enemies inherit. Implements IDamageable (health, pressure meter, knockback, launch, invulnerability blink) and IAttacker (virtual stubs). EnemyData SO for stats. TestDummyEnemy for combat testing. PlayerDamageable stub for bidirectional damage. HitboxDamage moved to Shared.
 - **Acceptance:**
-  - [ ] Implements IDamageable fully
-  - [ ] Implements IAttacker fully
-  - [ ] Health + pressure meter
-  - [ ] Knockback via Rigidbody2D
-  - [ ] Invulnerability after stun recovery (blink white)
-  - [ ] Reads stats from EnemyData SO
+  - [x] Implements IDamageable fully
+  - [x] Implements IAttacker fully
+  - [x] Health + pressure meter
+  - [x] Knockback via Rigidbody2D
+  - [x] Invulnerability after stun recovery (blink white)
+  - [x] Reads stats from EnemyData SO
 
 ### T012: CameraController2D [PENDING]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 3 | **Depends on:** T001

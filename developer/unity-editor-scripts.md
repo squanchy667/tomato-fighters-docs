@@ -19,6 +19,7 @@
 | 8 | Create All Path Assets | `TomatoFighters > Create All Path Assets` | 12 PathData assets (4 characters x 3 paths) |
 | 9 | Assign All Hitbox IDs | `Tools > TomatoFighters > Assign All Hitbox IDs` | Sets `hitboxId` field on all 26 AttackData assets |
 | 10 | Setup Mystica Character | `Tools > TomatoFighters > Setup Mystica Character` | Hitbox children on prefab, HitboxManager component, Mystica hitboxId wiring |
+| 11 | Create TestDummy Prefab | `TomatoFighters > Create TestDummy Prefab` | `TestDummy.prefab` + EnemyData SO + DummyPunch AttackData SO + WhiteSquare debug sprite |
 
 ---
 
@@ -57,7 +58,8 @@
 7. Create All Path Assets              ← 12 PathData assets
 8. Assign All Hitbox IDs               ← hitboxId on all 26 attacks
 9. Setup Mystica Character             ← hitbox children + HitboxManager on prefab (select Player root first)
-10. Create Movement Test Scene         ← test scene with arena + player
+10. Create Movement Test Scene         ← test scene with arena + player + enemy
+11. Create TestDummy Prefab             ← TestDummy.prefab with enemy + hitbox + debug visuals
 ```
 
 ---
@@ -441,13 +443,54 @@ metadata.json + PNGs
            │     └──────────────┘ └───────────────┘
            │
            ▼
-  ┌─────────────────┐    ┌─────────────────┐
-  │ #4 Create Test  │    │ #10 Setup       │
-  │    Scene        │    │   Mystica Char  │
-  └─────────────────┘    └─────────────────┘
-                         (needs prefab open
-                          + PlayerHitbox layer)
+  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+  │ #4 Create Test  │    │ #10 Setup       │    │ #11 Create      │
+  │    Scene        │    │   Mystica Char  │    │  TestDummy Pref │
+  └─────────────────┘    └─────────────────┘    └─────────────────┘
+  (also spawns enemy)    (needs prefab open     (needs EnemyHurtbox
+                          + PlayerHitbox layer)  + EnemyHitbox layers)
 ```
+
+---
+
+### #11 — Create TestDummy Prefab
+
+| | |
+|---|---|
+| **Menu** | `TomatoFighters > Create TestDummy Prefab` |
+| **File** | `Editor/Prefabs/TestDummyPrefabCreator.cs` |
+| **Output** | `Assets/Prefabs/Enemies/TestDummy.prefab` + 2 SOs + debug sprite |
+| **Prereqs** | `EnemyHurtbox` and `EnemyHitbox` layers exist in Project Settings |
+
+**What it creates:**
+
+1. **TestDummy prefab** at `Prefabs/Enemies/TestDummy.prefab`:
+
+   ```
+   TestDummy (root, EnemyHurtbox layer)
+   ├── Rigidbody2D (gravity=0, continuous, interpolate)
+   ├── BoxCollider2D (0.8x1.2, body hurtbox)
+   ├── TestDummyEnemy component (wired to EnemyData + AttackData)
+   ├── DebugHealthBar component (red fill, offset 1.2 above)
+   ├── Sprite (child)
+   │   └── SpriteRenderer (WhiteSquare, orange tint, 0.8x1.2 scale)
+   └── Hitbox_Punch (child, EnemyHitbox layer, starts disabled)
+       ├── BoxCollider2D (trigger, 0.8x0.6, offset -0.6x0.1)
+       ├── HitboxDamage component (from Shared)
+       └── DebugVisual (child)
+           └── SpriteRenderer (WhiteSquare, semi-transparent red)
+   ```
+
+2. **TestDummy_EnemyData** SO at `ScriptableObjects/Enemies/`:
+   - HP 100, pressure threshold 50, stun 2s, invuln 1s, knockback resist 0.3, speed 0
+
+3. **DummyPunch AttackData** SO at `ScriptableObjects/Attacks/Enemy/`:
+   - 0.5x damage, knockback (3, 0), hitbox start 2 / active 3 / total 15 frames
+
+4. **WhiteSquare.png** at `Assets/Sprites/Debug/`:
+   - 10x10 white PNG, 10 PPU, Point filter — used as base sprite for body and hitbox visuals
+
+**Safe to re-run** — loads existing assets/prefab and updates in place.
 
 ---
 

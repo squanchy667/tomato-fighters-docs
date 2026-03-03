@@ -10,7 +10,8 @@
 | **Agent** | world-agent |
 | **Depends On** | T001 |
 | **Blocks** | T013, T022 |
-| **Status** | PLANNED |
+| **Status** | DONE |
+| **Completed** | 2026-03-03 |
 | **Branch** | `pillar3/T011-enemy-base` |
 
 ## Objective

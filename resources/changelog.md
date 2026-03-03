@@ -1,5 +1,35 @@
 # Changelog
 
+## [Phase 1] — 2026-03-03 (T011 EnemyBase — DONE)
+
+### Completed
+- **T011: EnemyBase — IDamageable + IAttacker** — branch `pillar3/T011-enemy-base`
+  - `Shared/Components/HitboxDamage.cs`: Moved from `Combat/Hitbox/` to `Shared/Components/` — shared trigger detection for both player and enemy hitboxes
+  - `World/EnemyData.cs`: ScriptableObject with `[CreateAssetMenu]` — maxHealth, pressureThreshold, stunDuration, invulnerabilityDuration, knockbackResistance, movementSpeed, AttackData[] attacks
+  - `World/EnemyBase.cs`: Abstract MonoBehaviour implementing IDamageable (full) + IAttacker (virtual stubs). Pressure meter, knockback via Rigidbody2D.AddForce, stun/recovery coroutines, invulnerability blink, death event, virtual hooks (OnDamaged, OnStunned, OnDeath, OnRecovery)
+  - `World/TestDummyEnemy.cs`: Concrete test enemy — timer-based attack loop (3s interval, 0.4s telegraph, 0.6s active), coroutine-driven hitbox activation, IAttacker overrides during attack window
+  - `Combat/PlayerDamageable.cs`: Stub IDamageable on player — 100 HP, logs damage, red sprite flash, knockback via Rigidbody2D
+  - `World/DebugHealthBar.cs`: Temporary floating HP bar using SpriteRenderer fill (replaced by T025 HUD)
+  - `Editor/Prefabs/TestDummyPrefabCreator.cs`: Creates TestDummy.prefab, EnemyData SO, DummyPunch AttackData SO, WhiteSquare debug sprite
+  - `Editor/Prefabs/MovementTestSceneCreator.cs`: Updated to spawn TestDummy at (3,0) and add PlayerDamageable to player
+  - `Editor/SetupMysticaCharacter.cs`: Updated HitboxDamage import + added red debug visuals on player hitboxes
+  - `Editor/TomatoFighters.Editor.asmdef`: Added TomatoFighters.World reference
+
+### Design Decisions
+- DD-1 (T011): EnemyData lives in `World/EnemyData.cs` — Dev 3's pillar domain
+- DD-2 (T011): Attack timer in TestDummyEnemy subclass, not EnemyBase — base stays abstract and clean
+- DD-3 (T011): HitboxDamage moved to `Shared/Components/` — zero Combat dependencies, shared by both pillars
+- DD-4 (T011): Stub PlayerDamageable in Combat pillar — minimal stub for bidirectional damage testing
+- DD-5 (T011): WhiteSquare PNG written to disk (not runtime Texture2D) — survives prefab serialization
+
+### Notes
+- Task counter: 12/60 (Phase 1: 10/13, Phase 2: 2/12)
+- T011 unblocks: T013 (TestScene), T022 (BasicEnemyAI)
+- Bidirectional damage pipeline verified: player → enemy (HitboxManager) and enemy → player (TestDummyEnemy + HitboxDamage + PlayerDamageable)
+- Debug visuals: orange body sprite for enemy, semi-transparent red overlay for active hitboxes (both player and enemy)
+
+---
+
 ## [Phase 2] — 2026-03-03 (T015 HitboxManager — DONE)
 
 ### Completed
