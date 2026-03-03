@@ -33,6 +33,29 @@ TomatoFighters/
     └── developer/dev{N}*.md   ← Your personal guide
 ```
 
+## Building Game Assets (Editor Scripts)
+
+We don't create prefabs, ScriptableObjects, or animation controllers by hand. Instead, we use Unity editor scripts that generate everything from code. If something in the design changes — new attacks, rebalanced stats, different combo flow — we update the relevant editor script and re-run it. The scripts are the single source of truth for all generated assets.
+
+After cloning, run these from the Unity menu bar to set up all assets:
+
+```
+1. TomatoFighters > Import Sprite Sheets       ← slice animation PNGs
+2. TomatoFighters > Build Animations            ← create .anim clips + AnimatorController
+3. TomatoFighters > Create Player Prefab        ← Player.prefab with all components
+4. Tools > TomatoFighters > Create Mystica Attacks          ← base attack data
+5. Tools > TomatoFighters > Create All Character Attacks    ← all 26 attack assets
+6. Tools > TomatoFighters > Create Combo Definitions        ← combo trees + configs
+7. TomatoFighters > Create All Path Assets                  ← 12 upgrade paths
+8. Tools > TomatoFighters > Assign All Hitbox IDs           ← wire attacks to hitbox shapes
+9. Tools > TomatoFighters > Setup Mystica Character         ← hitbox colliders on prefab
+10. TomatoFighters > Create Movement Test Scene             ← playable test arena
+```
+
+Full details, dependency graph, and workflow recipes (e.g., "what to re-run when new animation GIFs arrive") are in [Unity Editor Scripts](unity-editor-scripts.md).
+
+---
+
 ## Running Tasks
 
 All 3 devs use the same meta-commands from the workspace root (`/Users/ofek/Projects/Claude/`):
