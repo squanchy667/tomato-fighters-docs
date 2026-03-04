@@ -1,5 +1,28 @@
 # Changelog
 
+## [Tooling] — 2026-03-04 (Multi-Character Animation Pipeline)
+
+### Changes
+- **AnimationForgeMetadata.cs** (`Editor/Animation/`): Added `CharacterAnimConfig` struct + `Characters` registry (Mystica, Slasher). New `Load(string sourceFolder)` and `GetSheetPath(string spritesFolder, ...)` overloads for per-character metadata loading
+- **SpriteSheetImporter.cs** (`Editor/Animation/`): Added `ImportSpriteSheets(string sourceFolder)` + per-character menu items (`TomatoFighters/Import Sprite Sheets/Mystica`, `TomatoFighters/Import Sprite Sheets/Slasher`)
+- **AnimationBuilder.cs** (`Editor/Animation/`): Added `BuildAnimations(string sourceFolder, string outputFolder)` + per-character menu items. Parameterized `CreateClip` and `BuildController` for character-specific output paths
+- **SlasherCharacterCreator.cs** (`Editor/Characters/`): Changed CONTROLLER_PATH to `Slasher_Controller`
+- **MysticaCharacterCreator.cs** (`Editor/Characters/`): Changed CONTROLLER_PATH to `Mystica_Controller`, PREFAB_PATH from `Player.prefab` to `Mystica.prefab`
+- **CharacterSelectTestSceneCreator.cs** (`Editor/Characters/`): Updated Mystica entry to reference `Mystica.prefab`
+- **MovementTestSceneCreator.cs** (`Editor/Prefabs/`): Refactored to expose `CreateTestScene(prefabPath, scenePath, characterType)`. Added `AssetDatabase.ImportAsset` before loading prefab to fix stale Library cache
+- **PlayerPrefabCreator.cs** (`Editor/Prefabs/`): Changed Animator controller from SerializedObject to direct assignment (`animator.runtimeAnimatorController`). Added forced reimport after save
+- **SlasherMovementTestSceneCreator.cs** (NEW `Editor/Characters/`): Per-character wrapper for Slasher movement test scene
+- **MysticaMovementTestSceneCreator.cs** (NEW `Editor/Characters/`): Per-character wrapper for Mystica movement test scene
+
+### Bug Fixes
+- **Animator controller null on scene instantiation**: Unity Library cache held stale prefab data after `PrefabUtility.SaveAsPrefabAsset`. Fixed by calling `AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate)` after save and before load
+
+### Notes
+- Animation pipeline is now fully parameterized: Import Sprites → Build Animations → Create Character → Create Movement Scene, each with per-character menu items
+- Work is uncommitted (in progress on `tal` branch)
+
+---
+
 ## [Bug Fix] — 2026-03-04 (Damage pipeline not registering hits)
 
 ### Problem

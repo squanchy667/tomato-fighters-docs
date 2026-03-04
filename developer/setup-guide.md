@@ -6,6 +6,7 @@
 - Git
 - Claude Code CLI (for AgentPilot meta-commands)
 - Node.js >= 18 (for AgentPilot)
+- Python / uv (for Unity MCP server)
 
 ## Installation
 
@@ -53,6 +54,50 @@ After cloning, run these from the Unity menu bar to set up all assets:
 ```
 
 Full details, dependency graph, and workflow recipes (e.g., "what to re-run when new animation GIFs arrive") are in [Unity Editor Scripts](unity-editor-scripts.md).
+
+---
+
+## Unity MCP (Model Context Protocol)
+
+The project uses [MCP for Unity](https://github.com/CoplayDev/unity-mcp) to give Claude Code direct access to the Unity Editor — reading scene hierarchies, inspecting components, running editor scripts, and more.
+
+### How It Works
+
+1. **Unity side:** The `com.coplaydev.unity-mcp` package runs inside the Unity Editor and exposes an HTTP bridge on `http://127.0.0.1:8080`.
+2. **Claude Code side:** An MCP server process (`mcp-for-unity`) connects to that bridge and translates Claude tool calls into Unity Editor actions.
+
+### Setup
+
+The MCP server is already configured in `~/.claude/settings.json`:
+
+```json
+"mcp-for-unity": {
+  "command": "C:\\Users\\taldi\\.local\\bin\\uvx.exe",
+  "args": [
+    "--from", "mcpforunityserver==9.4.7",
+    "mcp-for-unity",
+    "--transport", "http",
+    "--http-url", "http://127.0.0.1:8080",
+    "--project-scoped-tools"
+  ]
+}
+```
+
+### Usage
+
+1. **Open the Unity project** in the Unity Editor and wait for compilation to finish.
+2. **Verify the MCP bridge is running** — in Unity, check `Window > MCP for Unity` or look for the MCP status indicator. The bridge should be listening on port 8080.
+3. **Start Claude Code** — the `mcp-for-unity` server will launch automatically and connect to Unity.
+4. Claude Code now has access to Unity-specific tools (scene inspection, component queries, asset operations, etc.) through the MCP protocol.
+
+### Troubleshooting
+
+| Problem | Fix |
+|---------|-----|
+| MCP tools not appearing in Claude Code | Restart Claude Code after verifying Unity is open and the bridge is running |
+| Connection refused on port 8080 | Open the Unity project first — the bridge only runs while the Editor is active |
+| `uvx` not found | Install [uv](https://docs.astral.sh/uv/getting-started/installation/) — `uvx` is included |
+| Version mismatch | Update the version in `~/.claude/settings.json` to match the Unity package version |
 
 ---
 

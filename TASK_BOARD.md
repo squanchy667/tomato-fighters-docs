@@ -1,7 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 10/60 tasks DONE | 6 phases | 3 developers + AgentPilot
-> 12/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 15/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 

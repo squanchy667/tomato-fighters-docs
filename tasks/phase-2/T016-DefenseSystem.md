@@ -1,6 +1,7 @@
 # T016: DefenseSystem — Deflect/Clash/Dodge
 
 **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T014
+**Status:** DONE | **Completed:** 2026-03-04 | **Branch:** tal
 **Blocks:** T026 (PressureSystem), T027 (WallBounce/AirJuggle)
 
 ---
