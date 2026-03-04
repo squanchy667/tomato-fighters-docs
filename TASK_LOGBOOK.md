@@ -27,6 +27,33 @@ After completing any task through the AgentPilot pipeline (via `/do-task`, `/tas
 
 ## Phase 1: Foundation
 
+### T012: CameraController2D [DONE]
+- **Date:** 2026-03-05
+- **Dev:** Dev 3
+- **Agent/Command Used:** /task-execute
+- **Context Files:** `Shared/Events/VoidEventChannel.cs`, `World/WaveManager.cs`, `World/LevelBound.cs`
+- **Output Files:** `World/CameraController2D.cs`
+- **Issues:** None.
+- **Lesson Learned:** SO event channels (VoidEventChannel) enable clean camera integration — camera subscribes to lock/unlock/stun events without referencing Combat or World systems directly.
+- **Deliverables:**
+  - CameraController2D with smooth follow, leading, bounds clamping, stun zoom, co-op framing
+  - All configuration via Inspector (SerializeField + Tooltips + Range attributes)
+  - Gizmo visualization for level bounds
+
+### T010: WaveManager [DONE]
+- **Date:** 2026-03-05
+- **Dev:** Dev 3
+- **Agent/Command Used:** /task-execute
+- **Context Files:** `Shared/Interfaces/IRunProgressionEvents.cs`, `Shared/Data/EnemySpawnData.cs`, `World/EnemyBase.cs`
+- **Output Files:** `World/WaveManager.cs`, `World/LevelBound.cs`, `Shared/Data/WaveData.cs`, `Shared/Data/EnemySpawnData.cs`, `Shared/Events/VoidEventChannel.cs`, `Shared/Events/IntEventChannel.cs`, `Editor/WaveManagerAssetsCreator.cs`
+- **Issues:** None.
+- **Lesson Learned:** SO event channels (VoidEventChannel, IntEventChannel) are a clean cross-pillar communication pattern — decouple sender/receiver without interface coupling.
+- **Deliverables:**
+  - WaveManager with configurable wave spawning and camera stops
+  - LevelBound trigger zones for camera boundaries
+  - SO event channels for cross-pillar wave events
+  - Editor script for asset creation
+
 ### T005: AttackData ScriptableObject [DONE]
 - **Date:** 2026-03-03
 - **Dev:** Dev 1
