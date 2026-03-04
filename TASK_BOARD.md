@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 15/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 16/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -161,7 +161,7 @@
 ---
 
 ## Phase 2: Core Combat + Path Framework
-> Status: IN_PROGRESS | Tasks: 5/12 | Weeks: 3-4
+> Status: IN_PROGRESS | Tasks: 6/12 | Weeks: 3-4
 > Goal: All 4 characters playable with basic combos, path selection works, fight one wave
 
 ### T014: ComboSystem — All 4 Characters [DONE]
@@ -198,15 +198,16 @@
   - [x] Character-specific deflect bonuses
   - [x] DamageResponse enum (Hit, Deflected, Clashed, Dodged)
 
-### T017: Character Passives [PENDING]
+### T017: Character Passives [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 1 | **Depends on:** T007, T014
-- **Files:** `Characters/PassiveAbilitySystem.cs`, `Characters/Passives/ThickSkin.cs`, `Bloodlust.cs`, `ArcaneResonance.cs`, `DistanceBonus.cs`
+- **Branch:** `combat/T017-character-passives` | **Completed:** 2026-03-04
+- **Files:** `Characters/PassiveAbilitySystem.cs`, `Characters/Passives/ThickSkin.cs`, `Bloodlust.cs`, `ArcaneResonance.cs`, `DistanceBonus.cs`, `PassiveConfig.cs`, `IPassiveAbility.cs`, `Shared/Data/HitContext.cs`, `Shared/Interfaces/IPassiveProvider.cs`
 - **Description:** Implement 4 character passive abilities. Brutor: Thick Skin (15% DR, 40% less knockback). Slasher: Bloodlust (3% ATK per hit, 10 stacks, 3s decay). Mystica: Arcane Resonance (+5% damage per cast to allies, 3 stacks). Viper: Distance Bonus (+2%/unit, max +30%).
 - **Acceptance:**
-  - [ ] 4 passive abilities implemented
-  - [ ] Stacking/decay where applicable
-  - [ ] Reads from CharacterStatCalculator
-  - [ ] Fires through IBuffProvider pipeline
+  - [x] 4 passive abilities implemented
+  - [x] Stacking/decay where applicable
+  - [x] Reads from CharacterStatCalculator
+  - [x] Fires through IBuffProvider pipeline
 
 ### T018: PathSystem — Selection + Tier Progression [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 2 | **Depends on:** T008

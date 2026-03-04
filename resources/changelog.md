@@ -1,5 +1,64 @@
 # Changelog
 
+## [Phase 2] — 2026-03-04 (T017 Character Passives — DONE)
+
+### Completed
+- **T017: Character Passives** — branch `combat/T017-character-passives` (commit `f52f526`)
+  - 4 passive abilities as plain C# classes with `PassiveConfig` ScriptableObject for tuning
+  - **ThickSkin** (Brutor): Constant 0.85 defense multiplier (15% DR) + 0.6 knockback multiplier (40% reduction)
+  - **Bloodlust** (Slasher): +3% ATK per hit landed, 10 stacks max (+30%), resets to 0 after 3s without a hit. Combo drops do NOT reset stacks
+  - **ArcaneResonance** (Mystica): +5% damage per cast (multiplicative: 1.05^stacks), 3 max stacks with independent 3s expiry timers. Triggers on any attack event
+  - **DistanceBonus** (Viper): +2% per unit distance at hit time, capped at +30% (15 units). Distance read from HitContext struct — no transform access
+  - `IPassiveProvider` interface in `Shared/Interfaces/` — dedicated passive channel, separate from `IBuffProvider`
+  - `HitContext` struct in `Shared/Data/` — per-hit context (damageType, distanceToTarget, isPunishHit)
+  - `PassiveAbilitySystem` MonoBehaviour — holds active passive, subscribes to `HitboxManager.OnHitProcessed` + `ComboController.AttackStarted`, implements `IPassiveProvider`
+  - All 4 character Creator Scripts updated to wire `PassiveAbilitySystem` + shared `PassiveConfig` SO
+  - Unblocks: T028 (Path T1 Ability Execution)
+
+### Design Decisions
+- DD-1 (T017): PassiveConfig SO + plain C# logic — tunable values in Inspector, logic unit-testable without Unity
+- DD-2 (T017): Self-buff only for Arcane Resonance — co-op doesn't exist yet, add ally broadcast later
+- DD-3 (T017): HitContext struct for distance/per-hit data — keeps passives decoupled from transforms
+- DD-4 (T017): IPassiveProvider separate from IBuffProvider — passives are Combat-internal, IBuffProvider is Roguelite's channel
+- DD-5 (T017): Bloodlust decay timer only — combo drops do NOT reset stacks (double-punishment too harsh)
+
+### Tests Added
+- `ThickSkinTests.cs` — 6 tests (constant multipliers, custom config)
+- `BloodlustTests.cs` — 10 tests (stacks, cap, decay, timer reset, sequential increment)
+- `ArcaneResonanceTests.cs` — 11 tests (stacks, multiplicative calc, independent expiry, slot replacement)
+- `DistanceBonusTests.cs` — 9 tests (linear scaling, cap, per-hit independence)
+
+### Files Added
+- `Scripts/Shared/Data/HitContext.cs`
+- `Scripts/Shared/Interfaces/IPassiveProvider.cs`
+- `Scripts/Characters/Passives/PassiveConfig.cs`
+- `Scripts/Characters/Passives/IPassiveAbility.cs`
+- `Scripts/Characters/Passives/ThickSkin.cs`
+- `Scripts/Characters/Passives/Bloodlust.cs`
+- `Scripts/Characters/Passives/ArcaneResonance.cs`
+- `Scripts/Characters/Passives/DistanceBonus.cs`
+- `Scripts/Characters/PassiveAbilitySystem.cs`
+- `Tests/EditMode/Characters/ThickSkinTests.cs`
+- `Tests/EditMode/Characters/BloodlustTests.cs`
+- `Tests/EditMode/Characters/ArcaneResonanceTests.cs`
+- `Tests/EditMode/Characters/DistanceBonusTests.cs`
+
+### Files Modified
+- `Editor/Prefabs/CharacterPrefabConfig.cs` (added `passiveConfig` field)
+- `Editor/Prefabs/PlayerPrefabCreator.cs` (wires PassiveAbilitySystem)
+- `Editor/Characters/BrutorCharacterCreator.cs` (loads/creates PassiveConfig)
+- `Editor/Characters/SlasherCharacterCreator.cs` (loads/creates PassiveConfig)
+- `Editor/Characters/MysticaCharacterCreator.cs` (loads/creates PassiveConfig)
+- `Editor/Characters/ViperCharacterCreator.cs` (loads/creates PassiveConfig)
+- `Tests/EditMode/TomatoFighters.Tests.EditMode.asmdef` (added Characters assembly ref)
+
+### Notes
+- Task counter: 16/60 (Phase 1: 10/13, Phase 2: 6/12)
+- T017 unblocks: T028 (Path T1 Ability Execution)
+- IPassiveProvider is not yet integrated into HitboxManager's damage calculation — that wiring happens when the full damage formula is assembled
+
+---
+
 ## [Phase 2] — 2026-03-04 (T016 Follow-up: Clash Cancellation + Defense Visual Cues)
 
 ### Changes

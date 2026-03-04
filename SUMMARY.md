@@ -64,9 +64,14 @@
 * [T014: ComboSystem — All 4 Characters](tasks/phase-2/T014-ComboSystem-All4Characters.md)
 * [T015: HitboxManager](tasks/phase-2/T015-HitboxManager.md)
 * [T016: DefenseSystem](tasks/phase-2/T016-DefenseSystem.md)
+* [T017: Character Passives](tasks/phase-2/T017-character-passives.md)
 * [T018: PathSystem](tasks/phase-2/T018-path-system.md)
 * [T020: RitualData SO](tasks/phase-2/T020-ritual-data-so.md)
 * [TCUSTOM: Slasher Prefab + Character Selection](tasks/phase-2/TCUSTOM-SlasherPrefab-CharacterSelection.md)
+
+## Tasks — Phase 3
+
+* [T026: PressureSystem + Stun](tasks/phase-3/T026-pressure-system-stun.md)
 
 ## Resources
 
