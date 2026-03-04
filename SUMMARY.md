@@ -27,6 +27,9 @@
 
 * [Project Characterization](design-specs/PROJECT-TALAMH-CHARACTERIZATION.md)
 * [Character Archetypes](design-specs/CHARACTER-ARCHETYPES.md)
+* [Universal Character Prompt](design-specs/TALAMH_UNIVERSAL_CHARACTER_PROMPT.md)
+* [Ranger, Tank, Magician Prompts](design-specs/RANGER_TANK_MAGICIAN_BLUEPSTYLE_PROMPTS.md)
+* [Animation Forge Plan](design-specs/ANIMATION_FORGE_PLAN.md)
 * [Absolum Reference](design-specs/absolum-reverse-engineering-unity-guide.md)
 * [AgentPilot Bootstrap](design-specs/AGENTPILOT-BOOTSTRAP.md)
 * [Agent Pilot Guide v1](design-specs/agent-pilot-guide-project-talamh.md)
@@ -53,12 +56,18 @@
 * [T012: CameraController](tasks/phase-1/T012-camera-controller.md)
 * [T013: Test Scene](tasks/phase-1/T013-test-scene.md)
 
-## Tasks — Phase 2
+## Tasks — Phase 1 (Supplemental)
 
-* [T018: PathSystem](tasks/phase-2/T018-path-system.md)
+* [T011: Hitbox Fix](tasks/phase-1/T011-hitbox-fix.md)
+
+## Tasks — Phase 2
 
 * [T014: ComboSystem — All 4 Characters](tasks/phase-2/T014-ComboSystem-All4Characters.md)
 * [T015: HitboxManager](tasks/phase-2/T015-HitboxManager.md)
+* [T016: DefenseSystem](tasks/phase-2/T016-DefenseSystem.md)
+* [T018: PathSystem](tasks/phase-2/T018-path-system.md)
+* [T020: RitualData SO](tasks/phase-2/T020-ritual-data-so.md)
+* [TCUSTOM: Slasher Prefab + Character Selection](tasks/phase-2/TCUSTOM-SlasherPrefab-CharacterSelection.md)
 
 ## Resources
 
