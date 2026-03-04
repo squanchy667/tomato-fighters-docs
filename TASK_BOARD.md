@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 18/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 19/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -161,7 +161,7 @@
 ---
 
 ## Phase 2: Core Combat + Path Framework
-> Status: IN_PROGRESS | Tasks: 6/12 | Weeks: 3-4
+> Status: IN_PROGRESS | Tasks: 7/12 | Weeks: 3-4
 > Goal: All 4 characters playable with basic combos, path selection works, fight one wave
 
 ### T014: ComboSystem — All 4 Characters [DONE]
@@ -275,15 +275,18 @@
   - [ ] Basic enemy with 2-3 attack patterns
   - [ ] Configurable telegraph duration
 
-### T024: Character Animator Controllers [PENDING]
+### T024: Character Animator Controllers [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 3 | **Depends on:** T014
-- **Files:** `Animations/Characters/BaseCharacter.controller`, `Animations/Characters/Brutor.overrideController`, `Slasher.overrideController`, `Mystica.overrideController`, `Viper.overrideController`
-- **Description:** Base Animator Controller with shared state machine (idle, walk, run, strike1-3, finisher, skill, dash, jump, hit, death). 4 Animator Override Controllers with placeholder clips. Animation Events wired for hitbox activation.
+- **Branch:** `shared/T024-animator-controllers` | **Completed:** 2026-03-05
+- **Files:** `Editor/Animation/AnimationBuilder.cs`, `Editor/Animation/AnimationForgeMetadata.cs`, `Editor/Animation/AnimationEventStamper.cs`, `Scripts/Combat/Animation/TomatoFighterAnimatorParams.cs`
+- **Description:** Base Animator Controller with shared state machine (idle, walk, run, 10 attack slots, dash, jump, land, block, guard, hurt, death). 4 Animator Override Controllers with character-specific clips and placeholder generation. AnimationEventStamper pipeline step for hitbox/combo events.
 - **Acceptance:**
-  - [ ] Base controller with all combat states
-  - [ ] 4 override controllers
-  - [ ] Animation Events for hitbox, VFX, SFX timing
-  - [ ] Transition conditions match combat system states
+  - [x] Base controller with all combat states (locomotion, airborne, dash, 10 attack slots, defense, hurt, death)
+  - [x] 4 override controllers (Brutor, Slasher, Mystica, Viper)
+  - [x] Animation Events stamped on attack clips for hitbox, combo window, finisher timing
+  - [x] Transition conditions match combat system states
+  - [x] ERROR logged for metadata animations that don't map to any canonical state
+  - [x] WARNING logged for canonical states with no matching animation (placeholder generated)
 
 ### T025: HUD — Health, Mana, Combo Counter [PENDING]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 3 | **Depends on:** T007

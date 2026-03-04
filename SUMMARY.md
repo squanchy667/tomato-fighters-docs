@@ -70,11 +70,13 @@
 * [T017: Character Passives](tasks/phase-2/T017-character-passives.md)
 * [T018: PathSystem](tasks/phase-2/T018-path-system.md)
 * [T020: RitualData SO](tasks/phase-2/T020-ritual-data-so.md)
+* [T024: Character Animator Controllers](tasks/phase-2/T024-character-animator-controllers.md)
 * [TCUSTOM: Slasher Prefab + Character Selection](tasks/phase-2/TCUSTOM-SlasherPrefab-CharacterSelection.md)
 
 ## Tasks — Phase 3
 
 * [T026: PressureSystem + Stun](tasks/phase-3/T026-pressure-system-stun.md)
+* [T027: WallBounce + AirJuggle](tasks/phase-3/T027-wall-bounce-air-juggle.md)
 
 ## Resources
 
