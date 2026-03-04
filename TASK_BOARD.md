@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 15/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 18/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -147,7 +147,7 @@
   - [ ] Zoom on stun event (via SO event channel)
   - [ ] All values configurable in Inspector
 
-### T013: Basic Test Scene [PENDING]
+### T013: Basic Test Scene [IN_PROGRESS]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 3 | **Depends on:** T002, T010, T011, T012
 - **Files:** `Scenes/TestArena.unity`
 - **Description:** Simple test scene: flat ground, walls on both sides, camera setup, 1 player spawn, 2-3 dummy enemies. Used for Phase 1 integration testing.
@@ -161,7 +161,7 @@
 ---
 
 ## Phase 2: Core Combat + Path Framework
-> Status: IN_PROGRESS | Tasks: 4/12 | Weeks: 3-4
+> Status: IN_PROGRESS | Tasks: 6/12 | Weeks: 3-4
 > Goal: All 4 characters playable with basic combos, path selection works, fight one wave
 
 ### T014: ComboSystem — All 4 Characters [DONE]
@@ -198,15 +198,16 @@
   - [x] Character-specific deflect bonuses
   - [x] DamageResponse enum (Hit, Deflected, Clashed, Dodged)
 
-### T017: Character Passives [PENDING]
+### T017: Character Passives [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 1 | **Depends on:** T007, T014
-- **Files:** `Characters/PassiveAbilitySystem.cs`, `Characters/Passives/ThickSkin.cs`, `Bloodlust.cs`, `ArcaneResonance.cs`, `DistanceBonus.cs`
+- **Branch:** `combat/T017-character-passives` | **Completed:** 2026-03-04
+- **Files:** `Characters/PassiveAbilitySystem.cs`, `Characters/Passives/ThickSkin.cs`, `Bloodlust.cs`, `ArcaneResonance.cs`, `DistanceBonus.cs`, `PassiveConfig.cs`, `IPassiveAbility.cs`, `Shared/Data/HitContext.cs`, `Shared/Interfaces/IPassiveProvider.cs`
 - **Description:** Implement 4 character passive abilities. Brutor: Thick Skin (15% DR, 40% less knockback). Slasher: Bloodlust (3% ATK per hit, 10 stacks, 3s decay). Mystica: Arcane Resonance (+5% damage per cast to allies, 3 stacks). Viper: Distance Bonus (+2%/unit, max +30%).
 - **Acceptance:**
-  - [ ] 4 passive abilities implemented
-  - [ ] Stacking/decay where applicable
-  - [ ] Reads from CharacterStatCalculator
-  - [ ] Fires through IBuffProvider pipeline
+  - [x] 4 passive abilities implemented
+  - [x] Stacking/decay where applicable
+  - [x] Reads from CharacterStatCalculator
+  - [x] Fires through IBuffProvider pipeline
 
 ### T018: PathSystem — Selection + Tier Progression [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 2 | **Depends on:** T008
@@ -298,31 +299,33 @@
 ---
 
 ## Phase 3: Defensive Depth + Build Crafting
-> Status: PENDING | Tasks: 0/9 | Weeks: 5-6
+> Status: IN_PROGRESS | Tasks: 2/9 | Weeks: 5-6
 > Goal: Full loop — fight area, pick ritual, select path at shrine, fight boss
 
-### T026: PressureSystem + Stun [PENDING]
+### T026: PressureSystem + Stun [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T016
-- **Files:** `Combat/PressureSystem.cs`
-- **Description:** Hidden pressure meter on enemies. Punish damage fills 2x faster. Full meter → stunned for configurable duration (~3s). During stun: free juggle. After stun: invulnerable recovery (blink white). Camera zoom on stun (fire event). Per-character PRS stat affects fill rate.
+- **Branch:** `combat/T026-pressure-system-stun` | **Completed:** 2026-03-04
+- **Files:** `Shared/Data/DamagePacket.cs`, `Shared/Data/CombatEventData.cs`, `Shared/Interfaces/ICombatEvents.cs`, `Combat/Hitbox/HitboxManager.cs`, `World/EnemyBase.cs`, `Combat/PlayerDamageable.cs`
+- **Description:** Wire StunRate into damage pipeline. DamagePacket carries pre-calculated stunFillAmount (attacker-side). HitboxManager calculates stunFill = damage × stunRate × punishMultiplier. EnemyBase uses packet.stunFillAmount instead of recalculating. StunTriggered/StunRecovered events fired for Camera/UI/Roguelite integration.
 - **Acceptance:**
-  - [ ] Pressure meter per enemy
-  - [ ] Punish multiplier (2x fill rate)
-  - [ ] Stun state with configurable duration
-  - [ ] Invulnerable recovery after stun
-  - [ ] Camera zoom event on stun
-  - [ ] PRS stat integration
+  - [x] Pressure meter per enemy
+  - [x] Punish multiplier (2x fill rate)
+  - [x] Stun state with configurable duration
+  - [x] Invulnerable recovery after stun
+  - [x] Camera zoom event on stun
+  - [x] PRS stat integration
 
-### T027: WallBounce + AirJuggle [PENDING]
+### T027: WallBounce + AirJuggle [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 1 | **Depends on:** T015
-- **Files:** `Combat/WallBounceHandler.cs`, `Combat/JuggleSystem.cs`
+- **Branch:** `combat/T027-wallbounce-airjuggle` | **Completed:** 2026-03-04
+- **Files:** `Combat/Juggle/WallBounceHandler.cs`, `Combat/Juggle/JuggleSystem.cs`, `Shared/Enums/JuggleState.cs`, `Shared/Interfaces/IJuggleTarget.cs`, `Shared/Data/JuggleConfig.cs`
 - **Description:** Wall bounce: detect wall collision during knockback → bounce. Unlimited per combo, minor damage, no extra pressure. Air juggle: track airborne state, Gale element extends airtime. After stun expires → invulnerable landing. OTG vs Tech Hit distinction.
 - **Acceptance:**
-  - [ ] Wall bounce detection and physics
-  - [ ] Unlimited bounces per combo
-  - [ ] Airborne state tracking
-  - [ ] OTG vs Tech Hit distinction
-  - [ ] Gale extension support (via IBuffProvider)
+  - [x] Wall bounce detection and physics
+  - [x] Unlimited bounces per combo
+  - [x] Airborne state tracking
+  - [x] OTG vs Tech Hit distinction
+  - [x] Gale extension support (via IBuffProvider)
 
 ### T028: Path T1 Ability Execution [PENDING]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T017, T018

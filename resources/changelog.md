@@ -1,5 +1,224 @@
 # Changelog
 
+## [Phase 3] — 2026-03-04 (T027 WallBounce + AirJuggle — DONE)
+
+### Completed
+- **T027: WallBounce + AirJuggle** — branch `combat/T027-wallbounce-airjuggle` (commit `8769d7a`)
+  - `WallBounceHandler` MonoBehaviour: Detects wall collisions via `OnCollisionEnter2D`, reflects velocity with configurable retention factor, fires `BounceDetected` event. Unlimited bounces per combo. Minor damage (no pressure fill) applied via `IJuggleTarget.OnWallBounced` → `EnemyBase.HandleWallBounce()`
+  - `JuggleSystem` MonoBehaviour implementing `IJuggleTarget`: Belt-scroll simulated height tracking (mirrors CharacterMotor's jump model). 5-state lifecycle: Grounded → Airborne → Falling → OTG → TechRecover → Grounded. Queries `IBuffProvider.GetJuggleGravityMultiplier()` for Gale element airtime extension
+  - `JuggleConfig` ScriptableObject: Tuning params for gravity (25 u/s²), terminal fall speed (20), bounce velocity retention (0.7), min bounce velocity (3), wall bounce damage (2), OTG duration (1.0s), tech recover duration (0.4s), knockback recovery time (0.5s)
+  - `JuggleState` enum in `Shared/Enums/`: Grounded, Airborne, Falling, OTG, TechRecover
+  - `IJuggleTarget` interface in `Shared/Interfaces/`: Cross-pillar contract — Combat implements, World queries via `GetComponent<IJuggleTarget>()`
+  - `IBuffProvider.GetJuggleGravityMultiplier()`: New interface method for Gale element gravity reduction (base 1.0, lower = slower fall)
+  - `WallBounceEventData` + `JuggleLandEventData` structs added to `CombatEventData.cs`
+  - `EnemyBase` integration: IJuggleTarget wired in `Awake()`, `ApplyKnockback()` notifies juggle system, `ApplyLaunch()` delegates to IJuggleTarget, `StunRoutine()` defers invulnerability blink until landing if airborne
+  - Unblocks: T036 (OTG vs TechHit System)
+
+### Design Decisions
+- Belt-scroll simulated height (not Rigidbody2D Y-axis) — consistent with CharacterMotor's jump model; `spriteTransform.localPosition.y = airHeight`
+- IJuggleTarget in Shared/Interfaces/ for cross-pillar access — Combat implements, World queries without pillar violation
+- WallBounceHandler uses velocity magnitude + `IsInKnockback` flag as dual guard — prevents bouncing during normal movement
+- Wall bounce damage bypasses TakeDamage pipeline (no re-trigger of knockback) — applied directly to health via HandleWallBounce
+- JuggleSystem manages knockback recovery timing (replacing EnemyBase coroutine when present) — single source of truth for velocity state
+- OTG → TechRecover → Grounded gives clear states for T036 to distinguish OTG hits vs tech recovery
+
+### Files Added
+- `Scripts/Shared/Enums/JuggleState.cs`
+- `Scripts/Shared/Interfaces/IJuggleTarget.cs`
+- `Scripts/Shared/Data/JuggleConfig.cs`
+- `Scripts/Combat/Juggle/JuggleSystem.cs`
+- `Scripts/Combat/Juggle/WallBounceHandler.cs`
+
+### Files Modified
+- `Scripts/Shared/Interfaces/IBuffProvider.cs` (+`GetJuggleGravityMultiplier()`)
+- `Scripts/Shared/Data/CombatEventData.cs` (+`WallBounceEventData`, +`JuggleLandEventData`)
+- `Scripts/World/EnemyBase.cs` (IJuggleTarget integration, knockback/launch delegation, deferred post-stun invuln)
+
+### Notes
+- Task counter: 18/60 (Phase 1: 10/13, Phase 2: 6/12, Phase 3: 2/9)
+- T027 unblocks: T036 (OTG vs TechHit System)
+- No existing tests affected — IBuffProvider has no implementations yet
+- JuggleConfig needs a `.asset` created in Unity and assigned to enemy prefabs via Creator Scripts
+
+---
+
+## [Phase 3] — 2026-03-04 (T026 PressureSystem + Stun — DONE)
+
+### Completed
+- **T026: PressureSystem + Stun** — branch `combat/T026-pressure-system-stun` (commit `1727919`)
+  - `DamagePacket.stunFillAmount` — new readonly field carrying pre-calculated pressure fill from attacker stats (DD-1: attacker-side calculation)
+  - `HitboxManager.stunRate` — placeholder `[SerializeField]` field (default 1.0) with per-character values documented in tooltip (Slasher=1.5, Brutor=1.0, Viper=0.8, Mystica=0.5)
+  - `BuildDamagePacket()` now calculates `stunFill = damage * stunRate * (isPunish ? 2f : 1f)` and bakes it into the packet
+  - `EnemyBase.TakeDamage()` uses `packet.stunFillAmount` instead of recalculating internally — defender just receives "how much pressure this hit applies"
+  - `EnemyBase._lastHitBy` tracks source `CharacterType` for event data
+  - `StunTriggered` / `StunRecovered` events on `EnemyBase` — fired from `StunRoutine()` for Camera/UI/Roguelite subscribers
+  - `StunEventData` (lastHitBy, stunnedPosition, stunDuration) + `StunRecoveredEventData` (recoveredPosition) in `CombatEventData.cs`
+  - `ICombatEvents.OnStun` + `OnStunRecovered` — cross-pillar event signatures for Roguelite integration
+  - `PlayerDamageable.AddStun()` remains stub with TODO comment (DD-3: player stun deferred)
+  - Default parameter `stunFillAmount = 0f` on `DamagePacket` constructor — backward compatible with existing call sites (TestDummyEnemy)
+
+### Design Decisions
+- DD-1 (T026): StunFill calculated attacker-side — HitboxManager owns the calculation, EnemyBase just receives the amount
+- DD-2 (T026): No pressureResistance field — use higher `pressureThreshold` for tanky enemies (one knob, not two)
+- DD-3 (T026): Player stun deferred — requires input lock, combo cancel, defense reset, UI (separate task)
+- DD-4 (T026): Camera zoom event only — fire `OnStun`, don't consume. Camera belongs to World pillar
+- DD-5 (T026): StunRate as placeholder field — matches `baseAttack` placeholder pattern, both wired to stat system together later
+
+### Files Modified
+- `Scripts/Shared/Data/DamagePacket.cs` (added `stunFillAmount` field + constructor param)
+- `Scripts/Shared/Data/CombatEventData.cs` (added `StunEventData`, `StunRecoveredEventData`)
+- `Scripts/Shared/Interfaces/ICombatEvents.cs` (added `OnStun`, `OnStunRecovered`)
+- `Scripts/Combat/Hitbox/HitboxManager.cs` (added `stunRate`, updated `BuildDamagePacket`)
+- `Scripts/World/EnemyBase.cs` (uses `stunFillAmount`, tracks `_lastHitBy`, fires events)
+- `Scripts/Combat/PlayerDamageable.cs` (updated TODO comment)
+
+### Notes
+- Task counter: 17/60 (Phase 1: 10/13, Phase 2: 6/12, Phase 3: 1/9)
+- Phase 3 is now IN_PROGRESS
+- T026 unblocks: T032 (BossAI Framework)
+
+---
+
+## [Phase 2] — 2026-03-04 (T017 Character Passives — DONE)
+
+### Completed
+- **T017: Character Passives** — branch `combat/T017-character-passives` (commit `f52f526`)
+  - 4 passive abilities as plain C# classes with `PassiveConfig` ScriptableObject for tuning
+  - **ThickSkin** (Brutor): Constant 0.85 defense multiplier (15% DR) + 0.6 knockback multiplier (40% reduction)
+  - **Bloodlust** (Slasher): +3% ATK per hit landed, 10 stacks max (+30%), resets to 0 after 3s without a hit. Combo drops do NOT reset stacks
+  - **ArcaneResonance** (Mystica): +5% damage per cast (multiplicative: 1.05^stacks), 3 max stacks with independent 3s expiry timers. Triggers on any attack event
+  - **DistanceBonus** (Viper): +2% per unit distance at hit time, capped at +30% (15 units). Distance read from HitContext struct — no transform access
+  - `IPassiveProvider` interface in `Shared/Interfaces/` — dedicated passive channel, separate from `IBuffProvider`
+  - `HitContext` struct in `Shared/Data/` — per-hit context (damageType, distanceToTarget, isPunishHit)
+  - `PassiveAbilitySystem` MonoBehaviour — holds active passive, subscribes to `HitboxManager.OnHitProcessed` + `ComboController.AttackStarted`, implements `IPassiveProvider`
+  - All 4 character Creator Scripts updated to wire `PassiveAbilitySystem` + shared `PassiveConfig` SO
+  - Unblocks: T028 (Path T1 Ability Execution)
+
+### Design Decisions
+- DD-1 (T017): PassiveConfig SO + plain C# logic — tunable values in Inspector, logic unit-testable without Unity
+- DD-2 (T017): Self-buff only for Arcane Resonance — co-op doesn't exist yet, add ally broadcast later
+- DD-3 (T017): HitContext struct for distance/per-hit data — keeps passives decoupled from transforms
+- DD-4 (T017): IPassiveProvider separate from IBuffProvider — passives are Combat-internal, IBuffProvider is Roguelite's channel
+- DD-5 (T017): Bloodlust decay timer only — combo drops do NOT reset stacks (double-punishment too harsh)
+
+### Tests Added
+- `ThickSkinTests.cs` — 6 tests (constant multipliers, custom config)
+- `BloodlustTests.cs` — 10 tests (stacks, cap, decay, timer reset, sequential increment)
+- `ArcaneResonanceTests.cs` — 11 tests (stacks, multiplicative calc, independent expiry, slot replacement)
+- `DistanceBonusTests.cs` — 9 tests (linear scaling, cap, per-hit independence)
+
+### Files Added
+- `Scripts/Shared/Data/HitContext.cs`
+- `Scripts/Shared/Interfaces/IPassiveProvider.cs`
+- `Scripts/Characters/Passives/PassiveConfig.cs`
+- `Scripts/Characters/Passives/IPassiveAbility.cs`
+- `Scripts/Characters/Passives/ThickSkin.cs`
+- `Scripts/Characters/Passives/Bloodlust.cs`
+- `Scripts/Characters/Passives/ArcaneResonance.cs`
+- `Scripts/Characters/Passives/DistanceBonus.cs`
+- `Scripts/Characters/PassiveAbilitySystem.cs`
+- `Tests/EditMode/Characters/ThickSkinTests.cs`
+- `Tests/EditMode/Characters/BloodlustTests.cs`
+- `Tests/EditMode/Characters/ArcaneResonanceTests.cs`
+- `Tests/EditMode/Characters/DistanceBonusTests.cs`
+
+### Files Modified
+- `Editor/Prefabs/CharacterPrefabConfig.cs` (added `passiveConfig` field)
+- `Editor/Prefabs/PlayerPrefabCreator.cs` (wires PassiveAbilitySystem)
+- `Editor/Characters/BrutorCharacterCreator.cs` (loads/creates PassiveConfig)
+- `Editor/Characters/SlasherCharacterCreator.cs` (loads/creates PassiveConfig)
+- `Editor/Characters/MysticaCharacterCreator.cs` (loads/creates PassiveConfig)
+- `Editor/Characters/ViperCharacterCreator.cs` (loads/creates PassiveConfig)
+- `Tests/EditMode/TomatoFighters.Tests.EditMode.asmdef` (added Characters assembly ref)
+
+### Notes
+- Task counter: 16/60 (Phase 1: 10/13, Phase 2: 6/12)
+- T017 unblocks: T028 (Path T1 Ability Execution)
+- IPassiveProvider is not yet integrated into HitboxManager's damage calculation — that wiring happens when the full damage formula is assembled
+
+---
+
+## [Phase 2] — 2026-03-04 (T016 Follow-up: Clash Cancellation + Defense Visual Cues)
+
+### Changes
+- **Clash cancellation (0% mutual damage):** When two attacks collide simultaneously, both resolve as `DamageResponse.Clashed` with zero damage applied. `ClashTracker` component provides reciprocal immunity (0.1s window) so HitboxManager skips damage on the return frame
+- **ClashTracker component** (`Shared/Components/ClashTracker.cs`): New MonoBehaviour tracking recent clash partners via `Dictionary<GameObject, float>`. `RegisterClash(target)` grants mutual immunity; `IsClashImmune(target)` queried by HitboxManager before damage resolution
+- **Defense visual cues** (`Combat/Debug/DefenseDebugUI.cs`): Floating text feedback for Clash, Deflect, and Dodge outcomes. Font size 50, character size 0.12, color-coded per outcome. Attached to both player and enemy entities
+- **NotifyDefenseSuccess** added to `IDefenseProvider` interface: Allows World pillar (TestDummyEnemy) to trigger visual feedback on the target's DefenseSystem after defense resolution, without importing Combat
+- **TestDummyEnemy** now calls `NotifyDefenseSuccess()` on the target's `IDefenseProvider` after resolving defense outcomes, enabling the player to see visual cues when their defense succeeds against enemy attacks
+- **HitboxManager** integrates clash immunity: checks `ClashTracker.IsClashImmune()` before applying damage, skips if target was recently clashed
+
+### Files Added
+- `Scripts/Shared/Components/ClashTracker.cs`
+- `Scripts/Combat/Debug/DefenseDebugUI.cs`
+
+### Files Modified
+- `Scripts/Shared/Interfaces/IDefenseProvider.cs` (added `NotifyDefenseSuccess`)
+- `Scripts/Combat/Defense/DefenseSystem.cs` (implemented `NotifyDefenseSuccess`)
+- `Scripts/Combat/Hitbox/HitboxManager.cs` (clash immunity integration)
+- `Scripts/World/TestDummyEnemy.cs` (calls `NotifyDefenseSuccess` after defense resolution)
+- `Editor/Prefabs/PlayerPrefabCreator.cs` (wires ClashTracker to player prefab)
+- `Editor/Prefabs/TestDummyPrefabCreator.cs` (wires ClashTracker to TestDummy prefab)
+- `Editor/Prefabs/MovementTestSceneCreator.cs` (adds DefenseDebugUI to TestDummy in scene)
+
+### Notes
+- This is follow-up work on T016 (DefenseSystem), not a new task. T016 acceptance criteria were already met; this adds clash cancellation mechanics and debug visual feedback
+- Work is uncommitted on `tal` branch
+
+---
+
+## [Phase 2] — 2026-03-04 (T016 DefenseSystem — DONE)
+
+### Completed
+- **T016: DefenseSystem — Deflect/Clash/Dodge** — branch `tal` (commit `9bc3f0e`)
+  - `DefenseResolver` (plain C# class): Pure testable logic resolving defense outcomes — Hit, Deflected, Clashed, or Dodged — based on timing windows and directional context
+  - `DefenseSystem` (MonoBehaviour): Event-driven window tracking via `CharacterMotor.Dashed` + `ComboController.AttackStarted`. Manages active defense windows per entity
+  - `DefenseConfig` SO: Configurable per-entity timing — deflect 0–150ms, clash 20–80ms, dodge 50–300ms
+  - `DefenseBonus` strategy pattern with 4 character-specific implementations:
+    - **BrutorDefenseBonus**: No slideback on successful deflect
+    - **SlasherDefenseBonus**: Crit chance boost on deflect
+    - **MysticaDefenseBonus**: Mana restore on successful defense
+    - **ViperDefenseBonus**: Damage reflect on dodge
+  - `IDamageable.ResolveIncoming()`: Target-side defense resolution before damage application
+  - `IDefenseProvider`: New cross-pillar interface so World (EnemyBase) references defense without Combat import
+  - `HitboxManager`: Replaced temporary damage shim with full defense resolution pipeline
+  - `DefenseContext`, `DefenseState`: Supporting data types for the defense pipeline
+  - EnemyBase + TestDummyEnemy + PlayerDamageable updated to integrate defense resolution
+  - Unblocks: T017 (Character Passives), T024 (Animation Polish)
+
+### Design Decisions
+- DD-1 (T016): DefenseResolver is a plain C# class — fully unit-testable without Unity runtime, matching ComboStateMachine/CharacterStatCalculator pattern
+- DD-2 (T016): Strategy pattern for character bonuses — each character's unique defense reward is a separate class, avoiding a switch statement in DefenseSystem
+- DD-3 (T016): IDefenseProvider in Shared/Interfaces — allows World pillar to query defense state without importing Combat
+
+### Tests Added
+- `DefenseResolverTests.cs` — 22 edit-mode NUnit tests covering all defense states (Hit, Deflected, Clashed, Dodged) and edge cases
+
+### Files Added
+- `Scripts/Combat/Defense/DefenseResolver.cs`
+- `Scripts/Combat/Defense/DefenseSystem.cs`
+- `Scripts/Combat/Defense/DefenseConfig.cs`
+- `Scripts/Combat/Defense/DefenseContext.cs`
+- `Scripts/Combat/Defense/DefenseState.cs`
+- `Scripts/Combat/Defense/DefenseBonus.cs`
+- `Scripts/Combat/Defense/Bonuses/BrutorDefenseBonus.cs`
+- `Scripts/Combat/Defense/Bonuses/SlasherDefenseBonus.cs`
+- `Scripts/Combat/Defense/Bonuses/MysticaDefenseBonus.cs`
+- `Scripts/Combat/Defense/Bonuses/ViperDefenseBonus.cs`
+- `Scripts/Shared/Interfaces/IDefenseProvider.cs`
+- `Tests/EditMode/Combat/Defense/DefenseResolverTests.cs`
+
+### Files Modified
+- `Scripts/Combat/Hitbox/HitboxManager.cs` (replaced temp damage shim with defense resolution)
+- `Scripts/Combat/PlayerDamageable.cs` (defense integration)
+- `Scripts/Shared/Interfaces/IDamageable.cs` (added `ResolveIncoming()`)
+- `Scripts/World/EnemyBase.cs` (defense integration)
+- `Scripts/World/TestDummyEnemy.cs` (defense integration)
+- `Editor/Prefabs/CharacterPrefabConfig.cs` (defense config field)
+- `Editor/Prefabs/PlayerPrefabCreator.cs` (wires DefenseSystem)
+
+---
+
 ## [Bug Fix] — 2026-03-04 (Attack hitbox alignment + knockback recovery)
 
 ### Problem

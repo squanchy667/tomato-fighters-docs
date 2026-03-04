@@ -11,6 +11,7 @@
 | **Depends On** | T001 |
 | **Blocks** | T038 |
 | **Status** | DONE |
+| **Completed** | 2026-03-02 |
 | **Branch** | `pillar2/T009-currency-manager` |
 
 ## Objective
