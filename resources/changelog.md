@@ -1,5 +1,32 @@
 # Changelog
 
+## [Bug Fix] — 2026-03-04 (Attack hitbox alignment + knockback recovery)
+
+### Problem
+1. All player attack hitboxes (both Mystica and Slasher prefabs) were positioned at y=0.1, far below the hurtbox center at y=0.6 — attacks were barely overlapping with enemy hurtboxes.
+2. Enemies hit by knockback slid infinitely because `Rigidbody2D` has `linearDamping=0` and `gravityScale=0`, and no recovery mechanism existed.
+
+### Fixes
+
+1. **Attack hitbox y-offset raised from 0.1 → 0.5** on all hitboxes to align with hurtbox center (y=0.6):
+   - **Player.prefab (Mystica):** Hitbox_Burst, Hitbox_Bolt, Hitbox_BigBurst — colliders + debug visuals
+   - **Slasher.prefab:** Hitbox_Slash, Hitbox_WideSlash, Hitbox_Lunge, Hitbox_Spin — colliders + debug visuals
+   - **MysticaCharacterCreator.cs** + **SlasherCharacterCreator.cs**: Editor scripts updated to match, preventing re-generation from reverting the fix
+
+2. **Knockback recovery after 0.5s** (`Scripts/World/EnemyBase.cs`):
+   - `ApplyKnockback()` now starts a coroutine that zeros `Rb.linearVelocity` after 0.5 seconds
+   - If hit again during knockback, the old timer is cancelled and a fresh 0.5s starts
+   - No hit-stun state — enemy can still act while sliding (AI not implemented yet)
+
+### Files Modified
+- `unity/TomatoFighters/Assets/Prefabs/Player/Player.prefab` (6 collider/visual offsets)
+- `unity/TomatoFighters/Assets/Prefabs/Player/Slasher.prefab` (8 collider/visual offsets)
+- `unity/TomatoFighters/Assets/Scripts/World/EnemyBase.cs` (+field, +coroutine)
+- `unity/TomatoFighters/Assets/Editor/Characters/MysticaCharacterCreator.cs` (3 offsets)
+- `unity/TomatoFighters/Assets/Editor/Characters/SlasherCharacterCreator.cs` (4 offsets)
+
+---
+
 ## [Tooling] — 2026-03-04 (Multi-Character Animation Pipeline)
 
 ### Changes
