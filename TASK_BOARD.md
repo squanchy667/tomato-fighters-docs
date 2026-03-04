@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 16/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 17/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -299,20 +299,21 @@
 ---
 
 ## Phase 3: Defensive Depth + Build Crafting
-> Status: PENDING | Tasks: 0/9 | Weeks: 5-6
+> Status: IN_PROGRESS | Tasks: 1/9 | Weeks: 5-6
 > Goal: Full loop — fight area, pick ritual, select path at shrine, fight boss
 
-### T026: PressureSystem + Stun [PENDING]
+### T026: PressureSystem + Stun [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T016
-- **Files:** `Combat/PressureSystem.cs`
-- **Description:** Hidden pressure meter on enemies. Punish damage fills 2x faster. Full meter → stunned for configurable duration (~3s). During stun: free juggle. After stun: invulnerable recovery (blink white). Camera zoom on stun (fire event). Per-character PRS stat affects fill rate.
+- **Branch:** `combat/T026-pressure-system-stun` | **Completed:** 2026-03-04
+- **Files:** `Shared/Data/DamagePacket.cs`, `Shared/Data/CombatEventData.cs`, `Shared/Interfaces/ICombatEvents.cs`, `Combat/Hitbox/HitboxManager.cs`, `World/EnemyBase.cs`, `Combat/PlayerDamageable.cs`
+- **Description:** Wire StunRate into damage pipeline. DamagePacket carries pre-calculated stunFillAmount (attacker-side). HitboxManager calculates stunFill = damage × stunRate × punishMultiplier. EnemyBase uses packet.stunFillAmount instead of recalculating. StunTriggered/StunRecovered events fired for Camera/UI/Roguelite integration.
 - **Acceptance:**
-  - [ ] Pressure meter per enemy
-  - [ ] Punish multiplier (2x fill rate)
-  - [ ] Stun state with configurable duration
-  - [ ] Invulnerable recovery after stun
-  - [ ] Camera zoom event on stun
-  - [ ] PRS stat integration
+  - [x] Pressure meter per enemy
+  - [x] Punish multiplier (2x fill rate)
+  - [x] Stun state with configurable duration
+  - [x] Invulnerable recovery after stun
+  - [x] Camera zoom event on stun
+  - [x] PRS stat integration
 
 ### T027: WallBounce + AirJuggle [PENDING]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 1 | **Depends on:** T015

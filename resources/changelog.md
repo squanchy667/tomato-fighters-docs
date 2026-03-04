@@ -1,5 +1,42 @@
 # Changelog
 
+## [Phase 3] — 2026-03-04 (T026 PressureSystem + Stun — DONE)
+
+### Completed
+- **T026: PressureSystem + Stun** — branch `combat/T026-pressure-system-stun` (commit `1727919`)
+  - `DamagePacket.stunFillAmount` — new readonly field carrying pre-calculated pressure fill from attacker stats (DD-1: attacker-side calculation)
+  - `HitboxManager.stunRate` — placeholder `[SerializeField]` field (default 1.0) with per-character values documented in tooltip (Slasher=1.5, Brutor=1.0, Viper=0.8, Mystica=0.5)
+  - `BuildDamagePacket()` now calculates `stunFill = damage * stunRate * (isPunish ? 2f : 1f)` and bakes it into the packet
+  - `EnemyBase.TakeDamage()` uses `packet.stunFillAmount` instead of recalculating internally — defender just receives "how much pressure this hit applies"
+  - `EnemyBase._lastHitBy` tracks source `CharacterType` for event data
+  - `StunTriggered` / `StunRecovered` events on `EnemyBase` — fired from `StunRoutine()` for Camera/UI/Roguelite subscribers
+  - `StunEventData` (lastHitBy, stunnedPosition, stunDuration) + `StunRecoveredEventData` (recoveredPosition) in `CombatEventData.cs`
+  - `ICombatEvents.OnStun` + `OnStunRecovered` — cross-pillar event signatures for Roguelite integration
+  - `PlayerDamageable.AddStun()` remains stub with TODO comment (DD-3: player stun deferred)
+  - Default parameter `stunFillAmount = 0f` on `DamagePacket` constructor — backward compatible with existing call sites (TestDummyEnemy)
+
+### Design Decisions
+- DD-1 (T026): StunFill calculated attacker-side — HitboxManager owns the calculation, EnemyBase just receives the amount
+- DD-2 (T026): No pressureResistance field — use higher `pressureThreshold` for tanky enemies (one knob, not two)
+- DD-3 (T026): Player stun deferred — requires input lock, combo cancel, defense reset, UI (separate task)
+- DD-4 (T026): Camera zoom event only — fire `OnStun`, don't consume. Camera belongs to World pillar
+- DD-5 (T026): StunRate as placeholder field — matches `baseAttack` placeholder pattern, both wired to stat system together later
+
+### Files Modified
+- `Scripts/Shared/Data/DamagePacket.cs` (added `stunFillAmount` field + constructor param)
+- `Scripts/Shared/Data/CombatEventData.cs` (added `StunEventData`, `StunRecoveredEventData`)
+- `Scripts/Shared/Interfaces/ICombatEvents.cs` (added `OnStun`, `OnStunRecovered`)
+- `Scripts/Combat/Hitbox/HitboxManager.cs` (added `stunRate`, updated `BuildDamagePacket`)
+- `Scripts/World/EnemyBase.cs` (uses `stunFillAmount`, tracks `_lastHitBy`, fires events)
+- `Scripts/Combat/PlayerDamageable.cs` (updated TODO comment)
+
+### Notes
+- Task counter: 17/60 (Phase 1: 10/13, Phase 2: 6/12, Phase 3: 1/9)
+- Phase 3 is now IN_PROGRESS
+- T026 unblocks: T032 (BossAI Framework)
+
+---
+
 ## [Phase 2] — 2026-03-04 (T017 Character Passives — DONE)
 
 ### Completed
