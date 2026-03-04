@@ -11,6 +11,7 @@
 | **Depends On** | T001, T006 |
 | **Blocks** | T018 |
 | **Status** | DONE |
+| **Completed** | 2026-03-03 |
 | **Branch** | `shared/T008-path-data-so` |
 | **Merged** | 2026-03-03 → `gal` |
 | **Detailed Spec** | [T008-path-data-scriptable-object.md](T008-path-data-scriptable-object.md) |

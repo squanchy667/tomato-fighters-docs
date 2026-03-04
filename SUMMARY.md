@@ -22,6 +22,7 @@
 * [Dev 2 Guide — Roguelite](developer/dev2-roguelite-guide.md)
 * [Dev 3 Guide — World](developer/dev3-world-guide.md)
 * [Unity Editor Scripts](developer/unity-editor-scripts.md)
+* [Defense Timing Reference](developer/defense-timing-reference.md)
 
 ## Design Specs
 
@@ -47,6 +48,7 @@
 * [T006: CharacterBaseStats SO](tasks/phase-1/T006-character-base-stats.md)
 * [T007: StatCalculator](tasks/phase-1/T007-stat-calculator.md)
 * [T008: PathData SO](tasks/phase-1/T008-path-data-so.md)
+* [T008: PathData SO (superseded)](tasks/phase-1/T008-path-data-scriptable-object.md)
 * [T009: CurrencyManager](tasks/phase-1/T009-currency-manager.md)
 * [T010: WaveManager](tasks/phase-1/T010-wave-manager.md)
 * [T011: EnemyBase](tasks/phase-1/T011-enemy-base.md)

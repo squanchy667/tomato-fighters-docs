@@ -1,5 +1,86 @@
 # Changelog
 
+## [Phase 2] — 2026-03-04 (T016 Follow-up: Clash Cancellation + Defense Visual Cues)
+
+### Changes
+- **Clash cancellation (0% mutual damage):** When two attacks collide simultaneously, both resolve as `DamageResponse.Clashed` with zero damage applied. `ClashTracker` component provides reciprocal immunity (0.1s window) so HitboxManager skips damage on the return frame
+- **ClashTracker component** (`Shared/Components/ClashTracker.cs`): New MonoBehaviour tracking recent clash partners via `Dictionary<GameObject, float>`. `RegisterClash(target)` grants mutual immunity; `IsClashImmune(target)` queried by HitboxManager before damage resolution
+- **Defense visual cues** (`Combat/Debug/DefenseDebugUI.cs`): Floating text feedback for Clash, Deflect, and Dodge outcomes. Font size 50, character size 0.12, color-coded per outcome. Attached to both player and enemy entities
+- **NotifyDefenseSuccess** added to `IDefenseProvider` interface: Allows World pillar (TestDummyEnemy) to trigger visual feedback on the target's DefenseSystem after defense resolution, without importing Combat
+- **TestDummyEnemy** now calls `NotifyDefenseSuccess()` on the target's `IDefenseProvider` after resolving defense outcomes, enabling the player to see visual cues when their defense succeeds against enemy attacks
+- **HitboxManager** integrates clash immunity: checks `ClashTracker.IsClashImmune()` before applying damage, skips if target was recently clashed
+
+### Files Added
+- `Scripts/Shared/Components/ClashTracker.cs`
+- `Scripts/Combat/Debug/DefenseDebugUI.cs`
+
+### Files Modified
+- `Scripts/Shared/Interfaces/IDefenseProvider.cs` (added `NotifyDefenseSuccess`)
+- `Scripts/Combat/Defense/DefenseSystem.cs` (implemented `NotifyDefenseSuccess`)
+- `Scripts/Combat/Hitbox/HitboxManager.cs` (clash immunity integration)
+- `Scripts/World/TestDummyEnemy.cs` (calls `NotifyDefenseSuccess` after defense resolution)
+- `Editor/Prefabs/PlayerPrefabCreator.cs` (wires ClashTracker to player prefab)
+- `Editor/Prefabs/TestDummyPrefabCreator.cs` (wires ClashTracker to TestDummy prefab)
+- `Editor/Prefabs/MovementTestSceneCreator.cs` (adds DefenseDebugUI to TestDummy in scene)
+
+### Notes
+- This is follow-up work on T016 (DefenseSystem), not a new task. T016 acceptance criteria were already met; this adds clash cancellation mechanics and debug visual feedback
+- Work is uncommitted on `tal` branch
+
+---
+
+## [Phase 2] — 2026-03-04 (T016 DefenseSystem — DONE)
+
+### Completed
+- **T016: DefenseSystem — Deflect/Clash/Dodge** — branch `tal` (commit `9bc3f0e`)
+  - `DefenseResolver` (plain C# class): Pure testable logic resolving defense outcomes — Hit, Deflected, Clashed, or Dodged — based on timing windows and directional context
+  - `DefenseSystem` (MonoBehaviour): Event-driven window tracking via `CharacterMotor.Dashed` + `ComboController.AttackStarted`. Manages active defense windows per entity
+  - `DefenseConfig` SO: Configurable per-entity timing — deflect 0–150ms, clash 20–80ms, dodge 50–300ms
+  - `DefenseBonus` strategy pattern with 4 character-specific implementations:
+    - **BrutorDefenseBonus**: No slideback on successful deflect
+    - **SlasherDefenseBonus**: Crit chance boost on deflect
+    - **MysticaDefenseBonus**: Mana restore on successful defense
+    - **ViperDefenseBonus**: Damage reflect on dodge
+  - `IDamageable.ResolveIncoming()`: Target-side defense resolution before damage application
+  - `IDefenseProvider`: New cross-pillar interface so World (EnemyBase) references defense without Combat import
+  - `HitboxManager`: Replaced temporary damage shim with full defense resolution pipeline
+  - `DefenseContext`, `DefenseState`: Supporting data types for the defense pipeline
+  - EnemyBase + TestDummyEnemy + PlayerDamageable updated to integrate defense resolution
+  - Unblocks: T017 (Character Passives), T024 (Animation Polish)
+
+### Design Decisions
+- DD-1 (T016): DefenseResolver is a plain C# class — fully unit-testable without Unity runtime, matching ComboStateMachine/CharacterStatCalculator pattern
+- DD-2 (T016): Strategy pattern for character bonuses — each character's unique defense reward is a separate class, avoiding a switch statement in DefenseSystem
+- DD-3 (T016): IDefenseProvider in Shared/Interfaces — allows World pillar to query defense state without importing Combat
+
+### Tests Added
+- `DefenseResolverTests.cs` — 22 edit-mode NUnit tests covering all defense states (Hit, Deflected, Clashed, Dodged) and edge cases
+
+### Files Added
+- `Scripts/Combat/Defense/DefenseResolver.cs`
+- `Scripts/Combat/Defense/DefenseSystem.cs`
+- `Scripts/Combat/Defense/DefenseConfig.cs`
+- `Scripts/Combat/Defense/DefenseContext.cs`
+- `Scripts/Combat/Defense/DefenseState.cs`
+- `Scripts/Combat/Defense/DefenseBonus.cs`
+- `Scripts/Combat/Defense/Bonuses/BrutorDefenseBonus.cs`
+- `Scripts/Combat/Defense/Bonuses/SlasherDefenseBonus.cs`
+- `Scripts/Combat/Defense/Bonuses/MysticaDefenseBonus.cs`
+- `Scripts/Combat/Defense/Bonuses/ViperDefenseBonus.cs`
+- `Scripts/Shared/Interfaces/IDefenseProvider.cs`
+- `Tests/EditMode/Combat/Defense/DefenseResolverTests.cs`
+
+### Files Modified
+- `Scripts/Combat/Hitbox/HitboxManager.cs` (replaced temp damage shim with defense resolution)
+- `Scripts/Combat/PlayerDamageable.cs` (defense integration)
+- `Scripts/Shared/Interfaces/IDamageable.cs` (added `ResolveIncoming()`)
+- `Scripts/World/EnemyBase.cs` (defense integration)
+- `Scripts/World/TestDummyEnemy.cs` (defense integration)
+- `Editor/Prefabs/CharacterPrefabConfig.cs` (defense config field)
+- `Editor/Prefabs/PlayerPrefabCreator.cs` (wires DefenseSystem)
+
+---
+
 ## [Bug Fix] — 2026-03-04 (Attack hitbox alignment + knockback recovery)
 
 ### Problem
