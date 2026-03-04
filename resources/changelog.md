@@ -1,5 +1,48 @@
 # Changelog
 
+## [Bug Fix] — 2026-03-04 (Damage pipeline not registering hits)
+
+### Problem
+Attacks were visually activating (colliders enabling, animations playing) but no damage was being applied to enemies or the player. Three independent bugs combined to make the pipeline appear completely broken.
+
+### Root Causes & Fixes
+
+1. **DebugHealthBar not rendering** (`Scripts/Shared/Components/DebugHealthBar.cs`)
+   - **Bug:** Used `Image.Type.Filled` which requires a source sprite to render in Unity 2022. The runtime-created `Texture2D` white pixel, converted to a sprite, wasn't filling correctly.
+   - **Fix:** Switched to anchor-based fill using `anchorMax.x = healthRatio` with `Image.Type.Simple`. Health bar now visually updates on every `TakeDamage` call.
+
+2. **PlayerDamageable flash invisible** (`Scripts/Combat/PlayerDamageable.cs`)
+   - **Bug:** `GetComponent<SpriteRenderer>()` found the root GameObject's SpriteRenderer, which has no sprite assigned (the visible sprite lives on the `Sprite` child). The damage flash was applying to an invisible renderer.
+   - **Fix:** Changed to `GetComponentInChildren<SpriteRenderer>()` to find the visible sprite on the Sprite child GameObject.
+
+3. **Physics2D not detecting re-enabled trigger colliders** (`Scripts/Shared/Components/HitboxDamage.cs`)
+   - **Bug:** With `Physics2D.autoSyncTransforms = false` (project default), re-enabling a trigger collider while already overlapping a target did not fire `OnTriggerEnter2D` or `OnTriggerStay2D`. The hitbox GO was being enabled/disabled each attack, but the physics system never registered the overlap.
+   - **Fix:** Added `Physics2D.SyncTransforms()` and `Rigidbody2D.WakeUp()` calls in `HitboxDamage.OnEnable()` to force the physics engine to recognize the newly-enabled collider.
+
+### Additional Changes
+- **TestDummyEnemy.cs** (`Scripts/World/`): Added `OnDamaged()` override with white sprite flash for visual hit-confirm feedback
+- **HitboxManager.cs** (`Scripts/Combat/Hitbox/`): Added 3 diagnostic `Debug.Log` lines for pipeline tracing (temporary, remove before ship)
+- **HitboxDamage.cs** (`Scripts/Shared/Components/`): Added diagnostic log in `OnTriggerStay2D` (temporary)
+- **DamagePipelineDiagnostic.cs** (`Assets/` root): New temporary debug tool that validates the entire damage pipeline on scene `Start()` — checks layers, collider states, component wiring, Physics2D settings. Lives outside asmdef folders intentionally.
+- **MovementTestSceneCreator.cs** (`Editor/Prefabs/`): Now auto-adds `DamagePipelineDiagnostic` to Main Camera via string-based `Type.GetType()` lookup
+
+### Files Modified
+- `unity/TomatoFighters/Assets/Scripts/Shared/Components/DebugHealthBar.cs`
+- `unity/TomatoFighters/Assets/Scripts/Shared/Components/HitboxDamage.cs`
+- `unity/TomatoFighters/Assets/Scripts/Combat/PlayerDamageable.cs`
+- `unity/TomatoFighters/Assets/Scripts/Combat/Hitbox/HitboxManager.cs`
+- `unity/TomatoFighters/Assets/Scripts/World/TestDummyEnemy.cs`
+- `unity/TomatoFighters/Assets/Editor/Prefabs/MovementTestSceneCreator.cs`
+- `unity/TomatoFighters/Assets/DamagePipelineDiagnostic.cs` (NEW)
+
+### Lessons Learned
+- Unity 2022's `Image.Type.Filled` requires a properly-configured source sprite; runtime-created textures don't work reliably with fill mode
+- Always use `GetComponentInChildren<T>()` when the visual renderer might be on a child (common in prefabs with root+sprite+shadow structure)
+- When `autoSyncTransforms` is off, toggling collider GameObjects requires manual `Physics2D.SyncTransforms()` — this is a known Unity gotcha for enable/disable hitbox patterns
+- Diagnostic tools (`DamagePipelineDiagnostic`) that validate the full pipeline on Start are invaluable for catching integration issues early
+
+---
+
 ## [Phase 2] — 2026-03-03 (T020 RitualData — DONE)
 
 ### Completed

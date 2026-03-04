@@ -12,7 +12,7 @@
 | 1 | Import Sprite Sheets | `TomatoFighters > Import Sprite Sheets` | Configures PNG import settings, grid-slices sprite sheets into individual frames |
 | 2 | Build Animations | `TomatoFighters > Build Animations` | `.anim` clips + `AnimatorController` with locomotion/action/airborne states |
 | 3 | Create Player Prefab | `TomatoFighters > Create Player Prefab` | `Player.prefab` with all components wired (motor, combo, input, animator) |
-| 4 | Create Movement Test Scene | `TomatoFighters > Create Movement Test Scene` | `MovementTest.unity` scene with camera, arena, walls, and player |
+| 4 | Create Movement Test Scene | `TomatoFighters > Create Movement Test Scene` | `MovementTest.unity` scene with camera, arena, walls, player, enemy, and DamagePipelineDiagnostic |
 | 5 | Create Mystica Attacks | `Tools > TomatoFighters > Create Mystica Attacks` | 4 AttackData assets (Strike 1-3, Arcane Bolt) |
 | 6 | Create All Character Attacks | `Tools > TomatoFighters > Create All Character Attacks` | 22 AttackData assets (Brutor 7, Slasher 8, Viper 6, Mystica extra 1) |
 | 7 | Create Combo Definitions | `Tools > TomatoFighters > Create Combo Definitions` | 4 ComboDefinition + 4 ComboInteractionConfig assets, wires Player prefab |
@@ -220,6 +220,7 @@ Player (root)
 - Dark green ground plane with grid lines for depth perception
 - Player instance from prefab with all input actions re-wired
 - Controls hint text at top of screen
+- **DamagePipelineDiagnostic** component on Main Camera (temporary debug tool, added via `Type.GetType()` string lookup so it compiles even if the diagnostic script is removed). Validates layers, colliders, component wiring, and Physics2D settings on scene Start.
 
 **Why re-wiring?** `InputActionReference.Create()` doesn't survive prefab serialization, so input actions are wired on the scene instance directly.
 
