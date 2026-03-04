@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 18/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 19/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -115,7 +115,7 @@
   - [x] Add/Remove/Check methods
   - [x] Persistence flag per currency type
 
-### T010: WaveManager [PENDING]
+### T010: WaveManager [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 3 | **Depends on:** T001
 - **Files:** `World/WaveManager.cs`
 - **Description:** Spawn enemies in configurable waves. Camera stops at LevelBound until wave cleared. Configurable enemy composition per wave (EnemySpawnData list). Fires events on wave start, wave clear, area complete. Area complete triggers reward selection.
