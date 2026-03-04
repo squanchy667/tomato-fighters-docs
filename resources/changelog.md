@@ -1,5 +1,47 @@
 # Changelog
 
+## [Phase 3] — 2026-03-04 (T027 WallBounce + AirJuggle — DONE)
+
+### Completed
+- **T027: WallBounce + AirJuggle** — branch `combat/T027-wallbounce-airjuggle` (commit `8769d7a`)
+  - `WallBounceHandler` MonoBehaviour: Detects wall collisions via `OnCollisionEnter2D`, reflects velocity with configurable retention factor, fires `BounceDetected` event. Unlimited bounces per combo. Minor damage (no pressure fill) applied via `IJuggleTarget.OnWallBounced` → `EnemyBase.HandleWallBounce()`
+  - `JuggleSystem` MonoBehaviour implementing `IJuggleTarget`: Belt-scroll simulated height tracking (mirrors CharacterMotor's jump model). 5-state lifecycle: Grounded → Airborne → Falling → OTG → TechRecover → Grounded. Queries `IBuffProvider.GetJuggleGravityMultiplier()` for Gale element airtime extension
+  - `JuggleConfig` ScriptableObject: Tuning params for gravity (25 u/s²), terminal fall speed (20), bounce velocity retention (0.7), min bounce velocity (3), wall bounce damage (2), OTG duration (1.0s), tech recover duration (0.4s), knockback recovery time (0.5s)
+  - `JuggleState` enum in `Shared/Enums/`: Grounded, Airborne, Falling, OTG, TechRecover
+  - `IJuggleTarget` interface in `Shared/Interfaces/`: Cross-pillar contract — Combat implements, World queries via `GetComponent<IJuggleTarget>()`
+  - `IBuffProvider.GetJuggleGravityMultiplier()`: New interface method for Gale element gravity reduction (base 1.0, lower = slower fall)
+  - `WallBounceEventData` + `JuggleLandEventData` structs added to `CombatEventData.cs`
+  - `EnemyBase` integration: IJuggleTarget wired in `Awake()`, `ApplyKnockback()` notifies juggle system, `ApplyLaunch()` delegates to IJuggleTarget, `StunRoutine()` defers invulnerability blink until landing if airborne
+  - Unblocks: T036 (OTG vs TechHit System)
+
+### Design Decisions
+- Belt-scroll simulated height (not Rigidbody2D Y-axis) — consistent with CharacterMotor's jump model; `spriteTransform.localPosition.y = airHeight`
+- IJuggleTarget in Shared/Interfaces/ for cross-pillar access — Combat implements, World queries without pillar violation
+- WallBounceHandler uses velocity magnitude + `IsInKnockback` flag as dual guard — prevents bouncing during normal movement
+- Wall bounce damage bypasses TakeDamage pipeline (no re-trigger of knockback) — applied directly to health via HandleWallBounce
+- JuggleSystem manages knockback recovery timing (replacing EnemyBase coroutine when present) — single source of truth for velocity state
+- OTG → TechRecover → Grounded gives clear states for T036 to distinguish OTG hits vs tech recovery
+
+### Files Added
+- `Scripts/Shared/Enums/JuggleState.cs`
+- `Scripts/Shared/Interfaces/IJuggleTarget.cs`
+- `Scripts/Shared/Data/JuggleConfig.cs`
+- `Scripts/Combat/Juggle/JuggleSystem.cs`
+- `Scripts/Combat/Juggle/WallBounceHandler.cs`
+
+### Files Modified
+- `Scripts/Shared/Interfaces/IBuffProvider.cs` (+`GetJuggleGravityMultiplier()`)
+- `Scripts/Shared/Data/CombatEventData.cs` (+`WallBounceEventData`, +`JuggleLandEventData`)
+- `Scripts/World/EnemyBase.cs` (IJuggleTarget integration, knockback/launch delegation, deferred post-stun invuln)
+
+### Notes
+- Task counter: 18/60 (Phase 1: 10/13, Phase 2: 6/12, Phase 3: 2/9)
+- T027 unblocks: T036 (OTG vs TechHit System)
+- No existing tests affected — IBuffProvider has no implementations yet
+- JuggleConfig needs a `.asset` created in Unity and assigned to enemy prefabs via Creator Scripts
+
+---
+
 ## [Phase 3] — 2026-03-04 (T026 PressureSystem + Stun — DONE)
 
 ### Completed

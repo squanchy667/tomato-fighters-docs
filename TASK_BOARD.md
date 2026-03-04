@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 17/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 18/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -299,7 +299,7 @@
 ---
 
 ## Phase 3: Defensive Depth + Build Crafting
-> Status: IN_PROGRESS | Tasks: 1/9 | Weeks: 5-6
+> Status: IN_PROGRESS | Tasks: 2/9 | Weeks: 5-6
 > Goal: Full loop — fight area, pick ritual, select path at shrine, fight boss
 
 ### T026: PressureSystem + Stun [DONE]
@@ -315,16 +315,17 @@
   - [x] Camera zoom event on stun
   - [x] PRS stat integration
 
-### T027: WallBounce + AirJuggle [PENDING]
+### T027: WallBounce + AirJuggle [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 1 | **Depends on:** T015
-- **Files:** `Combat/WallBounceHandler.cs`, `Combat/JuggleSystem.cs`
+- **Branch:** `combat/T027-wallbounce-airjuggle` | **Completed:** 2026-03-04
+- **Files:** `Combat/Juggle/WallBounceHandler.cs`, `Combat/Juggle/JuggleSystem.cs`, `Shared/Enums/JuggleState.cs`, `Shared/Interfaces/IJuggleTarget.cs`, `Shared/Data/JuggleConfig.cs`
 - **Description:** Wall bounce: detect wall collision during knockback → bounce. Unlimited per combo, minor damage, no extra pressure. Air juggle: track airborne state, Gale element extends airtime. After stun expires → invulnerable landing. OTG vs Tech Hit distinction.
 - **Acceptance:**
-  - [ ] Wall bounce detection and physics
-  - [ ] Unlimited bounces per combo
-  - [ ] Airborne state tracking
-  - [ ] OTG vs Tech Hit distinction
-  - [ ] Gale extension support (via IBuffProvider)
+  - [x] Wall bounce detection and physics
+  - [x] Unlimited bounces per combo
+  - [x] Airborne state tracking
+  - [x] OTG vs Tech Hit distinction
+  - [x] Gale extension support (via IBuffProvider)
 
 ### T028: Path T1 Ability Execution [PENDING]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T017, T018
