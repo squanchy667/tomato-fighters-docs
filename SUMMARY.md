@@ -28,6 +28,9 @@
 
 * [Project Characterization](design-specs/PROJECT-TALAMH-CHARACTERIZATION.md)
 * [Character Archetypes](design-specs/CHARACTER-ARCHETYPES.md)
+* [Universal Character Prompt](design-specs/TALAMH_UNIVERSAL_CHARACTER_PROMPT.md)
+* [Ranger, Tank, Magician Prompts](design-specs/RANGER_TANK_MAGICIAN_BLUEPSTYLE_PROMPTS.md)
+* [Animation Forge Plan](design-specs/ANIMATION_FORGE_PLAN.md)
 * [Absolum Reference](design-specs/absolum-reverse-engineering-unity-guide.md)
 * [AgentPilot Bootstrap](design-specs/AGENTPILOT-BOOTSTRAP.md)
 * [Agent Pilot Guide v1](design-specs/agent-pilot-guide-project-talamh.md)
