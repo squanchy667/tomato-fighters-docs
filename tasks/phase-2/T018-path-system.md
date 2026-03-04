@@ -1,6 +1,6 @@
 # T018: PathSystem — Selection + Tier Progression
 
-**Phase:** 2 | **Priority:** P0 | **Owner:** Dev 2 | **Status:** PENDING
+**Phase:** 2 | **Priority:** P0 | **Owner:** Dev 2 | **Status:** DONE | **Completed:** 2026-03-03 | **Branch:** pillar2/T018-path-system
 **Depends on:** T008 ✓
 **Blocks:** T019 (PathSelectionUI), T028 (Path T1 Ability Execution — Dev 1), T041 (InspirationSystem)
 

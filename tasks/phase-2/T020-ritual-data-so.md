@@ -11,6 +11,8 @@
 | **Owner** | Dev 2 |
 | **Branch** | `pillar2/T020-ritual-data-so` |
 | **Depends On** | T001 |
+| **Status** | DONE |
+| **Completed** | 2026-03-03 |
 | **Blocks** | T021 (RitualSystem) |
 
 ## Summary
