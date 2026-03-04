@@ -147,7 +147,7 @@
   - [ ] Zoom on stun event (via SO event channel)
   - [ ] All values configurable in Inspector
 
-### T013: Basic Test Scene [PENDING]
+### T013: Basic Test Scene [IN_PROGRESS]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 3 | **Depends on:** T002, T010, T011, T012
 - **Files:** `Scenes/TestArena.unity`
 - **Description:** Simple test scene: flat ground, walls on both sides, camera setup, 1 player spawn, 2-3 dummy enemies. Used for Phase 1 integration testing.
