@@ -26,7 +26,7 @@ Runtime authority for a player's path state during a run. Enforces Main + Second
 - [ ] `SelectSecondaryPath(PathData)` — enforces rules, sets tier 1, fires event; returns bool
 - [ ] 3rd path enforced as locked (no `SelectThirdPath` — only two slots exist)
 - [ ] `HandleBossDefeated(BossDefeatedData)` — advances both active paths T1→T2
-- [ ] `HandleIslandCompleted(IslandCompletedData)` — advances Main path only T2→T3
+- [ ] `HandleIslandCompleted(IslandCompletedData)` — currently no-op (T3 deferred, max tier is T2)
 - [ ] `ResetForNewRun()` — clears all path state (called between runs)
 - [ ] `IPathProvider` fully implemented
 - [ ] `IRunProgressionEvents` subscribed via SerializeField MonoBehaviour (null-safe)
@@ -116,7 +116,7 @@ public class PathSystem : MonoBehaviour, IPathProvider
 
     // ── Tier Progression (also callable directly for interim testing) ─
     public void HandleBossDefeated(BossDefeatedData data);      // advances T1→T2
-    public void HandleIslandCompleted(IslandCompletedData data); // advances Main T2→T3
+    public void HandleIslandCompleted(IslandCompletedData data); // no-op (T3 deferred)
 
     // ── Run Lifecycle ─────────────────────────────────────────────
     /// <summary>Clears all path state. Call at run start.</summary>
@@ -154,7 +154,7 @@ public class PathSystem : MonoBehaviour, IPathProvider
 | Event | Main Path | Secondary Path |
 |-------|-----------|---------------|
 | `HandleBossDefeated` | T1 → T2 (if at T1) | T1 → T2 (if at T1) |
-| `HandleIslandCompleted` | T2 → T3 (if at T2) | **no change** |
+| `HandleIslandCompleted` | no change (T3 deferred) | **no change** |
 
 Tier-up only fires an event if the tier actually changed (idempotent — calling twice at same tier does nothing).
 

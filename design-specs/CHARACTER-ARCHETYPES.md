@@ -1,9 +1,17 @@
 # TOMATO FIGHTERS — Character Archetypes & Upgrade Paths
 
-**Version:** 1.0.0
+**Version:** 1.1.0
 **Game Type:** 2D Side-Scrolling Beat 'Em Up Roguelite
 **Engine:** Unity 2022 LTS (2D URP)
 **Based On:** Project Talamh framework (Absolum-inspired)
+
+> **DESIGN CHANGE (v1.1.0):** The ability model has been simplified:
+> - **T3 abilities are deferred** — not in current scope
+> - **T2 abilities are ALL passive** enhancements (no new active inputs at T2)
+> - **Only 2 special attacks** per player: Q (Main path T1) and E (Secondary path T1)
+> - **1 Ultimate per character** (fixed, not path-dependent): hold R, 1 charge/run
+> - T3 ability descriptions below are preserved for future reference but are NOT implemented
+> - See `tasks/phase-4/T037-path-t2-ability-ultimates.md` for the current spec
 
 ---
 
@@ -14,11 +22,20 @@ Unlike Absolum where characters differ primarily by movesets and animations, **T
 
 ### The Main + Secondary Path System
 Each character has **3 distinct upgrade paths**. During a run, a player commits to:
-- **1 Main Path** — Gets full progression (Tiers 1-3), unlocking the path's signature ability at Tier 3
-- **1 Secondary Path** — Gets partial progression (Tiers 1-2 only), providing supplementary tools
+- **1 Main Path** — Gets progression through Tiers 1-2, providing an active ability and a passive enhancement
+- **1 Secondary Path** — Gets progression through Tiers 1-2, providing a second active ability and a passive enhancement
 - **1 Locked Path** — Cannot be selected; that run, you sacrifice this path entirely
 
 This creates **6 viable build combinations per character** (3 choose 2, ordered), encouraging replayability and team composition strategy in co-op.
+
+### Character Ultimates
+Each character has **1 fixed Ultimate ability** (not affected by path selection):
+- **Brutor:** Unbreakable (6s invulnerable, forced taunt, reflect damage, end slam)
+- **Slasher:** Phantom Strike (screen-wide dash, 800% ATK, kill resets up to 3)
+- **Mystica:** Time Warp (4s enemy freeze, +50% stored damage, revives downed allies)
+- **Viper:** Rain of Arrows (3s barrage zone, 10 hits, 50% slow)
+
+Ultimates have **1 charge per run** — rare to earn more. This is the "save it for when it matters" ability.
 
 ### Path Selection Timing
 - **Main Path** — Chosen at the **first upgrade shrine** (end of Area 1)
@@ -27,13 +44,12 @@ This creates **6 viable build combinations per character** (3 choose 2, ordered)
 - Rituals, trinkets, and inspirations from the roguelite layer stack ON TOP of the path upgrades.
 
 ### Upgrade Tiers
-Each path has 3 tiers of power:
+Each path has 2 tiers of power:
 
 | Tier | Requirement | Effect |
 |------|------------|--------|
-| **Tier 1** | Select as Main or Secondary | Core mechanic unlocked |
-| **Tier 2** | Defeat Area Boss (Main or Secondary) | Mechanic enhanced, new ability |
-| **Tier 3** | Defeat Island Boss (Main ONLY) | Signature capstone ability |
+| **Tier 1** | Select as Main or Secondary | Active ability unlocked (Q or E) |
+| **Tier 2** | Defeat Area Boss (Main or Secondary) | Passive enhancement + stat bonus |
 
 ---
 

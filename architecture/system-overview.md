@@ -50,7 +50,6 @@ Assets/Scripts/
 │   ├── PressureSystem.cs
 │   ├── WallBounceHandler.cs
 │   ├── JuggleSystem.cs
-│   ├── RepetitiveTracker.cs
 │   └── ArcanaSystem.cs
 ├── Characters/          (Dev 1) — 16+ files, ~2,000 LOC target
 │   ├── PassiveAbilitySystem.cs

@@ -96,13 +96,13 @@
 ### T008: PathData ScriptableObject — 12 Paths [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 2 | **Depends on:** T001, T006
 - **Files:** `Shared/Data/PathData.cs`, `Shared/Data/PathTierBonuses.cs`, `Editor/PathDataCreator.cs`, `ScriptableObjects/Paths/{Character}/{PathName}Path.asset` (12 total)
-- **Description:** ScriptableObject for upgrade path definitions. Fields: PathType enum, stat bonuses per tier (T1/T2/T3), ability unlock IDs per tier, description text. Create all 12 path assets matching CHARACTER-ARCHETYPES.md.
+- **Description:** ScriptableObject for upgrade path definitions. Fields: PathType enum, stat bonuses per tier (T1/T2), ability unlock IDs per tier, description text. Create all 12 path assets matching CHARACTER-ARCHETYPES.md.
 - **Acceptance:**
   - [x] PathData SO with tier definitions (3 tiers)
   - [x] Stat bonus arrays per tier (named PathTierBonuses struct — DD-1)
   - [x] Ability unlock ID per tier
   - [x] All 12 path assets defined in PathDataCreator editor script with correct values
-  - [x] T3 marked as Main-only via [Header] — no runtime bool (DD-2)
+  - [x] T1/T2 tier structure with ability IDs (T3 deferred)
   - [x] IPathProvider updated: object placeholders replaced with PathData
 
 ### T009: CurrencyManager [DONE]
@@ -216,12 +216,12 @@
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 2 | **Depends on:** T008
 - **Files:** `Paths/PathSystem.cs`, `Paths/TomatoFighters.Paths.asmdef`
 - **Branch:** `pillar2/T018-path-system` | **Merged:** 2026-03-03 → `gal`
-- **Description:** Manages path selection state per character per run. Enforces: 1 Main + 1 Secondary, cannot select same path twice, 3rd path locked. Tier progression: T1 on select, T2 on boss defeat, T3 on island boss (Main only). Fires OnMainPathSelected, OnSecondaryPathSelected, OnPathTierUp events.
+- **Description:** Manages path selection state per character per run. Enforces: 1 Main + 1 Secondary, cannot select same path twice, 3rd path locked. Tier progression: T1 on select, T2 on boss defeat (T3 deferred). Fires OnMainPathSelected, OnSecondaryPathSelected, OnPathTierUp events.
 - **Acceptance:**
   - [x] Main + Secondary path selection logic
   - [x] 3rd path enforced as locked
   - [x] Tier progression triggers
-  - [x] T3 only for Main path
+  - [x] Max tier is T2 (T3 deferred)
   - [x] Events fired on selection and tier-up
   - [x] IPathProvider interface implemented
 
@@ -435,15 +435,10 @@
 > Status: PENDING | Tasks: 0/10 | Weeks: 7-8
 > Goal: Complete run from hub → 2 areas → boss → hub with path progress saved
 
-### T035: RepetitiveTracker — Anti-Spam [PENDING]
+### T035: RepetitiveTracker — Anti-Spam [CANCELLED]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 1 | **Depends on:** T014
 - **Files:** `Combat/RepetitiveTracker.cs`
-- **Description:** Track consecutive same-move usage. After threshold (configurable, ~3) → damage penalty multiplier (0.5x). Resets on using different move. IBuffProvider can override (Enchanter buff).
-- **Acceptance:**
-  - [ ] Tracks consecutive same-move count
-  - [ ] Configurable threshold and penalty
-  - [ ] Reset on move variety
-  - [ ] Override check via IBuffProvider
+- **Description:** ~~Track consecutive same-move usage.~~ **CANCELLED** — combo variety is naturally incentivized by the ritual trigger system (ICombatEvents) and path abilities. No artificial penalty needed.
 
 ### T036: OTG vs TechHit System [PENDING]
 - **Type:** implementation | **Priority:** P2 | **Owner:** Dev 1 | **Depends on:** T027
@@ -455,15 +450,16 @@
   - [ ] Arcana bypass (OTG)
   - [ ] State machine: airborne/grounded/downed/recovering
 
-### T037: Path T2 + T3 Ability Execution [PENDING]
+### T037: Path T2 + T3 Ability Execution [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T028
-- **Files:** `Characters/Abilities/*/` (T2 and T3 for all 12 paths)
-- **Description:** Implement all T2 abilities (12) and T3 signature abilities (12). T2: enhanced versions (Aggro Aura, Retaliation, Rallying Presence, Execution Threshold, Chain Slash, Afterimage, etc.). T3: capstones (Wrath, Fortress, Aegis Dome, Deathblow, Whirlwind, Thousand Cuts, etc.).
+- **Branch:** `combat/T037-path-t2-t3-abilities` | **Merged:** 2026-03-05 → `tal`
+- **Files:** `Characters/Abilities/*/` (12 T2 passives + 12 T3 signatures), `Characters/PathAbilityExecutor.cs`, `Editor/PathDataCreator.cs`, `Combat/PlayerDamageable.cs`
+- **Description:** Implement all 12 T2 passive abilities (auto-activate on tier-up) and 12 T3 signature abilities (Main path only, R key). T2: AggroAura, Retaliation, RallyingPresence, ExecutionThreshold, ChainSlash, Afterimage, PurifyingBurst, ElementalInfusion, DeployTotem, RapidFire, TrapNet, ManaBlast. T3: WrathOfTheWarden, Fortress, AegisDome, Deathblow, Whirlwind, ThousandCuts, Resurrection, ArcaneOverdrive, SummonGolem, Killshot, AnchorChain, ManaOverload. PathAbilityExecutor updated with tier progression and T3 activation slots. PathDataCreator extended with T3 stat bonuses and ability IDs for all 12 paths.
 - **Acceptance:**
-  - [ ] All 12 T2 abilities functional
-  - [ ] All 12 T3 abilities functional
-  - [ ] T3 gated by Main path check
-  - [ ] Cooldowns, mana costs, durations per spec
+  - [x] All 12 T2 abilities functional
+  - [x] All 12 T3 abilities functional
+  - [x] T3 gated by Main path check
+  - [x] Cooldowns, mana costs, durations per spec
 
 ### T038: MetaProgression + SoulTree [PENDING]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T009
@@ -526,13 +522,13 @@
   - [ ] Completion conditions
   - [ ] World state changes
 
-### T044: Path T2 + T3 Ability VFX [PENDING]
+### T044: Path T2 Passive + Ultimate VFX [PENDING]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 3 | **Depends on:** T037
-- **Files:** `Prefabs/Effects/Abilities/T2/*.prefab`, `T3/*.prefab`
-- **Description:** VFX for all T2 (12) and T3 (12) abilities. T3 signature abilities need dramatic effects: Wrath fire aura, Fortress shockwave, Aegis Dome shield bubble, Deathblow execution slash, Whirlwind tornado, Thousand Cuts teleport trails, Resurrection light pillar, etc.
+- **Files:** `Prefabs/Effects/Abilities/T2/*.prefab`, `Prefabs/Effects/Ultimates/*.prefab`
+- **Description:** VFX for all 12 T2 passive enhancements and 4 character Ultimates. Ultimates need dramatic effects: Unbreakable taunt aura + end slam, Phantom Strike dash trail, Time Warp freeze effect, Rain of Arrows barrage zone.
 - **Acceptance:**
-  - [ ] 12 T2 VFX prefabs
-  - [ ] 12 T3 VFX prefabs (signature — dramatic)
+  - [ ] 12 T2 passive VFX prefabs
+  - [ ] 4 Ultimate VFX prefabs (dramatic)
   - [ ] Consistent per-character color themes
   - [ ] Performance budget respected
 

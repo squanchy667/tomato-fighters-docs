@@ -35,7 +35,6 @@ Input (Strike button)
     │── × IBuffProvider.GetPathDamageMultiplier()
     │── × Passive modifier (Bloodlust stacks, Distance Bonus, etc.)
     │── × Punish multiplier (if applicable)
-    │── × Repetitive penalty (if applicable)
     │── = Final damage
     │
     ▼
@@ -129,7 +128,7 @@ Island 1 ───────────────────────�
 Island 2 ─────────────────────────────────────────
     │── 2nd Arcana unlocked
     │── More areas, rituals stack higher
-    │── Boss → Main T3 unlocked (SIGNATURE ability)
+    │── Boss (T3 deferred — max tier is T2)
     │
     ▼
 Island 3 ─────────────────────────────────────────

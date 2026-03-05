@@ -37,7 +37,6 @@ public interface IBuffProvider
     float GetDefenseMultiplier();
     List<OnHitEffect> GetAdditionalOnHitEffects();
     List<OnTriggerEffect> GetTriggerEffects(RitualTrigger trigger);
-    bool IsRepetitivePenaltyOverridden();
     float GetPathDamageMultiplier();
     float GetPathDefenseMultiplier();
     float GetPathSpeedMultiplier();
@@ -53,7 +52,7 @@ public interface IPathProvider
     CharacterType Character { get; }
     PathData MainPath { get; }
     PathData SecondaryPath { get; }
-    int MainPathTier { get; }       // 1-3
+    int MainPathTier { get; }       // 1-2
     int SecondaryPathTier { get; }   // 1-2
     bool HasPath(PathType type);
     float GetPathStatBonus(StatType stat);

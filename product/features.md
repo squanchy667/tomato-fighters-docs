@@ -3,7 +3,7 @@
 ## Core Features
 
 1. **4 Playable Characters** — Brutor (Tank), Slasher (Melee DPS), Mystica (Magician), Viper (Range) with dramatically different base stats and combat feel
-2. **Main + Secondary Path System** — 3 upgrade paths per character, choose 1 Main (T1-T3) + 1 Secondary (T1-T2), creating 6 builds per character (24 total)
+2. **Main + Secondary Path System** — 3 upgrade paths per character, choose 1 Main (T1-T2) + 1 Secondary (T1-T2), creating 6 builds per character (24 total). Each character also has a fixed Ultimate ability (1 charge per run)
 3. **Defensive Combat Depth** — Deflect (dash timing), Clash (heavy timing), Dodge (i-frames), Punish windows on bosses
 4. **Pressure/Stun System** — Hidden meter filled by damage; stun = free juggle window
 5. **8 Elemental Ritual Families** — Fire, Lightning, Water, Thorn, Gale, Time, Cosmic, Necro with multiplicative stacking

@@ -81,13 +81,13 @@ Area 2 Cleared → Upgrade Shrine
     ▼
 Area Boss Defeated
     │
-    ├── Main Path → Tier 2 (enhanced mechanic + bigger stat bonus)
-    ├── Secondary Path → Tier 2 (enhanced mechanic)
+    ├── Main Path → Tier 2 (passive enhancement + bigger stat bonus)
+    ├── Secondary Path → Tier 2 (passive enhancement)
     │
     ▼
-Island Boss Defeated
-    │
-    └── Main Path → Tier 3 (SIGNATURE ability — Main only)
+Character Ultimate — 1 charge per run (rare to earn more)
+    │── Brutor: Unbreakable | Slasher: Phantom Strike
+    │── Mystica: Time Warp  | Viper: Rain of Arrows
 
 Final Stats = Base + PathBonuses × RitualMultiplier × TrinketMultiplier × SoulTreeBonus
 ```

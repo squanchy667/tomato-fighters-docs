@@ -14,7 +14,7 @@
 | CharacterStatCalculator | 90% | All stat formulas, edge cases, path + ritual combo |
 | RitualStackCalculator | 90% | Level scaling, stacking, multiplicative power |
 | ComboSystem | 70% | State transitions, branching, cancel flags |
-| PathSystem | 80% | Selection logic, tier progression, T3 Main-only gate |
+| PathSystem | 80% | Selection logic, tier progression (T1-T2), Ultimate charge system |
 | CurrencyManager | 80% | Add/remove, persistence flags, event firing |
 | EnemyAI state machine | 70% | State transitions, aggression config |
 

@@ -241,4 +241,4 @@ World/StatusEffectTracker.cs                ← Implements IStatusEffectable
 
 - **Requires (done):** T017 (PassiveAbilitySystem pattern), T018 (PathSystem + IPathProvider)
 - **Uses:** `PlayerManaTracker` (T025), `EnemyBase`/`EnemyAI` (T011/T022), `HitboxManager` (T015), `CharacterMotor` (T002)
-- **Blocked by this:** T033 (Ability VFX), T037 (T2/T3 Abilities)
+- **Blocked by this:** T033 (Ability VFX), T037 (T2 Passive Enhancements + Character Ultimates)
