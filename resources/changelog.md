@@ -26,6 +26,27 @@
 - Pipeline order: Import Sprite Sheets → Build Animations → Stamp Animation Events
 - Guard state is looping (stays until interrupted by another trigger via AnyState)
 
+## [Phase 1] — 2026-03-05 (T010 WaveManager + T012 CameraController2D — DONE)
+
+### Completed
+- **T012: CameraController2D** — branch `ofek`
+  - Smooth side-scrolling camera with configurable leading, smooth damping, and vertical offset
+  - Dynamic level bounds via `SetBounds()` with Gizmo visualization
+  - SO event channel integration: camera lock/unlock (WaveManager), stun zoom (PressureSystem)
+  - Co-op framing: multi-target center calculation with auto-zoom to frame all players
+  - `SnapToTarget()` for instant positioning on scene transitions
+  - `AddTarget()`/`RemoveTarget()` API for co-op player join/leave
+  - Unblocks: T013 (Test Scene), T051 (Local Co-op)
+
+- **T010: WaveManager** — branch `ofek` (commit `8a9d6ea`)
+  - `WaveManager` MonoBehaviour (316 LOC): Configurable wave spawning, camera stops at LevelBounds until wave cleared, fires events on wave start/clear/area complete
+  - `LevelBound` MonoBehaviour: Camera boundary trigger zones, stops camera scroll until wave is cleared
+  - `WaveData` ScriptableObject: Wave composition config (enemy type, count, spawn delay)
+  - `EnemySpawnData` struct: Per-enemy spawn definition (prefab, position offset, delay)
+  - `VoidEventChannel` + `IntEventChannel` SO event channels: Cross-pillar event system (OnWaveStart, OnWaveCleared, OnAreaComplete)
+  - `WaveManagerAssetsCreator` editor script: Menu-driven SO asset creation
+  - Unblocks: T013 (Test Scene), T033 (Branching Path Navigation)
+
 ## [Phase 3] — 2026-03-04 (T027 WallBounce + AirJuggle — DONE)
 
 ### Completed
