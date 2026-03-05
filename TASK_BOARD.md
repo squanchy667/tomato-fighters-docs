@@ -1,11 +1,11 @@
 # Tomato Fighters — Task Board
 
-> 19/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 20/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
 ## Phase 1: Foundation
-> Status: IN_PROGRESS | Tasks: 10/13 | Weeks: 1-2
+> Status: IN_PROGRESS | Tasks: 12/13 | Weeks: 1-2
 > Goal: Shared contracts established, one character moves and hits a dummy enemy, camera follows
 
 ### T001: Shared Interfaces, Enums, and Data Structures [DONE]
@@ -115,15 +115,16 @@
   - [x] Add/Remove/Check methods
   - [x] Persistence flag per currency type
 
-### T010: WaveManager [PENDING]
+### T010: WaveManager [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 3 | **Depends on:** T001
-- **Files:** `World/WaveManager.cs`
-- **Description:** Spawn enemies in configurable waves. Camera stops at LevelBound until wave cleared. Configurable enemy composition per wave (EnemySpawnData list). Fires events on wave start, wave clear, area complete. Area complete triggers reward selection.
+- **Files:** `World/WaveManager.cs`, `World/LevelBound.cs`, `Shared/Data/WaveData.cs`, `Shared/Data/EnemySpawnData.cs`, `Shared/Events/VoidEventChannel.cs`, `Shared/Events/IntEventChannel.cs`, `Editor/WaveManagerAssetsCreator.cs`
+- **Branch:** `ofek` | **Completed:** 2026-03-05
+- **Description:** Spawn enemies in configurable waves. Camera stops at LevelBound until wave cleared. Configurable enemy composition per wave (EnemySpawnData list). Fires events on wave start, wave clear, area complete via SO event channels. Area complete triggers reward selection.
 - **Acceptance:**
-  - [ ] Wave list with configurable enemy spawns
-  - [ ] LevelBound camera stops
-  - [ ] Events: OnWaveStart, OnWaveCleared, OnAreaComplete
-  - [ ] Optional waves (side paths)
+  - [x] Wave list with configurable enemy spawns
+  - [x] LevelBound camera stops
+  - [x] Events: OnWaveStart, OnWaveCleared, OnAreaComplete
+  - [x] Optional waves (side paths)
 
 ### T011: EnemyBase — IDamageable + IAttacker [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T001
@@ -137,15 +138,16 @@
   - [x] Invulnerability after stun recovery (blink white)
   - [x] Reads stats from EnemyData SO
 
-### T012: CameraController2D [PENDING]
+### T012: CameraController2D [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 3 | **Depends on:** T001
 - **Files:** `World/CameraController2D.cs`
-- **Description:** Side-scroll follow with configurable leading. Level bound stops (integrates with WaveManager bounds). Smooth damping. Zoom-in on stun events (listens to event channel, doesn't reference PressureSystem). Co-op framing for 2 players (future).
+- **Branch:** `ofek` | **Completed:** 2026-03-05
+- **Description:** Side-scroll follow with configurable leading. Level bound stops (integrates with WaveManager via SO event channels). Smooth damping. Zoom-in on stun events (listens to VoidEventChannel, doesn't reference PressureSystem). Co-op framing for 2 players. Dynamic bounds via SetBounds(). Gizmo visualization.
 - **Acceptance:**
-  - [ ] Smooth follow with configurable leading
-  - [ ] Respects level bounds
-  - [ ] Zoom on stun event (via SO event channel)
-  - [ ] All values configurable in Inspector
+  - [x] Smooth follow with configurable leading
+  - [x] Respects level bounds
+  - [x] Zoom on stun event (via SO event channel)
+  - [x] All values configurable in Inspector
 
 ### T013: Basic Test Scene [IN_PROGRESS]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 3 | **Depends on:** T002, T010, T011, T012

@@ -10,7 +10,7 @@
 | **Agent** | world-agent |
 | **Depends On** | T001 |
 | **Blocks** | T013, T033 |
-| **Status** | PENDING |
+| **Status** | DONE |
 | **Branch** | `pillar3/T010-wave-manager` |
 
 ## Objective
@@ -42,22 +42,45 @@ Key architecture rules:
 12. Provide a public method to advance to the next area (called after reward selection completes)
 13. All timing values (spawn delay, wave transition delay) configurable via `[SerializeField]` in Inspector
 
+## Design Decisions
+
+### DD-1: SO Event Channels for ALL Wave Events
+All three wave events (`OnWaveStart`, `OnWaveCleared`, `OnAreaComplete`) use SO-based event channels — not C# events. This keeps communication consistent, allows Inspector-wired subscriptions (Camera, HUD, future Roguelite systems), and avoids mixing patterns. Uses two reusable channel types:
+- `VoidEventChannel` — parameterless (OnWaveCleared, OnAreaComplete)
+- `IntEventChannel` — carries int payload (OnWaveStart with wave index)
+
+### DD-2: Separate Files for Data Structs
+`EnemySpawnData` and `WaveData` live in `Shared/Data/` as separate files, consistent with `DamagePacket.cs`, `AttackData.cs`. Other pillars (T033 Branching Paths) may reference `EnemySpawnData` later.
+
+### DD-3: Subscribe to EnemyBase.OnDied for Death Tracking
+WaveManager subscribes to `EnemyBase.OnDied` (existing `event Action` on EnemyBase) when spawning each enemy. Decrements alive counter, checks wave clear. Same-pillar reference — no cross-pillar violation.
+
+### DD-4: LevelBound as Separate MonoBehaviour
+`LevelBound.cs` is a standalone trigger collider placed in the scene. Holds a `[SerializeField]` reference to a `VoidEventChannel` SO that WaveManager subscribes to. Keeps level layout concerns separate from spawn logic. Reusable across areas.
+
+### DD-5: Explicit Transform Spawn Points
+Spawn positions use `Transform[] spawnPoints` serialized on WaveManager — visible in Scene view, flexible for level design. `EnemySpawnData` references a spawn point index rather than raw offset vectors.
+
 ## File Plan
 | File | Purpose |
 |------|---------|
-| `Assets/Scripts/World/WaveManager.cs` | Main wave spawning and tracking MonoBehaviour |
-| `Assets/Scripts/Shared/Events/WaveEventChannel.cs` | SO-based event channels for OnWaveStart, OnWaveCleared, OnAreaComplete (if not already defined in T001) |
-| `Assets/Scripts/Shared/Data/EnemySpawnData.cs` | Serializable struct for spawn configuration (if not part of WaveManager.cs) |
+| `Assets/Scripts/Shared/Data/EnemySpawnData.cs` | `[Serializable]` struct: enemy prefab ref, count, spawn delay, spawn point index |
+| `Assets/Scripts/Shared/Data/WaveData.cs` | `[Serializable]` class: `List<EnemySpawnData>`, optional flag, wave name |
+| `Assets/Scripts/Shared/Events/VoidEventChannel.cs` | Reusable SO event channel (parameterless). Used for OnWaveCleared, OnAreaComplete, camera lock |
+| `Assets/Scripts/Shared/Events/IntEventChannel.cs` | Reusable SO event channel (int payload). Used for OnWaveStart(waveIndex) |
+| `Assets/Scripts/World/LevelBound.cs` | Trigger collider MonoBehaviour: `OnTriggerEnter2D` → fires SO event channel |
+| `Assets/Scripts/World/WaveManager.cs` | Main MonoBehaviour: wave sequencing, enemy spawning (coroutines), alive tracking, event firing |
 
 ## Implementation Notes
 - Use `[System.Serializable]` for `EnemySpawnData` and `WaveData` so they appear in Inspector
 - Spawn enemies via coroutine with configurable delay between spawns (staggered entrance)
-- Track alive enemies using a counter — increment on spawn, decrement when `IDamageable` reports death. Subscribe via SO event or UnityEvent on `EnemyBase`
-- LevelBound should be a trigger collider (`OnTriggerEnter2D`) — when the player enters, lock the camera and start the wave. The camera integration is one-way: WaveManager sets a flag or fires an event, CameraController2D reads it
-- Do NOT reference `CameraController2D` directly — communicate through a shared SO event channel or a `BoolVariable` ScriptableObject
-- Optional waves: use a bool flag on `WaveData`. If optional, show a UI prompt or fork indicator. If skipped, advance to next wave/area
-- Area complete should fire `OnAreaComplete` which the Roguelite pillar's `RewardSelectorUI` (T031) subscribes to — but that's a Phase 3 task, so for now just fire the event
-- Consider pooling for enemy spawns in the future, but for Phase 1 simple `Instantiate`/`Destroy` is acceptable
+- Track alive enemies using a counter — increment on spawn, decrement via `EnemyBase.OnDied` subscription per spawned enemy
+- LevelBound fires a `VoidEventChannel` SO on player enter. WaveManager subscribes to that channel and starts the next wave
+- Camera lock/unlock communicated via a separate `VoidEventChannel` pair (OnCameraLock / OnCameraUnlock) — CameraController2D (T012) will subscribe when built
+- Optional waves: bool flag on `WaveData`. For Phase 1, optional waves auto-play (UI prompt deferred). Skip logic present but not wired to UI
+- Area complete fires `OnAreaComplete` channel — Roguelite's `RewardSelectorUI` (T031) subscribes later. For now, just fire the event
+- Simple `Instantiate`/`Destroy` for Phase 1. Object pooling deferred to optimization pass
+- Draw spawn point gizmos in `OnDrawGizmos` for level design visibility
 
 ## Acceptance Criteria
 - [ ] Wave list with configurable enemy spawns visible and editable in Inspector
