@@ -1,5 +1,25 @@
 # Changelog
 
+## [Phase 2] — 2026-03-05 (T019 PathSelectionUI — DONE)
+
+### Completed
+- **T019**: PathSelectionUI — Upgrade shrine path selection overlay
+  - `PathSelectionUI.cs`: Full-screen OnGUI overlay with two-step selection (highlight + CONFIRM)
+  - Shows all 3 character paths with stat bonuses and T1 ability preview per card
+  - Handles Main and Secondary selection modes; greyed-out main path in secondary mode
+  - Pauses game while open; keyboard shortcuts (1-3, Enter)
+  - `PathSelectionTestSceneCreator.cs`: Test scene creator for Brutor paths
+  - Updated Roguelite + Editor asmdefs with `TomatoFighters.Paths` reference
+
+### Design Decisions
+- DD-1: Inject PathSystem as concrete type (not IPathProvider) — needs both query and mutation
+- DD-2: PathData[] injected via SerializeField — no singletons, no Resources.Load
+- DD-3: Two-step confirmation (highlight card + CONFIRM button) — prevents accidental locks
+- DD-4: Public Show(PathSelectionMode) API — decoupled from World pillar events
+- DD-5: Test scene Creator Script with showOnStart flag
+
+---
+
 ## [Phase 3] — 2026-03-05 (T028 Path T1 Ability Execution — DONE)
 
 ### Completed

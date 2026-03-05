@@ -225,15 +225,16 @@
   - [x] Events fired on selection and tier-up
   - [x] IPathProvider interface implemented
 
-### T019: PathSelectionUI [PENDING]
+### T019: PathSelectionUI [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T018
-- **Files:** `Roguelite/PathSelectionUI.cs`
+- **Branch:** `pillar2/T019-path-selection-ui` | **Merged:** 2026-03-05 → `tal`
+- **Files:** `Roguelite/PathSelectionUI.cs`, `Editor/Scenes/PathSelectionTestSceneCreator.cs`
 - **Description:** Upgrade shrine UI. Shows 3 path options (or 2 for secondary). Displays path name, description, T1 ability preview, stat bonuses. Locks selected path, greys out for secondary selection. Confirmation button.
 - **Acceptance:**
-  - [ ] Shows all available paths for character
-  - [ ] Displays stat bonuses and ability preview
-  - [ ] Handles both Main and Secondary selection states
-  - [ ] Confirmation before locking
+  - [x] Shows all available paths for character
+  - [x] Displays stat bonuses and ability preview
+  - [x] Handles both Main and Secondary selection states
+  - [x] Confirmation before locking
 
 ### T020: RitualData ScriptableObject + Families [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T001

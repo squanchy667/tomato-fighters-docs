@@ -71,8 +71,11 @@
 * [T016: DefenseSystem](tasks/phase-2/T016-DefenseSystem.md)
 * [T017: Character Passives](tasks/phase-2/T017-character-passives.md)
 * [T018: PathSystem](tasks/phase-2/T018-path-system.md)
+* [T019: PathSelectionUI](tasks/phase-2/T019-path-selection-ui.md)
 * [T020: RitualData SO](tasks/phase-2/T020-ritual-data-so.md)
+* [T021: RitualSystem](tasks/phase-2/T021-ritual-system.md)
 * [T022: BasicEnemyAI](tasks/phase-2/T022-basic-enemy-ai.md)
+* [T023: Enemy Attack Patterns](tasks/phase-2/T023-enemy-attack-patterns.md)
 * [T024: Character Animator Controllers](tasks/phase-2/T024-character-animator-controllers.md)
 * [T025: HUD — Health, Mana, Combo Counter](tasks/phase-2/T025-HUD-health-mana-combo.md)
 * [TCUSTOM: Slasher Prefab + Character Selection](tasks/phase-2/TCUSTOM-SlasherPrefab-CharacterSelection.md)
@@ -84,6 +87,7 @@
 * [T026: PressureSystem + Stun](tasks/phase-3/T026-pressure-system-stun.md)
 * [T027: WallBounce + AirJuggle](tasks/phase-3/T027-wall-bounce-air-juggle.md)
 * [T028: Path T1 Ability Execution](tasks/phase-3/T028-path-t1-ability-execution.md)
+* [T031: RewardSelectorUI](tasks/phase-3/T031-reward-selector-ui.md)
 * [T032: BossAI Framework](tasks/phase-3/T032-boss-ai-framework.md)
 
 ## Resources
