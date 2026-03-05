@@ -1,5 +1,26 @@
 # Changelog
 
+## [Phase 3] — 2026-03-05 (T024B Enemy Animator Controllers — DONE)
+
+### Completed
+- **T024B**: Enemy Animator Controllers — full enemy animation pipeline
+  - `AnimationForgeMetadata.cs`: Extended with `EnemyCanonicalStates` (idle, walk, 5 attack slots, hurt, death), `EnemyCharacters` registry (7 enemy types), `EnemyAttackSlotMappings`, `ValidateEnemyMetadata()`
+  - `AnimationBuilder.cs`: Extended to build enemy base controller + per-enemy override controllers with placeholder clip generation
+  - `AnimationEventStamper.cs`: Extended with hitbox-only event stamping for enemies (no combo events)
+  - `EnemyPrefabCreator.cs` + `EnemyPrefabConfig.cs`: New generic enemy prefab builder (parallel to PlayerPrefabCreator)
+  - `TestDummyPrefabCreator.cs`: Full test dummy implementation with Animator, override controller, debug visuals
+
+### Bug Fixes
+- **Animation trigger mismatches**: Fixed all 4 characters' combo trigger strings to match Animator Controller parameters (`attack_NTrigger` format)
+- **Art mapping convention**: Established light=attack_1, heavy=attack_2, finisher=attack_3/4 pattern across all characters (Viper, Brutor, Slasher, Mystica)
+- **HitboxManager coroutine leak**: Fixed `StartupThenActivate` coroutine firing after combo resets to Idle — now stopped by `HandleComboReset()` on `ComboDropped`/`ComboEnded`
+- **Non-canonical animation states**: Added `SkippedStates` (fall, kneel) to suppress validation errors for intentionally unused animations
+- **Placeholder clip warnings**: Improved to log specific state names for each placeholder generated
+
+### Notes
+- Total DONE: 23/60 numbered tasks + 2 TCUSTOM tasks
+- Phase 3 progress: 3/10
+
 ## [Phase 2] — 2026-03-05 (TCUSTOM Clash Windows Heavy Only — DONE)
 
 ### Completed

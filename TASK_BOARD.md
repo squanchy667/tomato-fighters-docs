@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 22/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 23/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -304,22 +304,23 @@
 ---
 
 ## Phase 3: Defensive Depth + Build Crafting
-> Status: IN_PROGRESS | Tasks: 2/10 | Weeks: 5-6
+> Status: IN_PROGRESS | Tasks: 3/10 | Weeks: 5-6
 > Goal: Full loop — fight area, pick ritual, select path at shrine, fight boss
 
-### T024B: Enemy Animator Controllers [PENDING]
+### T024B: Enemy Animator Controllers [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 3 | **Depends on:** T024, T011
+- **Branch:** `ofek` | **Completed:** 2026-03-05
 - **Files:** `Editor/Animation/AnimationForgeMetadata.cs`, `Editor/Animation/AnimationBuilder.cs`, `Editor/Animation/AnimationEventStamper.cs`, `Editor/Prefabs/EnemyPrefabCreator.cs`, `Editor/Prefabs/EnemyPrefabConfig.cs`, `Editor/Prefabs/TestDummyPrefabCreator.cs`
 - **Description:** Extend the animation pipeline to support enemy types. Build a Base Enemy Animator Controller (idle, walk, attack_1–attack_5, hurt, death) with per-enemy-type Override Controllers. Create generic EnemyPrefabCreator builder. Wire TestDummy as proof of concept.
 - **Acceptance:**
-  - [ ] Base enemy controller with all enemy combat states
-  - [ ] Override controller infrastructure (per-enemy-type)
-  - [ ] TestDummy wired with Animator + override controller
-  - [ ] AnimationForgeMetadata extended with enemy configs
-  - [ ] AnimationBuilder generates enemy controllers
-  - [ ] AnimationEventStamper stamps enemy attack events
-  - [ ] EnemyPrefabCreator generic builder exists
-  - [ ] Placeholder clips for missing enemy art
+  - [x] Base enemy controller with all enemy combat states
+  - [x] Override controller infrastructure (per-enemy-type)
+  - [x] TestDummy wired with Animator + override controller
+  - [x] AnimationForgeMetadata extended with enemy configs
+  - [x] AnimationBuilder generates enemy controllers
+  - [x] AnimationEventStamper stamps enemy attack events
+  - [x] EnemyPrefabCreator generic builder exists
+  - [x] Placeholder clips for missing enemy art
 
 ### T026: PressureSystem + Stun [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T016

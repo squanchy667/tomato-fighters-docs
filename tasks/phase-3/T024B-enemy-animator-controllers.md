@@ -8,8 +8,9 @@
 | **Owner** | Dev 3 (World) |
 | **Depends on** | T024 (Character Animator Controllers — DONE), T011 (EnemyBase — DONE) |
 | **Blocks** | T022 (BasicEnemyAI), T023 (Enemy Attack Patterns), T042 (2nd Enemy Type + Mini-Bosses) |
-| **Status** | PENDING |
-| **Branch** | `world/T024B-enemy-animators` |
+| **Status** | DONE |
+| **Branch** | `ofek` |
+| **Completed** | 2026-03-05 |
 
 ## Summary
 
@@ -218,19 +219,19 @@ TomatoFighters > Stamp Animation Events                    # Step 3: player + en
 
 ## Acceptance Criteria
 
-- [ ] Base enemy controller with states: idle, walk, attack_1–attack_5, hurt, death
-- [ ] 7 override controllers generated (TomatoBerserker, CornKnight, OnionCrybabyKnight, GarlicVampire, EggplantWizard, MushroomGhost, TestDummy)
-- [ ] TestDummy prefab wired with Animator on Sprite child + override controller
-- [ ] AnimationForgeMetadata extended with enemy canonical states, 7 character configs, and attack slot mappings
-- [ ] AnimationBuilder generates enemy base + override controllers (menu: Build Animations > All Characters)
-- [ ] AnimationEventStamper stamps ActivateHitbox/DeactivateHitbox on enemy attack clips
-- [ ] Placeholder clips generated for enemies without animation art (WhiteSquare fallback)
-- [ ] Clear ERROR logged listing all unmapped animation names per enemy (discovery workflow)
-- [ ] WARNING logged for canonical states with no matching animation
-- [ ] EnemyPrefabConfig + EnemyPrefabCreator exist, TestDummyPrefabCreator delegates to it
-- [ ] EnemyBase.Die() uses `GetComponentInChildren<Animator>()`
-- [ ] SpriteSheetImporter extended to slice enemy sprite sheets
-- [ ] Pipeline runs end-to-end without errors when enemy source folders exist with valid metadata
+- [x] Base enemy controller with states: idle, walk, attack_1–attack_5, hurt, death
+- [x] 7 override controllers generated (TomatoBerserker, CornKnight, OnionCrybabyKnight, GarlicVampire, EggplantWizard, MushroomGhost, TestDummy)
+- [x] TestDummy prefab wired with Animator on Sprite child + override controller
+- [x] AnimationForgeMetadata extended with enemy canonical states, 7 character configs, and attack slot mappings
+- [x] AnimationBuilder generates enemy base + override controllers (menu: Build Animations > All Characters)
+- [x] AnimationEventStamper stamps ActivateHitbox/DeactivateHitbox on enemy attack clips
+- [x] Placeholder clips generated for enemies without animation art (WhiteSquare fallback)
+- [x] Clear ERROR logged listing all unmapped animation names per enemy (discovery workflow)
+- [x] WARNING logged for canonical states with no matching animation
+- [x] EnemyPrefabConfig + EnemyPrefabCreator exist, TestDummyPrefabCreator delegates to it
+- [x] EnemyBase.Die() uses `GetComponentInChildren<Animator>()`
+- [x] SpriteSheetImporter extended to slice enemy sprite sheets
+- [x] Pipeline runs end-to-end without errors when enemy source folders exist with valid metadata
 
 ## References
 
