@@ -35,6 +35,8 @@
 * [AgentPilot Bootstrap](design-specs/AGENTPILOT-BOOTSTRAP.md)
 * [Agent Pilot Guide v1](design-specs/agent-pilot-guide-project-talamh.md)
 * [Agent Pilot Guide v2](design-specs/agent-pilot-guide-project-talamh-v2.md)
+* [Grok Environment Prompts](design-specs/GROK-ENVIRONMENT-PROMPTS.md)
+* [Test Scene Art Spec](design-specs/TEST-SCENE-ART-SPEC.md)
 
 ## Product
 
@@ -72,6 +74,7 @@
 * [T020: RitualData SO](tasks/phase-2/T020-ritual-data-so.md)
 * [T024: Character Animator Controllers](tasks/phase-2/T024-character-animator-controllers.md)
 * [TCUSTOM: Slasher Prefab + Character Selection](tasks/phase-2/TCUSTOM-SlasherPrefab-CharacterSelection.md)
+* [TCUSTOM: Clash Windows — Heavy Only](tasks/phase-2/TCUSTOM-clash-heavy-only.md)
 
 ## Tasks — Phase 3
 

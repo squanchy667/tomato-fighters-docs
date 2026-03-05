@@ -1,5 +1,22 @@
 # Changelog
 
+## [Phase 2] — 2026-03-05 (TCUSTOM Clash Windows Heavy Only — DONE)
+
+### Completed
+- **TCUSTOM-clash-heavy-only**: Clash windows restricted to Heavy attacks only — data-driven approach
+  - `BrutorCharacterCreator.cs`: Expanded `WireAttackDataIntoComboSteps` mapping to 4-tuple `(soName, hitboxId, clashStart, clashEnd)`. Light attacks (0-2): `0/0`. Heavy attacks (3-6): `0.25–0.30s`.
+  - `MysticaCharacterCreator.cs`: Same pattern. Light attacks (0-2): `0/0`. Heavy attacks (3-4): `0.15s`.
+  - `ViperCharacterCreator.cs`: Same pattern. Light attacks (0-2): `0/0`. Heavy attacks (3-5): `0.15–0.20s`.
+  - `SlasherCharacterCreator.cs`: Already correct — no changes needed.
+
+### Design Decisions
+- **DD-1**: Data-driven approach — clash windows set per-AttackData SO rather than system-level `if (attackType != Heavy)` filter. Keeps system generic for future exceptions.
+- **DD-2**: Clash window hierarchy by melee focus: Slasher (0.25–0.40s) > Brutor (0.25–0.30s) > Viper (0.15–0.20s) > Mystica (0.15s).
+
+### Notes
+- No runtime code changes required. `DefenseSystem.HandleAttackStarted` already gates on `AttackData.HasClashWindow`.
+- Total DONE: 22/60 numbered tasks + 2 TCUSTOM tasks.
+
 ## [Phase 1] — 2026-03-05 (T013 Basic Test Scene — DONE)
 
 ### Completed

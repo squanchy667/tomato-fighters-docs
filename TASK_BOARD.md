@@ -1,11 +1,11 @@
 # Tomato Fighters — Task Board
 
-> 20/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 22/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
 ## Phase 1: Foundation
-> Status: IN_PROGRESS | Tasks: 12/13 | Weeks: 1-2
+> Status: DONE | Tasks: 13/13 | Weeks: 1-2
 > Goal: Shared contracts established, one character moves and hits a dummy enemy, camera follows
 
 ### T001: Shared Interfaces, Enums, and Data Structures [DONE]
