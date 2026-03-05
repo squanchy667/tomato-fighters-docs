@@ -164,7 +164,7 @@
 ---
 
 ## Phase 2: Core Combat + Path Framework
-> Status: IN_PROGRESS | Tasks: 10/12 | Weeks: 3-4
+> Status: IN_PROGRESS | Tasks: 11/12 | Weeks: 3-4
 > Goal: All 4 characters playable with basic combos, path selection works, fight one wave
 
 ### T014: ComboSystem — All 4 Characters [DONE]
@@ -270,15 +270,16 @@
   - [x] Telegraph visuals (normal vs red/unstoppable)
   - [x] Inherits from EnemyBase
 
-### T023: Enemy Attack Patterns + Telegraphs [PENDING]
+### T023: Enemy Attack Patterns + Telegraphs [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 3 | **Depends on:** T022, T005
-- **Files:** `World/EnemyAttackPatterns.cs`, `ScriptableObjects/Enemies/BasicEnemy.asset`
-- **Description:** Attack pattern system using AttackData sequences. Telegraph visual system: Normal = wind-up animation, Unstoppable = red flash overlay. Create basic enemy type with 2-3 attack patterns.
+- **Branch:** `pillar3/T023-enemy-attack-patterns` | **Completed:** 2026-03-05
+- **Files:** `World/EnemyAttackPattern.cs`, `World/PatternSelector.cs`, `World/TelegraphVisualController.cs`, `World/EnemyAI.cs`, `World/EnemyData.cs`, `World/States/AttackState.cs`, `Editor/Prefabs/BasicEnemyPrefabCreator.cs`, `Tests/EditMode/World/EnemyAttackPatternTests.cs`
+- **Description:** Attack pattern system using EnemyAttackPattern SOs with flat step sequences, weighted selection, range conditions, and cooldown tracking. TelegraphVisualController with Normal (yellow ramp) vs Unstoppable (red flash). 3 concrete patterns for BasicMeleeEnemy. PatternSelector extracted as pure C# for testability.
 - **Acceptance:**
-  - [ ] Attack sequences from ScriptableObjects
-  - [ ] Visual telegraph: normal vs red flash
-  - [ ] Basic enemy with 2-3 attack patterns
-  - [ ] Configurable telegraph duration
+  - [x] Attack sequences from ScriptableObjects
+  - [x] Visual telegraph: normal vs red flash
+  - [x] Basic enemy with 2-3 attack patterns
+  - [x] Configurable telegraph duration
 
 ### T024: Character Animator Controllers [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 3 | **Depends on:** T014

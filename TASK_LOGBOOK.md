@@ -105,6 +105,21 @@ After completing any task through the AgentPilot pipeline (via `/do-task`, `/tas
   - Viper: 6-step combo tree, can move during normal attacks, 6 AttackData assets
   - 4 ComboInteractionConfigs with per-character cancel/lock tuning
 
+### T023: Enemy Attack Patterns + Telegraphs [DONE]
+- **Date:** 2026-03-05
+- **Dev:** Dev 3
+- **Agent/Command Used:** /task-execute T023
+- **Context Files:** `World/EnemyAI.cs`, `World/EnemyData.cs`, `World/States/AttackState.cs`, `World/EnemyBase.cs`, `Editor/Prefabs/BasicEnemyPrefabCreator.cs`, `Shared/Data/AttackData.cs`
+- **Output Files:** `World/EnemyAttackPattern.cs` (new), `World/PatternSelector.cs` (new), `World/TelegraphVisualController.cs` (new), `Tests/EditMode/World/EnemyAttackPatternTests.cs` (new), modified EnemyAI, EnemyData, AttackState, BasicEnemyPrefabCreator, test asmdef
+- **Issues:** None. Clean implementation following design decisions from /plan-task.
+- **Lesson Learned:** Extracting selection logic into a pure static class (PatternSelector) keeps the MonoBehaviour thin and makes edit-mode testing straightforward without needing runtime GameObjects.
+- **Deliverables:**
+  - EnemyAttackPattern SO with flat AttackPatternStep[] sequence, weighted selection, range/cooldown conditions
+  - TelegraphVisualController: Normal (white→yellow ramp) vs Unstoppable (red flash blink)
+  - AttackState rewritten for multi-step pattern execution with ShouldAbort() early-exit
+  - 3 concrete patterns for BasicMeleeEnemy: Quick Jabs (2-hit), Slash (single), Heavy Slam (unstoppable)
+  - 12 edit-mode tests for PatternSelector logic
+
 ---
 
 ## Phase 3: Defensive Depth + Build Crafting
