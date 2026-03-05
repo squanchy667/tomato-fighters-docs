@@ -1,5 +1,23 @@
 # Changelog
 
+## [Phase 1] — 2026-03-05 (T013 Basic Test Scene — DONE)
+
+### Completed
+- **T013**: Basic Test Scene — full integration of all Phase 1 systems into `MovementTest.unity`
+  - **Art layer upgrade**: Replaced programmatic grid-line background with 6 forest environment sprites (`bg_forest_distant`, `bg_forest_midground`, `bg_forest_foreground`, `ground_forest_floor`, `wall_left_stone`, `wall_right_stone`). Auto-scaled via `sprite.bounds.size`.
+  - **CameraController2D integration** (T012): Added to camera with smooth follow, arena bounds, SO event channels (`OnCameraLock`, `OnCameraUnlock`, `OnStunTriggered`, `OnStunRecovered`). Player transform wired as follow target.
+  - **WaveManager integration** (T010): Created with 3 spawn points, 1 test wave (3 enemy spawns), all 6 SO event channels wired.
+  - **LevelBound triggers**: Left/right trigger colliders inside arena walls, wired to `OnBoundReached` event channel.
+  - **Floor constraint**: Walkable area constrained to floor sprite strip (y=-5 to y=-3). Top wall caps vertical movement. All entity spawn positions adjusted to floor.
+  - **Layer collision fix**: Enabled `Default↔PlayerHurtbox` and `Default↔EnemyHurtbox` so arena walls block player and enemy bodies.
+
+### Design Decisions
+- **DD-4**: Upgraded `CreateArenaBackground()` with art layer sprites instead of programmatic rectangles
+- **DD-5**: Background layers span full arena, stacked by sorting order (parallax deferred to T012 camera)
+- **DD-6**: Stone wall sprites are visual-only; physics stays on invisible BoxCollider2D walls
+- **DD-7**: Sprite scaling from native texture size via `sprite.bounds.size` — auto-adapts to any PPU
+- Walkable area matches floor sprite height — characters move within the visual floor strip
+
 ## [Phase 2] — 2026-03-05 (T024 Character Animator Controllers — DONE)
 
 ### Completed

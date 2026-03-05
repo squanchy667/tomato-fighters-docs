@@ -10,7 +10,8 @@
 | **Agent** | integration-agent |
 | **Depends On** | T002, T010, T011, T012 |
 | **Blocks** | — |
-| **Status** | IN_PROGRESS (art layer upgrade; T010/T012 items still blocked) |
+| **Status** | DONE |
+| **Completed** | 2026-03-05 |
 | **Branch** | `pillar3/T013-test-scene` |
 
 ## Objective
