@@ -19,6 +19,18 @@
 - Phase 2 upgraded to DONE (12/12) — was showing 11/12 but all tasks complete
 - Phase 3 at 6/10 — remaining: T029 (RitualStackCalculator), T030 (TrinketSystem), T033 (BranchingPathNav), T034 (AbilityVFX)
 - Demo limitations: ritual effects don't trigger (needs ICombatEvents wiring), path abilities need IPathProvider wiring, path options always show Brutor's 3 paths
+## [Phase 4] — 2026-03-05 (T048 All 8 Ritual Families — DONE)
+
+### Completed
+- **T048**: All 8 Ritual Families Complete — 6 new families (Water, Thorn, Gale, Time, Cosmic, Necro)
+  - `Roguelite/RitualSystem.cs`: 24 new stub handler methods + 24 handler registrations in `RegisterHandlers()`
+  - `Editor/RitualDataCreator.cs`: 6 new `Create{Family}Family()` methods generating 24 RitualData SO assets
+  - 32 total rituals across 8 families (4 per family: 1 Core + 1 General + 2 Enhancement)
+  - All handlers are stubs (SpawnVfx + AddStack where applicable) — real effects deferred
+  - Balance values follow category templates: Core (stacking), General (power scaling), Enhancement (burst/stacking)
+
+---
+
 ## [Phase 3] — 2026-03-05 (T030 TrinketSystem — DONE)
 
 ### Completed
@@ -46,6 +58,28 @@
 ```
 finalEffect = baseValue × levelMultiplier × (stackingMultiplier ^ currentStacks) × ritualPower
 ```
+
+---
+
+## [Phase 3] — 2026-03-05 (Phase 3 Demo Scene Complete)
+
+### Completed
+- **Phase 3 Demo Scene**: Full roguelite loop playable end-to-end
+  - `Editor/Phase3DemoSceneCreator.cs`: Programmatic scene builder — arena, waves, reward UI, path UI, boss, mediator
+  - `World/Phase3DemoMediator.cs`: Bridges wave events to UI (Wave 1 -> ritual pick, Wave 2 -> path shrine, Wave 3 -> boss)
+  - Flow: Character select -> Walk right -> Wave 1 (3 enemies) -> Ritual reward pick -> Wave 2 (4 enemies) -> Path selection -> Boss fight (3 phases)
+  - All Phase 2 tasks confirmed DONE (12/12)
+
+### Bug Fixes (Demo Playtest)
+- **Player tag missing**: `PlayerPrefabCreator` + `CharacterSpawner` now set `tag = "Player"` — LevelBound trigger detection was silently failing
+- **Camera not following player**: `CameraController2D` gains `AutoDiscoverPlayer()` — finds Player-tagged object at runtime instead of following static SpawnPoint
+- **Camera freezing on combat**: Removed hard camera lock during waves — camera now follows player with bounds clamping instead of freezing at a single point
+- **Camera framing**: Reduced orthoSize from 7 to 5, bounds calculated from arena dimensions to keep camera edges within arena
+
+### Notes
+- Phase 2 upgraded to DONE (12/12) — was showing 11/12 but all tasks complete
+- Phase 3 at 7/10 — remaining: T033 (BranchingPathNav), T034 (AbilityVFX)
+- Demo limitations: ritual effects don't trigger (needs ICombatEvents wiring), path abilities need IPathProvider wiring, path options always show Brutor's 3 paths
 
 ---
 
