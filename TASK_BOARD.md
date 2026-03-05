@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 23/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 24/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -164,7 +164,7 @@
 ---
 
 ## Phase 2: Core Combat + Path Framework
-> Status: IN_PROGRESS | Tasks: 9/12 | Weeks: 3-4
+> Status: IN_PROGRESS | Tasks: 10/12 | Weeks: 3-4
 > Goal: All 4 characters playable with basic combos, path selection works, fight one wave
 
 ### T014: ComboSystem — All 4 Characters [DONE]
@@ -246,16 +246,17 @@
   - [x] Lightning family: Chain Lightning, Lightning Strike, Shock Wave, Static Field
   - [x] Level 1-3 power values defined
 
-### T021: RitualSystem — Trigger Pipeline [PENDING]
+### T021: RitualSystem — Trigger Pipeline [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T020
 - **Files:** `Roguelite/RitualSystem.cs`
+- **Branch:** `gal` | **Completed:** 2026-03-05
 - **Description:** Manages active rituals per run. Subscribes to ICombatEvents. When combat event fires, checks all active rituals for matching trigger, fires ritual effects. Tracks family counts. Supports adding/leveling rituals. Provides IBuffProvider queries.
 - **Acceptance:**
-  - [ ] Subscribes to all ICombatEvents triggers
-  - [ ] Trigger → matching ritual → fire effect pipeline
-  - [ ] Add ritual (new or level-up existing)
-  - [ ] Family count tracking
-  - [ ] IBuffProvider implementation for damage/speed/defense multipliers
+  - [x] Subscribes to all ICombatEvents triggers
+  - [x] Trigger → matching ritual → fire effect pipeline
+  - [x] Add ritual (new or level-up existing)
+  - [x] Family count tracking
+  - [x] IBuffProvider implementation for damage/speed/defense multipliers
 
 ### T022: BasicEnemyAI [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 3 | **Depends on:** T011

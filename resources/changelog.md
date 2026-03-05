@@ -1,5 +1,44 @@
 # Changelog
 
+## [Integration] — 2026-03-05 (Phase 1 Demo + Playtest)
+
+### Completed
+- **T021**: RitualSystem — Trigger Pipeline — DONE (branch `gal`)
+  - Subscribes to all 12 ICombatEvents, dispatches matching rituals
+  - 8 Fire + Lightning handlers (Burn, BlazingDash, FlameStrike, EmberShield, Chain, Strike, ShockWave, StaticField)
+  - Full IBuffProvider implementation (damage/speed/defense/juggle gravity multipliers)
+  - Family count tracking, add/level-up ritual management
+
+- **Phase 1 Demo Scene** — comprehensive integration test
+  - `DemoSceneCreator.cs`: all 4 characters (1-4 switching), forest background art, 5 AI enemies, PlayerHUD, CameraController2D, WaveManager, LevelBounds
+  - `CharacterSelectUI.cs`: full-screen character selection overlay with stats display, pauses game until pick
+  - `CharacterSpawner.cs`: added `deferSpawn` flag + Resources.Load fallback for CharacterRegistry
+  - `CharacterInputHandler.cs`: self-wires InputActions from Resources at runtime (InputActionReferences don't survive prefab serialization)
+  - `BasicEnemyPrefabCreator.cs`: removed legacy DebugHealthBar (replaced by EnemyHealthBarUI)
+  - `PlayerPrefabCreator.cs`: bakes SO event channels (health, mana, combo) into prefabs for runtime spawning
+  - `RitualSystem.cs`: added missing `GetJuggleGravityMultiplier()` implementation
+
+### Playtest Findings (10 issues tracked)
+- **3 P0**: Player death not handled, enemy AI can't find player (layer mismatch), balance too weak
+- **4 P1**: Camera doesn't follow spawned player, no restart, enemies active during select, enemy HP init order
+- **3 P2**: No hit feedback, no death animation, HUD not wired to spawned player
+- Full details in `resources/known-issues.md`
+
+### Files Added
+- `Scripts/Characters/CharacterSelectUI.cs`
+- `Editor/DemoSceneCreator.cs`
+- `Assets/Resources/CharacterRegistry.asset`
+- `Assets/Resources/InputSystem_Actions.inputactions`
+- `Scenes/Phase1Demo.unity`
+
+### Files Modified
+- `Scripts/Characters/CharacterSpawner.cs` (deferSpawn + Resources fallback)
+- `Scripts/Characters/CharacterInputHandler.cs` (runtime self-wiring)
+- `Scripts/Roguelite/RitualSystem.cs` (GetJuggleGravityMultiplier)
+- `Editor/Prefabs/PlayerPrefabCreator.cs` (SO event baking)
+- `Editor/Prefabs/BasicEnemyPrefabCreator.cs` (remove DebugHealthBar)
+- `Editor/Prefabs/MovementTestSceneCreator.cs` (BasicMeleeEnemy instead of TestDummy)
+
 ## [Phase 2] — 2026-03-05 (T024 Character Animator Controllers — DONE)
 
 ### Completed
