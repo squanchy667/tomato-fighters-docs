@@ -1,5 +1,17 @@
 # Changelog
 
+## [Phase 4] — 2026-03-05 (T048 All 8 Ritual Families — DONE)
+
+### Completed
+- **T048**: All 8 Ritual Families Complete — 6 new families (Water, Thorn, Gale, Time, Cosmic, Necro)
+  - `Roguelite/RitualSystem.cs`: 24 new stub handler methods + 24 handler registrations in `RegisterHandlers()`
+  - `Editor/RitualDataCreator.cs`: 6 new `Create{Family}Family()` methods generating 24 RitualData SO assets
+  - 32 total rituals across 8 families (4 per family: 1 Core + 1 General + 2 Enhancement)
+  - All handlers are stubs (SpawnVfx + AddStack where applicable) — real effects deferred
+  - Balance values follow category templates: Core (stacking), General (power scaling), Enhancement (burst/stacking)
+
+---
+
 ## [Phase 3] — 2026-03-05 (T030 TrinketSystem — DONE)
 
 ### Completed

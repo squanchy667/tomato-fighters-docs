@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 31/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 32/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -574,15 +574,15 @@
   - [ ] Unlock via hub NPC
   - [ ] Stack with regular rituals
 
-### T048: All 8 Ritual Families Complete [PENDING]
+### T048: All 8 Ritual Families Complete [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T029
 - **Files:** `ScriptableObjects/Rituals/{Water,Thorn,Gale,Time,Cosmic,Necro}/*.asset`
 - **Description:** Complete remaining 6 families (Fire + Lightning done in T020). Water: tidal waves. Thorn: bramble knives. Gale: extended juggles. Time: echoes. Cosmic: ultimates. Necro: lifesteal/summons. 4-5 rituals per family.
 - **Acceptance:**
-  - [ ] All 8 families with 4-5 rituals each
-  - [ ] Core, General, Enhancement categories per family
-  - [ ] All trigger-effect links defined
-  - [ ] Level 1-3 power values balanced
+  - [x] All 8 families with 4 rituals each (32 total)
+  - [x] Core, General, Enhancement categories per family
+  - [x] All trigger-effect links defined via effectId
+  - [x] Level 1-3 power values balanced per category template
 
 ### T049: Ritual Balance Pass [PENDING]
 - **Type:** refactor | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T048
