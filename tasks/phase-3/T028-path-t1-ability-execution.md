@@ -1,7 +1,7 @@
 # T028: Path T1 Ability Execution
 
 > **Phase:** 3 | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T017, T018
-> **Status:** PENDING
+> **Status:** DONE | **Completed:** 2026-03-05 | **Branch:** `combat/T028-path-t1-ability-execution`
 
 ## Summary
 
@@ -9,11 +9,11 @@ Implement the `PathAbilityExecutor` framework and all 12 Tier 1 path abilities. 
 
 ## Acceptance Criteria
 
-- [ ] All 12 T1 abilities functional
-- [ ] Cooldown management per ability
-- [ ] Mana consumption where specified
-- [ ] Integrates with IPathProvider tier checks
-- [ ] Fires PathAbilityEventData through ICombatEvents
+- [x] All 12 T1 abilities functional
+- [x] Cooldown management per ability
+- [x] Mana consumption where specified
+- [x] Integrates with IPathProvider tier checks
+- [x] Fires PathAbilityEventData through ICombatEvents
 
 ## Design Decisions
 

@@ -83,6 +83,7 @@
 * [T024B: Enemy Animator Controllers](tasks/phase-3/T024B-enemy-animator-controllers.md)
 * [T026: PressureSystem + Stun](tasks/phase-3/T026-pressure-system-stun.md)
 * [T027: WallBounce + AirJuggle](tasks/phase-3/T027-wall-bounce-air-juggle.md)
+* [T028: Path T1 Ability Execution](tasks/phase-3/T028-path-t1-ability-execution.md)
 * [T032: BossAI Framework](tasks/phase-3/T032-boss-ai-framework.md)
 
 ## Resources

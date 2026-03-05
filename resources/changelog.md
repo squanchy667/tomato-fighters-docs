@@ -1,5 +1,33 @@
 # Changelog
 
+## [Phase 3] — 2026-03-05 (T028 Path T1 Ability Execution — DONE)
+
+### Completed
+- **T028**: PathAbilityExecutor framework + all 12 T1 path abilities
+  - **Shared Layer:** `StatusEffectType`, `AbilityActivationType` enums; `StatusEffect` struct; `IPathAbility`, `IPathAbilityModifier`, `IStatusEffectable`, `IChanneledAbility` interfaces; `ProjectileBase` component
+  - **Framework:** `PathAbilityExecutor` routes Q/E input, manages cooldowns, fires `PathAbilityEventData`; `PathAbilityContext` dependency bundle; `AbilityFactory` ID→class mapping
+  - **Brutor:** Provoke (AoE taunt via IStatusEffectable), IronGuard (toggle 50% DR), ShieldLink (stub for co-op)
+  - **Slasher:** MarkForDeath (+25% dmg mark), CleavingStrikes (passive +2 targets at 60%), PhaseDash (dash damage)
+  - **Mystica:** MendingAura (toggle heal 3%HP/s), Empower (self-buff +30% ATK/+20% SPD), SummonSproutling (companion)
+  - **Viper:** PiercingShots (passive pierce -20%/target), HarpoonShot (immobilize projectile), ManaCharge (channeled mana regen)
+  - **World:** `StatusEffectTracker` (ticks effects, handles Taunt→AI), `SproutlingEnemy` (companion targeting enemy layer)
+  - **Input:** Added Ability1 (Q) and Ability2 (E) input actions + gamepad bindings
+  - **Creator Scripts:** PlayerPrefabCreator wires PathAbilityExecutor; BasicEnemyPrefabCreator adds StatusEffectTracker; new SproutlingPrefabCreator
+
+### Design Decisions
+- DD-1: Two input buttons (Q/E) for Main/Secondary path abilities
+- DD-2: Full combat abilities + self-target fallback for ally abilities (ShieldLink, MendingAura, Empower)
+- DD-3: Mana via existing PlayerManaTracker (T025)
+- DD-4: Passive modifiers via IPathAbilityModifier query in HitboxManager
+- DD-5: PhaseDash modifies existing dash system (event subscription, not replacement)
+- DD-6: ShieldLink no-op in solo, MendingAura/Empower target self
+- DD-7: SproutlingEnemy reuses EnemyBase framework with inverted layer targeting
+- DD-8: ProjectileBase in Shared for Viper kit reuse
+- DD-9: StatusEffectTracker on enemies for centralized effect management
+- DD-10: Cross-pillar contracts — IStatusEffectable in Shared, implementation in World
+
+---
+
 ## [Phase 3] — 2026-03-05 (T032 BossAI Framework — DONE)
 
 ### Completed

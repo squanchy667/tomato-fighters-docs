@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 25/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 26/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -309,7 +309,7 @@
 ---
 
 ## Phase 3: Defensive Depth + Build Crafting
-> Status: IN_PROGRESS | Tasks: 4/10 | Weeks: 5-6
+> Status: IN_PROGRESS | Tasks: 5/10 | Weeks: 5-6
 > Goal: Full loop — fight area, pick ritual, select path at shrine, fight boss
 
 ### T024B: Enemy Animator Controllers [DONE]
@@ -352,16 +352,17 @@
   - [x] OTG vs Tech Hit distinction
   - [x] Gale extension support (via IBuffProvider)
 
-### T028: Path T1 Ability Execution [PENDING]
+### T028: Path T1 Ability Execution [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T017, T018
+- **Branch:** `combat/T028-path-t1-ability-execution` | **Completed:** 2026-03-05
 - **Files:** `Characters/PathAbilityExecutor.cs`, `Characters/Abilities/Warden/Provoke.cs`, `Bulwark/IronGuard.cs`, `Guardian/ShieldLink.cs`, `Executioner/MarkForDeath.cs`, `Reaper/CleavingStrikes.cs`, `Shadow/PhaseDash.cs`, `Sage/MendingAura.cs`, `Enchanter/Empower.cs`, `Conjurer/SummonSproutling.cs`, `Marksman/PiercingShots.cs`, `Trapper/HarpoonShot.cs`, `Arcanist/ManaCharge.cs`
 - **Description:** Execute all 12 Tier 1 path abilities through the combat system. Each ability reads from PathData SO, checks tier via IPathProvider, consumes mana where applicable. Active abilities have cooldowns. Passive abilities modify combat calculations.
 - **Acceptance:**
-  - [ ] All 12 T1 abilities functional
-  - [ ] Cooldown management per ability
-  - [ ] Mana consumption where specified
-  - [ ] Integrates with IPathProvider tier checks
-  - [ ] Fires PathAbilityEventData through ICombatEvents
+  - [x] All 12 T1 abilities functional
+  - [x] Cooldown management per ability
+  - [x] Mana consumption where specified
+  - [x] Integrates with IPathProvider tier checks
+  - [x] Fires PathAbilityEventData through ICombatEvents
 
 ### T029: RitualStackCalculator [PENDING]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T021
