@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 26/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 27/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -386,15 +386,16 @@
   - [ ] Conditional triggers
   - [ ] Integration with CharacterStatCalculator
 
-### T031: RewardSelectorUI [PENDING]
+### T031: RewardSelectorUI [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T021
-- **Files:** `Roguelite/RewardSelectorUI.cs`
+- **Branch:** `roguelite/T031-reward-selector-ui` | **Completed:** 2026-03-05
+- **Files:** `Shared/Data/RewardSelectedData.cs`, `Shared/Events/RewardSelectedEventChannel.cs`, `Roguelite/RewardOption.cs`, `Roguelite/RitualPoolSelector.cs`, `Roguelite/RewardConfig.cs`, `Roguelite/RewardSelectorUI.cs`, `Editor/Prefabs/RewardSelectorUICreator.cs`, `Tests/EditMode/Roguelite/RitualPoolSelectorTests.cs`
 - **Description:** Post-area reward selection. Pick 1 of 2 rituals (3 with Soul Tree upgrade), OR gold, OR crystals. Shows ritual name, family, description, preview of effect. Fires event on selection.
 - **Acceptance:**
-  - [ ] 2-3 ritual options displayed
-  - [ ] Gold and crystal alternatives
-  - [ ] Ritual preview with family color coding
-  - [ ] Selection fires event consumed by RitualSystem
+  - [x] 2-3 ritual options displayed
+  - [x] Gold and crystal alternatives
+  - [x] Ritual preview with family color coding
+  - [x] Selection fires event consumed by RitualSystem
 
 ### T032: BossAI Framework [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 3 | **Depends on:** T022, T026

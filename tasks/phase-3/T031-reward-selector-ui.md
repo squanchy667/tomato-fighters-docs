@@ -1,7 +1,7 @@
 # T031: RewardSelectorUI
 
-> **Status:** PENDING | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T021
-> **Pillar:** Roguelite | **Phase:** 3
+> **Status:** DONE | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T021
+> **Pillar:** Roguelite | **Phase:** 3 | **Branch:** `roguelite/T031-reward-selector-ui` | **Completed:** 2026-03-05
 
 ---
 

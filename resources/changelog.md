@@ -1,5 +1,27 @@
 # Changelog
 
+## [Phase 3] — 2026-03-05 (T031 RewardSelectorUI — DONE)
+
+### Completed
+- **T031**: RewardSelectorUI — Post-area reward selection screen
+  - `Shared/Data/RewardSelectedData.cs`: `RewardType` enum + `RewardSelectedData` struct (typed as SO to avoid cross-pillar import)
+  - `Shared/Events/RewardSelectedEventChannel.cs`: Typed SO event channel matching existing VoidEventChannel/IntEventChannel pattern
+  - `Roguelite/RewardOption.cs`: Uniform display model with `FromRitual`/`FromCurrency` factories + family color mapping
+  - `Roguelite/RewardConfig.cs`: SO with category weights, currency amounts per area, pool size settings
+  - `Roguelite/RitualPoolSelector.cs`: Pure C# class — weighted random selection, injectable random for testing, maxed-ritual filtering
+  - `Roguelite/RewardSelectorUI.cs`: OnGUI-based reward screen — 2-3 ritual cards + 2 currency alternatives, Time.timeScale=0 pause, fires RewardSelectedEventChannel
+  - `Editor/Prefabs/RewardSelectorUICreator.cs`: Creates prefab + VoidEventChannel + RewardSelectedEventChannel + RewardConfig SOs
+  - `Tests/EditMode/Roguelite/RitualPoolSelectorTests.cs`: 11 NUnit tests (basic selection, null/empty, maxed filtering, weighted selection, no duplicates)
+
+### Design Decisions
+- DD-1: Separate RitualPoolSelector (pure C# class) for testability and reuse
+- DD-2: VoidEventChannel SO trigger decouples UI from World pillar
+- DD-3: RewardConfig SO for designer-tweakable currency amounts and category weights
+- DD-4: Time.timeScale = 0 pause during reward screen
+- DD-5: Typed RewardSelectedEventChannel SO event channel
+
+---
+
 ## [Phase 2] — 2026-03-05 (T019 PathSelectionUI — DONE)
 
 ### Completed
