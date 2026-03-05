@@ -10,7 +10,7 @@
 | **Agent** | integration-agent |
 | **Depends On** | T002, T010, T011, T012 |
 | **Blocks** | — |
-| **Status** | BLOCKED (waiting on T010, T012) |
+| **Status** | IN_PROGRESS (art layer upgrade; T010/T012 items still blocked) |
 | **Branch** | `pillar3/T013-test-scene` |
 
 ## Objective
@@ -88,9 +88,68 @@ The following Creator Scripts already deliver the core T013 functionality. Rathe
 - **Decision:** When WaveManager is added, keep the 5 tiered static dummies as a parallel debug option (possibly behind a bool flag in the creator).
 - **Rationale:** Static dummies are invaluable for testing specific defense interactions (deflect vs Unstoppable Bruiser, clash timing vs Fighter). Wave-spawned enemies test flow; static dummies test mechanics.
 
+### DD-4: Upgrade existing CreateArenaBackground() with art layers
+- **Decision:** Replace the programmatic colored-rectangle background in `MovementTestSceneCreator.CreateArenaBackground()` with the 6 forest environment sprites from `Assets/Art/Environment/TestArena/`.
+- **Rationale:** The sprites are ready, the scene creator already exists and works — simplest path is to swap the background method rather than creating a separate TestArenaCreator. Keeps one scene creator, one scene.
+
+### DD-5: Full-width stacked background layers
+- **Decision:** All 3 background layers (`bg_forest_distant`, `bg_forest_midground`, `bg_forest_foreground`) span the full 20×10 arena dimensions, stacked via sorting order.
+- **Rationale:** Simple and works for any sprite aspect ratio. True parallax scrolling (camera-relative movement) is a future concern when CameraController2D (T012) lands.
+
+### DD-6: Stone wall sprites are visual-only, physics stays on invisible colliders
+- **Decision:** Keep the existing invisible `BoxCollider2D` walls for physics. Overlay `wall_left_stone` and `wall_right_stone` as purely visual `SpriteRenderer` GameObjects with no colliders.
+- **Rationale:** Decouples visual art from physics boundaries. The invisible colliders are proven to work; adding colliders to art sprites would create confusing double-collision scenarios.
+
+### DD-7: Sprite scaling from native texture size
+- **Decision:** Compute each sprite's scale by dividing the target arena dimension by the sprite's native world-space size (`sprite.bounds.size`). This auto-adapts to any PPU setting.
+- **Rationale:** Avoids hardcoding pixel sizes or assuming a specific PPU. If the artist re-exports at different resolution, the scene creator self-corrects.
+- **Code pattern:**
+```csharp
+var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+float scaleX = ARENA_WIDTH / sprite.bounds.size.x;
+float scaleY = ARENA_HEIGHT / sprite.bounds.size.y;
+go.transform.localScale = new Vector3(scaleX, scaleY, 1f);
+```
+
+### DD-8: Monster animations deferred
+- **Decision:** Monster animations exist but are not yet imported into Unity. This task does NOT touch monster sprites. When they are imported, the `TestDummyPrefabCreator` or a new `MonsterAnimationBuilder` will handle them separately.
+- **Rationale:** Art layers and monster animations are independent workstreams. Combining them would bloat the scope.
+
+## Remaining Work (Art Layer Upgrade)
+
+### Changes to `Editor/Prefabs/MovementTestSceneCreator.cs`
+
+**Method: `CreateArenaBackground()`** — Rewrite to:
+
+1. Create an `Environment` parent GameObject
+2. Load 6 sprites from `Assets/Art/Environment/TestArena/`
+3. Create child GameObjects with `SpriteRenderer` for each layer:
+
+| # | Sprite File | GO Name | sortingOrder | Position | Notes |
+|---|-------------|---------|-------------|----------|-------|
+| 1 | `bg_forest_distant.png` | `BG_Distant` | -100 | (0, 0, 0) | Full arena, furthest back |
+| 2 | `bg_forest_midground.png` | `BG_Midground` | -90 | (0, 0, 0) | Full arena, trees/foliage |
+| 3 | `bg_forest_foreground.png` | `BG_Foreground` | -80 | (0, 0, 0) | Full arena, closest foliage |
+| 4 | `ground_forest_floor.png` | `Ground_Floor` | -50 | (0, -ARENA_HEIGHT/2 + floorHeight/2, 0) | Bottom of arena, floor surface |
+| 5 | `wall_left_stone.png` | `Wall_Left_Visual` | -40 | (-ARENA_WIDTH/2 + wallWidth/2, 0, 0) | Left edge, visual only |
+| 6 | `wall_right_stone.png` | `Wall_Right_Visual` | -40 | (ARENA_WIDTH/2 - wallWidth/2, 0, 0) | Right edge, visual only |
+
+4. Scale each sprite to fit using `sprite.bounds.size` (DD-7)
+5. Remove the old `CreateRectSprite()`-based ground and grid lines
+
+**Method: `CreateRectSprite()`** — Keep as-is (still used by `BuildInlineFallbackPlayer()`)
+
+**No other methods change.** Walls, player, dummies, input wiring, debug UI — all untouched.
+
+### Execution Order
+
+1. Modify `CreateArenaBackground()` in `MovementTestSceneCreator.cs`
+2. Re-run `TomatoFighters > Create Movement Test Scene` in Unity to regenerate the scene
+3. Verify sprites load and display correctly in the Scene view
+
 ## Acceptance Criteria
 
-### Done
+### Done (Core Gameplay)
 - [x] Editor Creator Script generates a complete test scene programmatically
 - [x] Script accessible via Unity menu
 - [x] Scene has: arena background, 4 wall colliders, grid lines
@@ -102,6 +161,15 @@ The following Creator Scripts already deliver the core T013 functionality. Rathe
 - [x] Scene saved via `EditorSceneManager.SaveScene`
 - [x] All serialized field references wired via `SerializedObject` (persist correctly)
 - [x] Compiles with zero warnings
+
+### Pending (Art Layer Upgrade)
+- [ ] `CreateArenaBackground()` loads 6 sprites from `Assets/Art/Environment/TestArena/`
+- [ ] 3 background layers (`bg_forest_distant`, `bg_forest_midground`, `bg_forest_foreground`) render full-arena stacked by sorting order
+- [ ] `ground_forest_floor` renders at bottom of arena
+- [ ] `wall_left_stone` and `wall_right_stone` render at arena edges (visual only, no colliders)
+- [ ] All sprites scaled to fit arena via `sprite.bounds.size` calculation
+- [ ] Old programmatic grid-line background removed
+- [ ] Scene regenerates cleanly via menu with new art
 
 ### Blocked (T010, T012)
 - [ ] Camera has `CameraController2D` with follow target set to player
