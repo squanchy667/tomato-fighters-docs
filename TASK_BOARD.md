@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 27/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 28/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -310,7 +310,7 @@
 ---
 
 ## Phase 3: Defensive Depth + Build Crafting
-> Status: IN_PROGRESS | Tasks: 5/10 | Weeks: 5-6
+> Status: IN_PROGRESS | Tasks: 6/10 | Weeks: 5-6
 > Goal: Full loop — fight area, pick ritual, select path at shrine, fight boss
 
 ### T024B: Enemy Animator Controllers [DONE]
@@ -365,15 +365,16 @@
   - [x] Integrates with IPathProvider tier checks
   - [x] Fires PathAbilityEventData through ICombatEvents
 
-### T029: RitualStackCalculator [PENDING]
+### T029: RitualStackCalculator [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T021
 - **Files:** `Roguelite/RitualStackCalculator.cs`
+- **Branch:** `gal` | **Completed:** 2026-03-05
 - **Description:** Plain C# class. Level scaling: L1=base, L2=1.5x, L3=2.0x. Same-mechanic stacking: 2 rituals=1.5x, 3=2.0x. Ritual Power from trinkets is multiplicative with itself (1.1 * 1.1 = 1.21x). Final = (base * levelMult) * stackingMult * ritualPower.
 - **Acceptance:**
-  - [ ] Level multipliers: 1.0, 1.5, 2.0
-  - [ ] Stacking multipliers: 1.0, 1.5, 2.0
-  - [ ] Ritual Power multiplicative (NOT additive)
-  - [ ] Unit tests with concrete numeric examples
+  - [x] Level multipliers: 1.0, 1.5, 2.0
+  - [x] Stacking multipliers: 1.0, 1.5, 2.0
+  - [x] Ritual Power multiplicative (NOT additive)
+  - [x] Unit tests with concrete numeric examples
   - [ ] Plain C# class for testability
 
 ### T030: TrinketSystem [PENDING]

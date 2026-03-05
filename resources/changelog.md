@@ -1,5 +1,20 @@
 # Changelog
 
+## [Phase 3] — 2026-03-05 (T029 RitualStackCalculator — DONE)
+
+### Completed
+- **T029**: RitualStackCalculator — Pure math stacking formula
+  - `Roguelite/RitualStackCalculator.cs`: Static class with `Compute()`, `GetLevelMultiplier()`, level constants (1.0/1.5/2.0), integer `Pow()` helper
+  - `Roguelite/RitualSystem.cs`: Updated `ActiveRitualEntry.GetDamageContribution()` to use `RitualStackCalculator.Compute()` with full formula
+  - `Tests/EditMode/Roguelite/RitualStackCalculatorTests.cs`: 9 NUnit tests — level multipliers, formula verification, edge cases (negative stacks, invalid levels)
+
+### Formula
+```
+finalEffect = baseValue × levelMultiplier × (stackingMultiplier ^ currentStacks) × ritualPower
+```
+
+---
+
 ## [Phase 3] — 2026-03-05 (T031 RewardSelectorUI — DONE)
 
 ### Completed
