@@ -151,8 +151,9 @@
 
 ### T013: Basic Test Scene [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 3 | **Depends on:** T002, T010, T011, T012
-- **Files:** `Scenes/TestArena.unity`
-- **Description:** Simple test scene: flat ground, walls on both sides, camera setup, 1 player spawn, 2-3 dummy enemies. Used for Phase 1 integration testing.
+- **Files:** `Editor/Prefabs/MovementTestSceneCreator.cs`, `Scenes/MovementTest.unity`
+- **Branch:** `ofek` | **Completed:** 2026-03-05
+- **Description:** Simple test scene: flat ground, walls on both sides, camera setup, 1 player spawn, 2-3 dummy enemies. Used for Phase 1 integration testing. Built via Creator Script (MovementTestSceneCreator). Includes 5 tiered dummies, 2 AI enemies (BasicMeleeEnemy), PlayerHUD, WaveManager, CameraController2D, LevelBounds.
 - **Acceptance:**
   - [x] Flat ground with collision
   - [x] Walls on both sides
@@ -163,7 +164,7 @@
 ---
 
 ## Phase 2: Core Combat + Path Framework
-> Status: IN_PROGRESS | Tasks: 7/12 | Weeks: 3-4
+> Status: IN_PROGRESS | Tasks: 9/12 | Weeks: 3-4
 > Goal: All 4 characters playable with basic combos, path selection works, fight one wave
 
 ### T014: ComboSystem — All 4 Characters [DONE]
@@ -256,16 +257,17 @@
   - [ ] Family count tracking
   - [ ] IBuffProvider implementation for damage/speed/defense multipliers
 
-### T022: BasicEnemyAI [PENDING]
+### T022: BasicEnemyAI [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 3 | **Depends on:** T011
-- **Files:** `World/EnemyAI.cs`, `World/EnemyStateBase.cs`, `World/States/IdleState.cs`, `PatrolState.cs`, `ChaseState.cs`, `AttackState.cs`, `HitReactState.cs`, `DeathState.cs`
-- **Description:** State machine: Idle → Patrol → Chase → Attack → HitReact → Death. Configurable aggression, attack frequency, telegraph duration. Uses AttackData SOs for attack patterns. Respects TelegraphType for visual signals.
+- **Files:** `World/EnemyAI.cs`, `World/EnemyStateBase.cs`, `World/States/IdleState.cs`, `PatrolState.cs`, `ChaseState.cs`, `AttackState.cs`, `HitReactState.cs`, `DeathState.cs`, `World/BasicMeleeEnemy.cs`
+- **Branch:** `ofek` | **Completed:** 2026-03-05
+- **Description:** State machine: Idle → Patrol → Chase → Attack → HitReact → Death. Configurable aggression, attack frequency, telegraph duration. Uses AttackData SOs for attack patterns. Respects TelegraphType for visual signals. BasicMeleeEnemy concrete class forwards EnemyBase hooks to EnemyAI.
 - **Acceptance:**
-  - [ ] 6-state machine with clean transitions
-  - [ ] Configurable per-enemy: aggression, frequency, range
-  - [ ] Uses AttackData for attack patterns
-  - [ ] Telegraph visuals (normal vs red/unstoppable)
-  - [ ] Inherits from EnemyBase
+  - [x] 6-state machine with clean transitions
+  - [x] Configurable per-enemy: aggression, frequency, range
+  - [x] Uses AttackData for attack patterns
+  - [x] Telegraph visuals (normal vs red/unstoppable)
+  - [x] Inherits from EnemyBase
 
 ### T023: Enemy Attack Patterns + Telegraphs [PENDING]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 3 | **Depends on:** T022, T005
@@ -290,16 +292,17 @@
   - [x] ERROR logged for metadata animations that don't map to any canonical state
   - [x] WARNING logged for canonical states with no matching animation (placeholder generated)
 
-### T025: HUD — Health, Mana, Combo Counter [PENDING]
+### T025: HUD — Health, Mana, Combo Counter [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 3 | **Depends on:** T007
-- **Files:** `World/UI/HUDManager.cs`, `World/UI/HealthBarUI.cs`, `World/UI/ManaBarUI.cs`, `World/UI/ComboCounterUI.cs`
-- **Description:** Screen-space overlay HUD. Health bar reads from character stats. Mana bar for MNA. Combo counter tracks consecutive hits with decay timer. Path indicator shows current Main/Secondary. Enemy health bars as world-space canvas.
+- **Files:** `World/UI/HUDManager.cs`, `World/UI/HealthBarUI.cs`, `World/UI/ManaBarUI.cs`, `World/UI/ComboCounterUI.cs`, `World/UI/PathIndicatorUI.cs`, `World/UI/EnemyHealthBarUI.cs`, `Shared/Events/FloatEventChannel.cs`, `Shared/Components/PlayerManaTracker.cs`, `Editor/HUDCreator.cs`
+- **Branch:** `ofek` | **Completed:** 2026-03-05
+- **Description:** Screen-space overlay HUD via SO event channels (fully decoupled). Health bar subscribes to FloatEventChannel from PlayerDamageable. Mana bar from PlayerManaTracker. Combo counter from IntEventChannel on ComboController hit-confirm. Path indicator via IPathProvider. Enemy world-space health+pressure bars spawned by EnemyBase.
 - **Acceptance:**
-  - [ ] Player health bar (% of max HP)
-  - [ ] Mana bar
-  - [ ] Combo counter with decay
-  - [ ] Path indicator (icons for Main/Secondary)
-  - [ ] Enemy world-space health bars
+  - [x] Player health bar (% of max HP)
+  - [x] Mana bar
+  - [x] Combo counter with decay
+  - [x] Path indicator (icons for Main/Secondary)
+  - [x] Enemy world-space health bars
 
 ---
 
