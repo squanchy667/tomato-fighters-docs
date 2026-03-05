@@ -10,105 +10,106 @@
 | **Agent** | integration-agent |
 | **Depends On** | T002, T010, T011, T012 |
 | **Blocks** | — |
-| **Status** | PENDING |
+| **Status** | BLOCKED (waiting on T010, T012) |
 | **Branch** | `pillar3/T013-test-scene` |
 
 ## Objective
 Create a minimal test scene with flat ground, walls, a player spawn, dummy enemies, and camera setup — used for Phase 1 integration testing of controller movement, wave spawning, enemy damage, and camera follow.
 
 ## Context
-This is the Phase 1 integration task. It wires together the foundational systems from all 3 pillars into a playable test scene at `Assets/Scenes/TestArena.unity`. The scene validates that:
-- `CharacterController2D` (T002, Combat pillar) moves and jumps correctly
-- `WaveManager` (T010, World pillar) spawns enemies
-- `EnemyBase` (T011, World pillar) takes damage and dies
-- `CameraController2D` (T012, World pillar) follows the player and respects bounds
+This is the Phase 1 integration task. It wires together the foundational systems from all 3 pillars into a playable test scene. The scene validates that:
+- `CharacterMotor` (T002, Combat pillar) moves and dashes correctly ✅
+- `WaveManager` (T010, World pillar) spawns enemies — **NOT YET IMPLEMENTED**
+- `EnemyBase` / `TestDummyEnemy` (T011, World pillar) takes damage and dies ✅
+- `CameraController2D` (T012, World pillar) follows the player and respects bounds — **NOT YET IMPLEMENTED**
 
-**Important**: Since CLI agents cannot open the Unity Editor, this task must produce an **Editor setup script** that programmatically creates the scene, GameObjects, components, and wires serialized fields. This follows the KingOfOpera pattern (`Editor/ProjectSetup.cs`). The setup script runs from Unity's Tools menu.
+**Important**: Since CLI agents cannot open the Unity Editor, this task produces **Editor Creator Scripts** that programmatically create the scene, GameObjects, components, and wire serialized fields.
 
-## Requirements
-1. Create an Editor setup script at `Assets/Scripts/Editor/TestArenaSetup.cs`
-2. The script must be accessible via Unity menu: `Tools > TomatoFighters > Setup Test Arena`
-3. The setup script programmatically creates a new scene containing:
+## Implementation Status
 
-   **Ground:**
-   4. Flat ground plane — `GameObject` with `BoxCollider2D` (wide, thin), `SpriteRenderer` (placeholder color), positioned at Y=0
-   5. Ground should span enough width for a combat arena (e.g., 30-40 units wide)
+### Already Implemented (exceeds original spec)
 
-   **Walls:**
-   6. Left wall — `GameObject` with `BoxCollider2D` (tall, thin), positioned at left edge of ground
-   7. Right wall — `GameObject` with `BoxCollider2D` (tall, thin), positioned at right edge of ground
-   8. Walls should be tall enough to prevent jumping over (e.g., 10 units)
+The following Creator Scripts already deliver the core T013 functionality. Rather than creating a separate `TestArena.unity`, the existing `MovementTest.unity` scene serves as the integration test scene and will be evolved to add CameraController2D and WaveManager when those systems are built.
 
-   **Level Bounds:**
-   9. Left level bound trigger — `BoxCollider2D` set as trigger, positioned slightly inside left wall
-   10. Right level bound trigger — `BoxCollider2D` set as trigger, positioned slightly inside right wall
+| Requirement | Status | Implemented By |
+|---|---|---|
+| Editor setup script | ✅ Done | `Editor/Prefabs/MovementTestSceneCreator.cs` |
+| Menu accessible | ✅ Done | `TomatoFighters > Create Movement Test Scene` (+ per-character variants) |
+| Flat ground + arena background | ✅ Done | 20×10 arena with grid lines for depth perception |
+| 4 walls (L/R/Top/Bottom) | ✅ Done | Invisible BoxCollider2D walls |
+| Player with full components | ✅ Done | Prefab instantiation: CharacterMotor, ComboController, CharacterInputHandler, DefenseSystem, PlayerDamageable, DebugHealthBar, DefenseDebugUI |
+| Input wiring (WASD/Space/Shift/LMB/C/Ctrl) | ✅ Done | InputActionReference re-wiring on scene instance |
+| Dummy enemies | ✅ **Exceeds spec** | 5 tiered dummies (Bruiser→Weakling) with unique AttackData, telegraph types, defense systems |
+| DummyEnemy subclass | ✅ Done | `Scripts/World/TestDummyEnemy.cs` — AI with facing, telegraph, timed attacks |
+| EnemyData SO | ✅ Done | Per-tier AttackData SOs created by `TestDummyPrefabCreator` |
+| TestDummy prefab | ✅ Done | `Editor/Prefabs/TestDummyPrefabCreator.cs` — Rigidbody2D, DefenseSystem, ClashTracker, hitbox, debug health bar |
+| Layer collision matrix | ✅ Done | PlayerHitbox↔EnemyHurtbox, EnemyHitbox↔PlayerHurtbox enabled; same-team disabled |
+| Debug UI | ✅ Done | Health bars, defense event popups, combo debug overlay, controls hint |
+| Character switching scene | ✅ **Bonus** | `Editor/Characters/CharacterSelectTestSceneCreator.cs` — press 1-4 to swap characters |
+| Clash timing test scene | ✅ **Bonus** | `Editor/Prefabs/ClashTimingTestSceneCreator.cs` — automated clash timing validation |
+| All 4 character prefabs | ✅ **Bonus** | Brutor, Slasher, Mystica, Viper creators with unique combos, hitboxes, defense configs |
+| Animation pipeline | ✅ **Bonus** | `SpriteSheetImporter` + `AnimationBuilder` — metadata-driven sprite slicing and AnimatorController generation |
 
-   **Player:**
-   11. Player spawn point — empty `GameObject` at a start position (e.g., X=-10, Y=1)
-   12. Player `GameObject` with: `SpriteRenderer` (placeholder square), `Rigidbody2D` (gravity scale configured), `BoxCollider2D`, `CharacterController2D` component
-   13. Wire `CharacterController2D` serialized fields with default values
+### Blocked — Waiting on T010, T012
 
-   **Enemies:**
-   14. 2-3 dummy enemy `GameObjects` with: `SpriteRenderer` (different placeholder color), `Rigidbody2D`, `BoxCollider2D`, `EnemyBase`-derived component (or a `DummyEnemy` MonoBehaviour that inherits `EnemyBase`)
-   15. Create a basic `EnemyData` ScriptableObject asset with test values (100 HP, 50 pressure threshold, low knockback resistance)
-   16. Wire enemy `[SerializeField] EnemyData` references
+| Requirement | Blocked On | What to Do When Unblocked |
+|---|---|---|
+| Camera with `CameraController2D` | T012 | Add `CameraController2D` to the camera in `MovementTestSceneCreator.SetupCamera()`. Wire follow target to player transform, configure orthographic bounds to arena width, wire SO event channels (stun zoom, bound lock). |
+| `WaveManager` with test wave | T010 | Add a `WaveManager` GO in `MovementTestSceneCreator.CreateTestScene()` after `CreateTestDummies()`. Configure 1 wave with 3 enemy spawns. Wire SO event channel references. Keep the static tiered dummies as a separate debug option. |
+| Level bound triggers | T012 (camera bounds) | Add trigger colliders inside L/R walls for camera bound-locking. Only meaningful once CameraController2D exists. |
 
-   **Camera:**
-   17. Main Camera with `CameraController2D` component
-   18. Set camera follow target to the player transform
-   19. Configure orthographic size, bounds matching the arena width
-   20. Wire SO event channel references (stun zoom, bound lock) if available
+### File Map (Actual)
 
-   **Wave Manager:**
-   21. Empty `GameObject` with `WaveManager` component
-   22. Configure 1 test wave with 2-3 enemy spawns
-   23. Wire SO event channel references
+| File | Purpose | Status |
+|------|---------|--------|
+| `Editor/Prefabs/MovementTestSceneCreator.cs` | Main test scene creator (replaces spec's `TestArenaSetup.cs`) | ✅ Done |
+| `Editor/Prefabs/TestDummyPrefabCreator.cs` | TestDummy prefab + tiered AttackData factory | ✅ Done |
+| `Editor/Prefabs/PlayerPrefabCreator.cs` | Generic player prefab builder (used by all character creators) | ✅ Done |
+| `Editor/Prefabs/ClashTimingTestSceneCreator.cs` | Clash timing automated test scene | ✅ Done |
+| `Editor/Characters/CharacterSelectTestSceneCreator.cs` | Character switching test scene | ✅ Done |
+| `Editor/Characters/BrutorCharacterCreator.cs` | Brutor prefab creator | ✅ Done |
+| `Editor/Characters/SlasherCharacterCreator.cs` | Slasher prefab creator | ✅ Done |
+| `Editor/Characters/MysticaCharacterCreator.cs` | Mystica prefab creator | ✅ Done |
+| `Editor/Characters/ViperCharacterCreator.cs` | Viper prefab creator | ✅ Done |
+| `Scripts/World/TestDummyEnemy.cs` | Concrete enemy with AI, telegraph, attacks | ✅ Done |
+| `Scenes/MovementTest.unity` | Output scene (generated, not hand-edited) | ✅ Done |
 
-4. The setup script should use `SerializedObject` and `SerializedProperty` to properly wire serialized field references (not just direct assignment, which doesn't persist in Unity)
-5. Save the scene to `Assets/Scenes/TestArena.unity` using `EditorSceneManager.SaveScene`
-6. Optionally create a `DummyEnemy` class at `Assets/Scripts/World/DummyEnemy.cs` that extends `EnemyBase` with minimal concrete implementations (just the abstract methods)
+## Design Decisions
 
-## File Plan
-| File | Purpose |
-|------|---------|
-| `Assets/Scripts/Editor/TestArenaSetup.cs` | Editor script that programmatically creates the TestArena scene (Tools > TomatoFighters > Setup Test Arena) |
-| `Assets/Scripts/World/DummyEnemy.cs` | Minimal concrete EnemyBase subclass for testing |
-| `Assets/Scenes/TestArena.unity` | Output scene (created by the setup script, not hand-authored) |
-| `Assets/ScriptableObjects/Enemies/DummyEnemyData.asset` | Test EnemyData SO (created by setup script) |
+### DD-1: Evolve existing scene, don't create a separate TestArena
+- **Decision:** Use `MovementTestSceneCreator` → `MovementTest.unity` as the integration test scene rather than creating a new `TestArenaSetup.cs` → `TestArena.unity`.
+- **Rationale:** The existing scene already exceeds T013 requirements (5 tiered enemies, full defense system, debug UI, multiple character support). Creating a separate scene would duplicate 90% of the code. When T010/T012 are done, we add CameraController2D and WaveManager to the existing creator.
 
-## Implementation Notes
-- **Editor script pattern**: Use `[MenuItem("Tools/TomatoFighters/Setup Test Arena")]` on a static method. The script must live in an `Editor/` folder (or have `Editor` as assembly definition)
-- **SerializedObject for wiring**: When setting `[SerializeField]` references, use:
-  ```csharp
-  var so = new SerializedObject(component);
-  so.FindProperty("fieldName").objectReferenceValue = targetObject;
-  so.ApplyModifiedProperties();
-  ```
-  Direct field assignment via reflection does not reliably persist in Unity's serialization
-- **DummyEnemy**: Minimal subclass — override abstract methods with empty bodies or simple log statements. Set health from EnemyData. This is a test-only class
-- **Placeholder sprites**: Use `Sprite.Create()` with a small texture, or reference Unity's built-in white square sprite (`Sprite` from `UnityEditor.EditorGUIUtility`)
-- **Layer setup**: Consider setting player to "Player" layer and enemies to "Enemy" layer with appropriate collision matrix, but this can be deferred
-- **Scene hierarchy organization**: Group objects under parent empties: `--- Environment ---`, `--- Player ---`, `--- Enemies ---`, `--- Systems ---`
-- **No hardcoded absolute paths** in the setup script — use `AssetDatabase.CreateAsset` with relative project paths
-- **Idempotent**: The setup script should handle being run multiple times (check if scene/assets exist, overwrite or skip)
+### DD-2: Block on T010/T012, don't stub
+- **Decision:** Mark T013 as BLOCKED rather than stubbing CameraController2D/WaveManager integration points now.
+- **Rationale:** The existing scene is fully playable for combat testing without camera follow or wave spawning. Adding stubs would just be dead code. When T010/T012 land, the integration points in `MovementTestSceneCreator` are straightforward: 3-5 lines in `SetupCamera()` and a new `CreateWaveManager()` method.
+
+### DD-3: Keep static dummies alongside future WaveManager
+- **Decision:** When WaveManager is added, keep the 5 tiered static dummies as a parallel debug option (possibly behind a bool flag in the creator).
+- **Rationale:** Static dummies are invaluable for testing specific defense interactions (deflect vs Unstoppable Bruiser, clash timing vs Fighter). Wave-spawned enemies test flow; static dummies test mechanics.
 
 ## Acceptance Criteria
-- [ ] Editor setup script exists at `Assets/Scripts/Editor/TestArenaSetup.cs`
-- [ ] Script accessible via menu: `Tools > TomatoFighters > Setup Test Arena`
-- [ ] Running the script creates a scene with: flat ground with collision, walls on both sides, player spawn point
-- [ ] Player has `CharacterController2D`, `Rigidbody2D`, `BoxCollider2D`, `SpriteRenderer`
-- [ ] 2-3 dummy enemies with `EnemyBase` subclass, `Rigidbody2D`, `BoxCollider2D`, `SpriteRenderer`
-- [ ] Dummy enemies reference a test `EnemyData` ScriptableObject with basic stats
+
+### Done
+- [x] Editor Creator Script generates a complete test scene programmatically
+- [x] Script accessible via Unity menu
+- [x] Scene has: arena background, 4 wall colliders, grid lines
+- [x] Player instantiated from prefab with: CharacterMotor, ComboController, CharacterInputHandler, DefenseSystem, PlayerDamageable, DebugHealthBar
+- [x] Input actions wired via SerializedObject (Move, Jump, Dash, Light, Heavy, Run)
+- [x] 5 tiered enemies with EnemyBase subclass, Rigidbody2D, BoxCollider2D, SpriteRenderer, DefenseSystem
+- [x] Each enemy tier has unique AttackData SO with distinct damage/knockback/telegraph
+- [x] Layer collision matrix configured (cross-team hits only)
+- [x] Scene saved via `EditorSceneManager.SaveScene`
+- [x] All serialized field references wired via `SerializedObject` (persist correctly)
+- [x] Compiles with zero warnings
+
+### Blocked (T010, T012)
 - [ ] Camera has `CameraController2D` with follow target set to player
+- [ ] Camera respects arena bounds, supports stun zoom event
 - [ ] `WaveManager` present with at least 1 configured wave
-- [ ] All serialized field references are wired via `SerializedObject` (persist after script runs)
-- [ ] Scene saved to `Assets/Scenes/TestArena.unity`
-- [ ] `DummyEnemy` compiles and extends `EnemyBase` correctly
-- [ ] Compiles with zero warnings (in both runtime and editor assemblies)
+- [ ] Level bound triggers inside L/R walls
 
 ## References
-- [System Overview](../../architecture/system-overview.md) — Module architecture, all file paths
+- [System Overview](../../architecture/system-overview.md) — Module architecture
 - [Data Flow](../../architecture/data-flow.md) — Single combat frame flow (what this scene tests)
 - [TASK_BOARD.md](../../TASK_BOARD.md) — T013 entry, dependencies on T002/T010/T011/T012
-- [development-agents.md](../../development-agents.md) — Batch 1.2c: T013 integration scene
-- KingOfOpera precedent: `Editor/ProjectSetup.cs` pattern for programmatic scene creation

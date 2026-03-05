@@ -1,11 +1,11 @@
 # Tomato Fighters — Task Board
 
-> 15/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 20/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
 ## Phase 1: Foundation
-> Status: IN_PROGRESS | Tasks: 10/13 | Weeks: 1-2
+> Status: IN_PROGRESS | Tasks: 12/13 | Weeks: 1-2
 > Goal: Shared contracts established, one character moves and hits a dummy enemy, camera follows
 
 ### T001: Shared Interfaces, Enums, and Data Structures [DONE]
@@ -115,15 +115,16 @@
   - [x] Add/Remove/Check methods
   - [x] Persistence flag per currency type
 
-### T010: WaveManager [PENDING]
+### T010: WaveManager [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 3 | **Depends on:** T001
-- **Files:** `World/WaveManager.cs`
-- **Description:** Spawn enemies in configurable waves. Camera stops at LevelBound until wave cleared. Configurable enemy composition per wave (EnemySpawnData list). Fires events on wave start, wave clear, area complete. Area complete triggers reward selection.
+- **Files:** `World/WaveManager.cs`, `World/LevelBound.cs`, `Shared/Data/WaveData.cs`, `Shared/Data/EnemySpawnData.cs`, `Shared/Events/VoidEventChannel.cs`, `Shared/Events/IntEventChannel.cs`, `Editor/WaveManagerAssetsCreator.cs`
+- **Branch:** `ofek` | **Completed:** 2026-03-05
+- **Description:** Spawn enemies in configurable waves. Camera stops at LevelBound until wave cleared. Configurable enemy composition per wave (EnemySpawnData list). Fires events on wave start, wave clear, area complete via SO event channels. Area complete triggers reward selection.
 - **Acceptance:**
-  - [ ] Wave list with configurable enemy spawns
-  - [ ] LevelBound camera stops
-  - [ ] Events: OnWaveStart, OnWaveCleared, OnAreaComplete
-  - [ ] Optional waves (side paths)
+  - [x] Wave list with configurable enemy spawns
+  - [x] LevelBound camera stops
+  - [x] Events: OnWaveStart, OnWaveCleared, OnAreaComplete
+  - [x] Optional waves (side paths)
 
 ### T011: EnemyBase — IDamageable + IAttacker [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T001
@@ -137,17 +138,18 @@
   - [x] Invulnerability after stun recovery (blink white)
   - [x] Reads stats from EnemyData SO
 
-### T012: CameraController2D [PENDING]
+### T012: CameraController2D [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 3 | **Depends on:** T001
 - **Files:** `World/CameraController2D.cs`
-- **Description:** Side-scroll follow with configurable leading. Level bound stops (integrates with WaveManager bounds). Smooth damping. Zoom-in on stun events (listens to event channel, doesn't reference PressureSystem). Co-op framing for 2 players (future).
+- **Branch:** `ofek` | **Completed:** 2026-03-05
+- **Description:** Side-scroll follow with configurable leading. Level bound stops (integrates with WaveManager via SO event channels). Smooth damping. Zoom-in on stun events (listens to VoidEventChannel, doesn't reference PressureSystem). Co-op framing for 2 players. Dynamic bounds via SetBounds(). Gizmo visualization.
 - **Acceptance:**
-  - [ ] Smooth follow with configurable leading
-  - [ ] Respects level bounds
-  - [ ] Zoom on stun event (via SO event channel)
-  - [ ] All values configurable in Inspector
+  - [x] Smooth follow with configurable leading
+  - [x] Respects level bounds
+  - [x] Zoom on stun event (via SO event channel)
+  - [x] All values configurable in Inspector
 
-### T013: Basic Test Scene [PENDING]
+### T013: Basic Test Scene [IN_PROGRESS]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 3 | **Depends on:** T002, T010, T011, T012
 - **Files:** `Scenes/TestArena.unity`
 - **Description:** Simple test scene: flat ground, walls on both sides, camera setup, 1 player spawn, 2-3 dummy enemies. Used for Phase 1 integration testing.
@@ -161,7 +163,7 @@
 ---
 
 ## Phase 2: Core Combat + Path Framework
-> Status: IN_PROGRESS | Tasks: 4/12 | Weeks: 3-4
+> Status: IN_PROGRESS | Tasks: 7/12 | Weeks: 3-4
 > Goal: All 4 characters playable with basic combos, path selection works, fight one wave
 
 ### T014: ComboSystem — All 4 Characters [DONE]
@@ -198,15 +200,16 @@
   - [x] Character-specific deflect bonuses
   - [x] DamageResponse enum (Hit, Deflected, Clashed, Dodged)
 
-### T017: Character Passives [PENDING]
+### T017: Character Passives [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 1 | **Depends on:** T007, T014
-- **Files:** `Characters/PassiveAbilitySystem.cs`, `Characters/Passives/ThickSkin.cs`, `Bloodlust.cs`, `ArcaneResonance.cs`, `DistanceBonus.cs`
+- **Branch:** `combat/T017-character-passives` | **Completed:** 2026-03-04
+- **Files:** `Characters/PassiveAbilitySystem.cs`, `Characters/Passives/ThickSkin.cs`, `Bloodlust.cs`, `ArcaneResonance.cs`, `DistanceBonus.cs`, `PassiveConfig.cs`, `IPassiveAbility.cs`, `Shared/Data/HitContext.cs`, `Shared/Interfaces/IPassiveProvider.cs`
 - **Description:** Implement 4 character passive abilities. Brutor: Thick Skin (15% DR, 40% less knockback). Slasher: Bloodlust (3% ATK per hit, 10 stacks, 3s decay). Mystica: Arcane Resonance (+5% damage per cast to allies, 3 stacks). Viper: Distance Bonus (+2%/unit, max +30%).
 - **Acceptance:**
-  - [ ] 4 passive abilities implemented
-  - [ ] Stacking/decay where applicable
-  - [ ] Reads from CharacterStatCalculator
-  - [ ] Fires through IBuffProvider pipeline
+  - [x] 4 passive abilities implemented
+  - [x] Stacking/decay where applicable
+  - [x] Reads from CharacterStatCalculator
+  - [x] Fires through IBuffProvider pipeline
 
 ### T018: PathSystem — Selection + Tier Progression [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 2 | **Depends on:** T008
@@ -274,15 +277,18 @@
   - [ ] Basic enemy with 2-3 attack patterns
   - [ ] Configurable telegraph duration
 
-### T024: Character Animator Controllers [PENDING]
+### T024: Character Animator Controllers [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 3 | **Depends on:** T014
-- **Files:** `Animations/Characters/BaseCharacter.controller`, `Animations/Characters/Brutor.overrideController`, `Slasher.overrideController`, `Mystica.overrideController`, `Viper.overrideController`
-- **Description:** Base Animator Controller with shared state machine (idle, walk, run, strike1-3, finisher, skill, dash, jump, hit, death). 4 Animator Override Controllers with placeholder clips. Animation Events wired for hitbox activation.
+- **Branch:** `shared/T024-animator-controllers` | **Completed:** 2026-03-05
+- **Files:** `Editor/Animation/AnimationBuilder.cs`, `Editor/Animation/AnimationForgeMetadata.cs`, `Editor/Animation/AnimationEventStamper.cs`, `Scripts/Combat/Animation/TomatoFighterAnimatorParams.cs`
+- **Description:** Base Animator Controller with shared state machine (idle, walk, run, 10 attack slots, dash, jump, land, block, guard, hurt, death). 4 Animator Override Controllers with character-specific clips and placeholder generation. AnimationEventStamper pipeline step for hitbox/combo events.
 - **Acceptance:**
-  - [ ] Base controller with all combat states
-  - [ ] 4 override controllers
-  - [ ] Animation Events for hitbox, VFX, SFX timing
-  - [ ] Transition conditions match combat system states
+  - [x] Base controller with all combat states (locomotion, airborne, dash, 10 attack slots, defense, hurt, death)
+  - [x] 4 override controllers (Brutor, Slasher, Mystica, Viper)
+  - [x] Animation Events stamped on attack clips for hitbox, combo window, finisher timing
+  - [x] Transition conditions match combat system states
+  - [x] ERROR logged for metadata animations that don't map to any canonical state
+  - [x] WARNING logged for canonical states with no matching animation (placeholder generated)
 
 ### T025: HUD — Health, Mana, Combo Counter [PENDING]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 3 | **Depends on:** T007
@@ -298,31 +304,33 @@
 ---
 
 ## Phase 3: Defensive Depth + Build Crafting
-> Status: PENDING | Tasks: 0/9 | Weeks: 5-6
+> Status: IN_PROGRESS | Tasks: 2/9 | Weeks: 5-6
 > Goal: Full loop — fight area, pick ritual, select path at shrine, fight boss
 
-### T026: PressureSystem + Stun [PENDING]
+### T026: PressureSystem + Stun [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T016
-- **Files:** `Combat/PressureSystem.cs`
-- **Description:** Hidden pressure meter on enemies. Punish damage fills 2x faster. Full meter → stunned for configurable duration (~3s). During stun: free juggle. After stun: invulnerable recovery (blink white). Camera zoom on stun (fire event). Per-character PRS stat affects fill rate.
+- **Branch:** `combat/T026-pressure-system-stun` | **Completed:** 2026-03-04
+- **Files:** `Shared/Data/DamagePacket.cs`, `Shared/Data/CombatEventData.cs`, `Shared/Interfaces/ICombatEvents.cs`, `Combat/Hitbox/HitboxManager.cs`, `World/EnemyBase.cs`, `Combat/PlayerDamageable.cs`
+- **Description:** Wire StunRate into damage pipeline. DamagePacket carries pre-calculated stunFillAmount (attacker-side). HitboxManager calculates stunFill = damage × stunRate × punishMultiplier. EnemyBase uses packet.stunFillAmount instead of recalculating. StunTriggered/StunRecovered events fired for Camera/UI/Roguelite integration.
 - **Acceptance:**
-  - [ ] Pressure meter per enemy
-  - [ ] Punish multiplier (2x fill rate)
-  - [ ] Stun state with configurable duration
-  - [ ] Invulnerable recovery after stun
-  - [ ] Camera zoom event on stun
-  - [ ] PRS stat integration
+  - [x] Pressure meter per enemy
+  - [x] Punish multiplier (2x fill rate)
+  - [x] Stun state with configurable duration
+  - [x] Invulnerable recovery after stun
+  - [x] Camera zoom event on stun
+  - [x] PRS stat integration
 
-### T027: WallBounce + AirJuggle [PENDING]
+### T027: WallBounce + AirJuggle [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 1 | **Depends on:** T015
-- **Files:** `Combat/WallBounceHandler.cs`, `Combat/JuggleSystem.cs`
+- **Branch:** `combat/T027-wallbounce-airjuggle` | **Completed:** 2026-03-04
+- **Files:** `Combat/Juggle/WallBounceHandler.cs`, `Combat/Juggle/JuggleSystem.cs`, `Shared/Enums/JuggleState.cs`, `Shared/Interfaces/IJuggleTarget.cs`, `Shared/Data/JuggleConfig.cs`
 - **Description:** Wall bounce: detect wall collision during knockback → bounce. Unlimited per combo, minor damage, no extra pressure. Air juggle: track airborne state, Gale element extends airtime. After stun expires → invulnerable landing. OTG vs Tech Hit distinction.
 - **Acceptance:**
-  - [ ] Wall bounce detection and physics
-  - [ ] Unlimited bounces per combo
-  - [ ] Airborne state tracking
-  - [ ] OTG vs Tech Hit distinction
-  - [ ] Gale extension support (via IBuffProvider)
+  - [x] Wall bounce detection and physics
+  - [x] Unlimited bounces per combo
+  - [x] Airborne state tracking
+  - [x] OTG vs Tech Hit distinction
+  - [x] Gale extension support (via IBuffProvider)
 
 ### T028: Path T1 Ability Execution [PENDING]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 1 | **Depends on:** T017, T018

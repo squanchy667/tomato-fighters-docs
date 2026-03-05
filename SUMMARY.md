@@ -22,6 +22,7 @@
 * [Dev 2 Guide — Roguelite](developer/dev2-roguelite-guide.md)
 * [Dev 3 Guide — World](developer/dev3-world-guide.md)
 * [Unity Editor Scripts](developer/unity-editor-scripts.md)
+* [Defense Timing Reference](developer/defense-timing-reference.md)
 
 ## Design Specs
 
@@ -50,6 +51,7 @@
 * [T006: CharacterBaseStats SO](tasks/phase-1/T006-character-base-stats.md)
 * [T007: StatCalculator](tasks/phase-1/T007-stat-calculator.md)
 * [T008: PathData SO](tasks/phase-1/T008-path-data-so.md)
+* [T008: PathData SO (superseded)](tasks/phase-1/T008-path-data-scriptable-object.md)
 * [T009: CurrencyManager](tasks/phase-1/T009-currency-manager.md)
 * [T010: WaveManager](tasks/phase-1/T010-wave-manager.md)
 * [T011: EnemyBase](tasks/phase-1/T011-enemy-base.md)
@@ -65,9 +67,16 @@
 * [T014: ComboSystem — All 4 Characters](tasks/phase-2/T014-ComboSystem-All4Characters.md)
 * [T015: HitboxManager](tasks/phase-2/T015-HitboxManager.md)
 * [T016: DefenseSystem](tasks/phase-2/T016-DefenseSystem.md)
+* [T017: Character Passives](tasks/phase-2/T017-character-passives.md)
 * [T018: PathSystem](tasks/phase-2/T018-path-system.md)
 * [T020: RitualData SO](tasks/phase-2/T020-ritual-data-so.md)
+* [T024: Character Animator Controllers](tasks/phase-2/T024-character-animator-controllers.md)
 * [TCUSTOM: Slasher Prefab + Character Selection](tasks/phase-2/TCUSTOM-SlasherPrefab-CharacterSelection.md)
+
+## Tasks — Phase 3
+
+* [T026: PressureSystem + Stun](tasks/phase-3/T026-pressure-system-stun.md)
+* [T027: WallBounce + AirJuggle](tasks/phase-3/T027-wall-bounce-air-juggle.md)
 
 ## Resources
 
