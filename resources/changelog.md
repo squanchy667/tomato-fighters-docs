@@ -1,5 +1,36 @@
 # Changelog
 
+## [Phase 3] — 2026-03-05 (T032 BossAI Framework — DONE)
+
+### Completed
+- **T032**: BossAI Framework — Phase-based boss AI with companion component pattern
+  - `BossPhaseData.cs`: Serializable phase data (HP% threshold, attack pool, tempo, enrage)
+  - `BossData.cs`: ScriptableObject holding phases array + transition config
+  - `BossAI.cs`: Phase monitor — HP% checks, attack pool swapping, SO event firing
+  - `BossEnemy.cs`: Concrete boss extending EnemyBase, bridges EnemyAI + BossAI
+  - `BossPunishState.cs`: Post-big-attack vulnerability window with visual feedback
+  - `BossPhaseTransitionState.cs`: Invulnerable cinematic pause with sprite blink
+  - `BossPrefabCreator.cs`: Creator Script — TestBoss prefab + 6 AttackData SOs + BossData + EnemyData
+
+### Modified (backwards-compatible)
+- `AttackData.cs`: Added `hasPunishWindow` + `punishWindowDuration` fields
+- `EnemyAI.cs`: Added `GetAvailableAttacks()`, `SetAttackPool()`, `SetTempoMultiplier()`
+- `EnemyBase.cs`: Added `SetInvulnerableExternal()` for phase transition invulnerability
+- `AttackState.cs`: Reads from `GetAvailableAttacks()`, applies tempo multiplier, checks punish window
+
+### Design Decisions
+- DD-1: BossAI as companion component (`[RequireComponent(typeof(EnemyAI))]`), not subclass
+- DD-2: BossPhaseData as `[Serializable]` inline on BossData SO (one asset per boss)
+- DD-3: Punish windows via AttackData flag (per-attack granularity, works for non-bosses too)
+- DD-4: Multi-threshold skip — no cascading through intermediate phases
+- DD-5: Minimal EnemyAI modifications — regular enemies unchanged
+- DD-6: OnBossPhaseChanged VoidEventChannel for camera/UI integration
+
+### Test Boss (3 phases)
+- Phase 1 (100%–60%): 1.0x tempo, BossSlash + BossOverhead
+- Phase 2 (60%–30%): 1.3x tempo, + BossLunge + BossUnstoppableSlam
+- Phase 3 (30%–0%): 1.6x tempo, + BossGroundPound (1.5s punish window), enraged red tint
+
 ## [Integration] — 2026-03-05 (Phase 1 Demo + Playtest)
 
 ### Completed

@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 24/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 25/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -309,7 +309,7 @@
 ---
 
 ## Phase 3: Defensive Depth + Build Crafting
-> Status: IN_PROGRESS | Tasks: 3/10 | Weeks: 5-6
+> Status: IN_PROGRESS | Tasks: 4/10 | Weeks: 5-6
 > Goal: Full loop — fight area, pick ritual, select path at shrine, fight boss
 
 ### T024B: Enemy Animator Controllers [DONE]
@@ -394,16 +394,17 @@
   - [ ] Ritual preview with family color coding
   - [ ] Selection fires event consumed by RitualSystem
 
-### T032: BossAI Framework [PENDING]
+### T032: BossAI Framework [DONE]
 - **Type:** implementation | **Priority:** P0 | **Owner:** Dev 3 | **Depends on:** T022, T026
-- **Files:** `World/BossAI.cs`, `World/BossPhase.cs`, `ScriptableObjects/Enemies/TestBoss.asset`
-- **Description:** Extends EnemyAI with Phase system. Phases transition by HP% thresholds. Each phase: own attack pattern list (SO), new moves, faster tempo. Punish windows after big attacks (configurable duration). Camera zoom on stun. Create one test boss.
+- **Branch:** `pillar3/T032-boss-ai-framework` | **Completed:** 2026-03-05
+- **Files:** `World/BossAI.cs`, `World/BossData.cs`, `World/BossPhaseData.cs`, `World/BossEnemy.cs`, `World/States/BossPunishState.cs`, `World/States/BossPhaseTransitionState.cs`, `Shared/Data/AttackData.cs`, `World/EnemyAI.cs`, `World/EnemyBase.cs`, `World/States/AttackState.cs`, `Editor/Prefabs/BossPrefabCreator.cs`
+- **Description:** Phase-based boss AI as companion component alongside EnemyAI. HP%-threshold phase transitions with per-phase attack pools (SO-driven), tempo multipliers, and enrage visuals. Punish windows via AttackData flags. Phase transition cinematic with invulnerability. OnBossPhaseChanged SO event for camera/UI. Multi-threshold skip (no cascading). TestBoss with 3 phases and 6 AttackData SOs via Creator Script.
 - **Acceptance:**
-  - [ ] Phase system with HP% transitions
-  - [ ] Per-phase attack patterns (SO)
-  - [ ] Punish windows after big attacks
-  - [ ] Camera zoom on stun (event-based)
-  - [ ] One test boss with 2-3 phases
+  - [x] Phase system with HP% transitions
+  - [x] Per-phase attack patterns (SO)
+  - [x] Punish windows after big attacks
+  - [x] Camera zoom on stun (event-based)
+  - [x] One test boss with 2-3 phases
 
 ### T033: Branching Path Navigation [PENDING]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 3 | **Depends on:** T010
