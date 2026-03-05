@@ -1,5 +1,20 @@
 # Changelog
 
+## [Phase 3] — 2026-03-05 (T030 TrinketSystem — DONE)
+
+### Completed
+- **T030**: TrinketSystem — Stat modifier items with multiplicative stacking
+  - `Shared/Enums/ModifierType.cs`: `Flat` / `Percent` enum
+  - `Shared/Enums/TrinketTriggerType.cs`: `Always`, `OnDodge`, `OnKill`, `OnDeflect`, `OnFinisher`
+  - `Shared/Data/TrinketData.cs`: SO with stat, value, type, trigger, duration, icon, description
+  - `Shared/Data/CharacterBaseStats.cs`: Added `GetStat(StatType)` for flat-to-multiplier conversion
+  - `Roguelite/TrinketStackCalculator.cs`: Pure C# calculator — multiplicative stacking (1.1×1.1=1.21), flat→multiplier via `(base+flat)/base`, zero-base guard
+  - `Roguelite/TrinketSystem.cs`: MonoBehaviour — max 5 slots, timed conditional buffs via ICombatEvents, `GetMultipliers()` for StatModifierInput
+  - `Editor/CreateTrinketData.cs`: Creator script with 7 sample trinkets (3 always + 4 conditional)
+  - `Tests/EditMode/Roguelite/TrinketStackCalculatorTests.cs`: 10 NUnit tests — percent stacking, flat conversion, mixed, conditional, cross-stat, zero-base
+
+---
+
 ## [Phase 3] — 2026-03-05 (T029 RitualStackCalculator — DONE)
 
 ### Completed

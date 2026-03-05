@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 28/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 29/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -310,7 +310,7 @@
 ---
 
 ## Phase 3: Defensive Depth + Build Crafting
-> Status: IN_PROGRESS | Tasks: 6/10 | Weeks: 5-6
+> Status: IN_PROGRESS | Tasks: 7/10 | Weeks: 5-6
 > Goal: Full loop — fight area, pick ritual, select path at shrine, fight boss
 
 ### T024B: Enemy Animator Controllers [DONE]
@@ -377,15 +377,16 @@
   - [x] Unit tests with concrete numeric examples
   - [ ] Plain C# class for testability
 
-### T030: TrinketSystem [PENDING]
+### T030: TrinketSystem [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T007
-- **Files:** `Roguelite/TrinketSystem.cs`, `Shared/Data/TrinketData.cs`
+- **Branch:** `roguelite/T030-trinket-system` | **Completed:** 2026-03-05
+- **Files:** `Shared/Enums/ModifierType.cs`, `Shared/Enums/TrinketTriggerType.cs`, `Shared/Data/TrinketData.cs`, `Shared/Data/CharacterBaseStats.cs` (added GetStat), `Roguelite/TrinketStackCalculator.cs`, `Roguelite/TrinketSystem.cs`, `Editor/CreateTrinketData.cs`, `Tests/EditMode/Roguelite/TrinketStackCalculatorTests.cs`
 - **Description:** Stat modifier items found during runs. TrinketData SO: stat type, modifier value, modifier type (flat/percent), condition (always/on-dodge/on-kill/etc.). TrinketSystem manages active trinkets, applies modifiers through CharacterStatCalculator.
 - **Acceptance:**
-  - [ ] TrinketData SO with all fields
-  - [ ] Flat and percentage modifiers
-  - [ ] Conditional triggers
-  - [ ] Integration with CharacterStatCalculator
+  - [x] TrinketData SO with all fields
+  - [x] Flat and percentage modifiers
+  - [x] Conditional triggers
+  - [x] Integration with CharacterStatCalculator
 
 ### T031: RewardSelectorUI [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T021
