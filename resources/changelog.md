@@ -1,5 +1,31 @@
 # Changelog
 
+## [Phase 2] — 2026-03-05 (T024 Character Animator Controllers — DONE)
+
+### Completed
+- **T024**: Character Animator Controllers — Base + Override architecture for all 4 characters
+  - Base controller at `Animations/Base/BaseCharacter_Controller.controller` with full state machine: locomotion (idle/walk/run), airborne (jump/land), dash, 10 attack slots (attack_1–attack_10), defense (block/guard), reaction (hurt/death)
+  - 4 AnimatorOverrideControllers: Mystica, Slasher, Brutor, Viper — character-specific clips mapped to shared state machine
+  - AnimationEventStamper (Step 3 pipeline): stamps ActivateHitbox, DeactivateHitbox, OnComboWindowOpen, OnFinisherEnd from AttackData SO timing
+  - Placeholder clip generation for canonical states without real art (single-frame idle sprite)
+  - Validation: ERROR on unmapped metadata animations, WARNING on missing canonical states
+  - TomatoFighterAnimatorParams updated: attack_1Trigger–attack_10Trigger, blockTrigger, guardTrigger, all state name constants
+  - Character creator scripts updated to load override controllers instead of standalone controllers
+  - CharacterPrefabConfig.animatorController changed from AnimatorController to RuntimeAnimatorController
+
+### Design Decisions
+- **DD-1**: Base + Override pattern — all characters share one state machine, only clips differ
+- **DD-2**: Placeholder clips auto-generated from idle sprite for missing art
+- **DD-3**: 10 generic attack slots (attack_1–attack_10), no semantic naming at controller level
+- **DD-4**: AnimationEventStamper as separate pipeline Step 3 (decoupled from AnimationBuilder)
+- **DD-5**: Base controller uses Mystica's clips as template
+- **DD-6**: Defense + reaction states (block, guard, hurt, death) with trigger-driven transitions
+
+### Notes
+- ComboDefinition animationTrigger strings still use old naming (attack_light_1, etc.) — need updating to attack_1–attack_10 in a follow-up
+- Pipeline order: Import Sprite Sheets → Build Animations → Stamp Animation Events
+- Guard state is looping (stays until interrupted by another trigger via AnyState)
+
 ## [Phase 3] — 2026-03-04 (T027 WallBounce + AirJuggle — DONE)
 
 ### Completed
