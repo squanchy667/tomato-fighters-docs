@@ -19,6 +19,33 @@
 - Phase 2 upgraded to DONE (12/12) — was showing 11/12 but all tasks complete
 - Phase 3 at 6/10 — remaining: T029 (RitualStackCalculator), T030 (TrinketSystem), T033 (BranchingPathNav), T034 (AbilityVFX)
 - Demo limitations: ritual effects don't trigger (needs ICombatEvents wiring), path abilities need IPathProvider wiring, path options always show Brutor's 3 paths
+## [Phase 3] — 2026-03-05 (T030 TrinketSystem — DONE)
+
+### Completed
+- **T030**: TrinketSystem — Stat modifier items with multiplicative stacking
+  - `Shared/Enums/ModifierType.cs`: `Flat` / `Percent` enum
+  - `Shared/Enums/TrinketTriggerType.cs`: `Always`, `OnDodge`, `OnKill`, `OnDeflect`, `OnFinisher`
+  - `Shared/Data/TrinketData.cs`: SO with stat, value, type, trigger, duration, icon, description
+  - `Shared/Data/CharacterBaseStats.cs`: Added `GetStat(StatType)` for flat-to-multiplier conversion
+  - `Roguelite/TrinketStackCalculator.cs`: Pure C# calculator — multiplicative stacking (1.1×1.1=1.21), flat→multiplier via `(base+flat)/base`, zero-base guard
+  - `Roguelite/TrinketSystem.cs`: MonoBehaviour — max 5 slots, timed conditional buffs via ICombatEvents, `GetMultipliers()` for StatModifierInput
+  - `Editor/CreateTrinketData.cs`: Creator script with 7 sample trinkets (3 always + 4 conditional)
+  - `Tests/EditMode/Roguelite/TrinketStackCalculatorTests.cs`: 10 NUnit tests — percent stacking, flat conversion, mixed, conditional, cross-stat, zero-base
+
+---
+
+## [Phase 3] — 2026-03-05 (T029 RitualStackCalculator — DONE)
+
+### Completed
+- **T029**: RitualStackCalculator — Pure math stacking formula
+  - `Roguelite/RitualStackCalculator.cs`: Static class with `Compute()`, `GetLevelMultiplier()`, level constants (1.0/1.5/2.0), integer `Pow()` helper
+  - `Roguelite/RitualSystem.cs`: Updated `ActiveRitualEntry.GetDamageContribution()` to use `RitualStackCalculator.Compute()` with full formula
+  - `Tests/EditMode/Roguelite/RitualStackCalculatorTests.cs`: 9 NUnit tests — level multipliers, formula verification, edge cases (negative stacks, invalid levels)
+
+### Formula
+```
+finalEffect = baseValue × levelMultiplier × (stackingMultiplier ^ currentStacks) × ritualPower
+```
 
 ---
 
