@@ -443,7 +443,7 @@
 - **Files:** `Combat/RepetitiveTracker.cs`
 - **Description:** ~~Track consecutive same-move usage.~~ **CANCELLED** — combo variety is naturally incentivized by the ritual trigger system (ICombatEvents) and path abilities. No artificial penalty needed.
 
-### T036: OTG vs TechHit System [PENDING]
+### T036: OTG vs TechHit System [DONE]
 - **Type:** implementation | **Priority:** P2 | **Owner:** Dev 1 | **Depends on:** T027
 - **Files:** `Combat/OTGSystem.cs`
 - **Description:** Tech Hit: hitting downed enemies — they can recover. OTG: Arcana hits downed enemies, they cannot recover. Distinction critical for combo design. State tracking: airborne → grounded → downed → recovering.

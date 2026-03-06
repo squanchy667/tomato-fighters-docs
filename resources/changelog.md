@@ -1,5 +1,25 @@
 # Changelog
 
+## [Phase 4] — 2026-03-06 (T036 OTG vs TechHit System — DONE)
+
+### Completed
+- **T036**: OTG vs TechHit System — hit-gating logic for downed enemies
+  - `Shared/Interfaces/IJuggleTarget.cs`: Added `NotifyBlockedHit()`, `OnBlockedHit` event, `OnOTGEnd` event
+  - `Combat/Juggle/JuggleSystem.cs`: Implements `NotifyBlockedHit()`, fires `OnBlockedHit` + `OnOTGEnd` on state exit
+  - `Combat/Hitbox/HitboxManager.cs`: OTG/TechRecover hit-gating in `HandleHitDetected()` — blocks non-OTG attacks on OTG targets, blocks all attacks on TechRecover targets
+  - `World/EnemyBase.cs`: Visual feedback — OTG reddish tint, TechRecover white blink, cyan "immune" flash on blocked hits
+
+### Design Decisions Applied
+- DD-1: OTG timer does NOT refresh on hit (fixed combo endpoint window)
+- DD-2: Blocked hits show cyan flash placeholder (upgradeable in T053)
+- DD-3: OTG = reddish tint, TechRecover = white blink loop (distinct visuals)
+- DD-4: `NotifyBlockedHit()` on IJuggleTarget, entity handles own visual feedback
+- DD-5: Scope boundary respected — no particle VFX, no balance tuning
+
+### Notes
+- Phase 4 at 2/10 — T036 (OTG/TechHit) + T037 (T2+T3 abilities) done
+- Added `OnOTGEnd` event to cleanly handle OTG tint removal on relaunch edge case
+
 ## [Phase 3] — 2026-03-06 (T034 Path T1 Ability VFX — DONE)
 
 ### Completed

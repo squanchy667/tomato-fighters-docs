@@ -89,6 +89,12 @@
 * [T028: Path T1 Ability Execution](tasks/phase-3/T028-path-t1-ability-execution.md)
 * [T031: RewardSelectorUI](tasks/phase-3/T031-reward-selector-ui.md)
 * [T032: BossAI Framework](tasks/phase-3/T032-boss-ai-framework.md)
+* [T034: Path T1 Ability VFX](tasks/phase-3/T034-path-t1-ability-vfx.md)
+
+## Tasks — Phase 4
+
+* [T036: OTG vs TechHit System](tasks/phase-4/T036-otg-vs-techhit.md)
+* [T037: Path T2 + T3 Ability Execution](tasks/phase-4/T037-path-t2-ability-ultimates.md)
 
 ## Resources
 
