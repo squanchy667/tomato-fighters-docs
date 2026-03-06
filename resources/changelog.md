@@ -1,5 +1,25 @@
 # Changelog
 
+## [Phase 3] — 2026-03-06 (T034 Path T1 Ability VFX — DONE)
+
+### Completed
+- **T034**: Path T1 Ability VFX — 12 VFX prefabs + data-driven lookup
+  - `Shared/Data/AbilityVfxLookup.cs`: SO mapping abilityId → vfxPrefab, with lazy dictionary lookup
+  - `Editor/AbilityVfxCreator.cs`: Creator Script generating 12 VFX prefabs via `ParticleSystemApplier` + lookup SO
+  - `Characters/Abilities/PathAbilityContext.cs`: Added `VfxPrefab` property for per-ability VFX injection
+  - `Characters/PathAbilityExecutor.cs`: Added `vfxLookup` field, `CreateAbilityWithVfx()` helper
+  - All 12 T1 abilities modified with VFX spawn calls:
+    - Burst (fire-and-forget): Provoke, CleavingStrikes, PhaseDash, SummonSproutling, HarpoonShot
+    - Sustained (instantiate/destroy on toggle): IronGuard, MendingAura, Empower, PiercingShots, ManaCharge
+    - Target-placed: MarkForDeath (VFX at enemy position for mark duration)
+  - ManaCharge scales VFX emission rate proportional to `ChargePercent`
+  - Color-coded: Orange/Brutor, Crimson/Slasher, Emerald/Mystica, Gold/Viper
+
+### Notes
+- Phase 3 at 8/10 — remaining: T033 (BranchingPathNav), T034 now DONE
+- Phase 4 at 1/10 — T037 (T2+T3 abilities) done previously
+- ShieldLink VFX is placeholder glow (no co-op ally target system yet — awaiting T051)
+
 ## [Phase 3] — 2026-03-05 (Phase 3 Demo Scene Complete)
 
 ### Completed

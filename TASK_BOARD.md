@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 32/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 33/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -310,7 +310,7 @@
 ---
 
 ## Phase 3: Defensive Depth + Build Crafting
-> Status: IN_PROGRESS | Tasks: 7/10 | Weeks: 5-6
+> Status: IN_PROGRESS | Tasks: 8/10 | Weeks: 5-6
 > Goal: Full loop — fight area, pick ritual, select path at shrine, fight boss
 
 ### T024B: Enemy Animator Controllers [DONE]
@@ -421,20 +421,21 @@
   - [ ] Fork choice interaction
   - [ ] Node type icons/colors
 
-### T034: Path T1 Ability VFX [PENDING]
+### T034: Path T1 Ability VFX [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 3 | **Depends on:** T028
-- **Files:** `Prefabs/Effects/Abilities/*.prefab`
+- **Branch:** `world/T034-path-t1-ability-vfx` | **Merged:** 2026-03-06 → `tal`
+- **Files:** `Shared/Data/AbilityVfxLookup.cs`, `Editor/AbilityVfxCreator.cs`, `Prefabs/Effects/Abilities/*.prefab`, 12 T1 ability files, `Characters/PathAbilityExecutor.cs`, `Characters/Abilities/PathAbilityContext.cs`
 - **Description:** Visual effects for all 12 T1 path abilities. Brutor: taunt pulse, shield glow, link beam. Slasher: mark indicator, cleave arc, afterimage trail. Mystica: heal particles, buff glow, sproutling spawn. Viper: pierce trail, harpoon chain, charge buildup.
 - **Acceptance:**
-  - [ ] 12 VFX prefabs (one per T1 ability)
-  - [ ] Particle systems + sprite effects
-  - [ ] Color-coded per character
-  - [ ] Performance: max 50 particles per effect
+  - [x] 12 VFX prefabs (one per T1 ability)
+  - [x] Particle systems + sprite effects
+  - [x] Color-coded per character
+  - [x] Performance: max 50 particles per effect
 
 ---
 
 ## Phase 4: Advanced Combat + Meta-Progression
-> Status: PENDING | Tasks: 0/10 | Weeks: 7-8
+> Status: IN_PROGRESS | Tasks: 1/10 | Weeks: 7-8
 > Goal: Complete run from hub → 2 areas → boss → hub with path progress saved
 
 ### T035: RepetitiveTracker — Anti-Spam [CANCELLED]

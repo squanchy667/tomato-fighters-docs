@@ -1,7 +1,7 @@
 # T034: Path T1 Ability VFX
 
 **Type:** implementation | **Priority:** P1 | **Owner:** Dev 3 | **Depends on:** T028
-**Status:** PENDING
+**Status:** DONE | **Completed:** 2026-03-06 | **Branch:** `world/T034-path-t1-ability-vfx`
 
 ## Summary
 
