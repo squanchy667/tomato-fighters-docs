@@ -1,5 +1,22 @@
 # Changelog
 
+## [Phase 4] — 2026-03-06 (T038 MetaProgression + SoulTree — DONE)
+
+### Completed
+- **T038**: MetaProgression + SoulTree — persistent between-run upgrade system
+  - `Shared/Interfaces/IMetaProvider.cs`: Cross-pillar contract (`GetSoulTreeBonus`, `HasSpecialUnlock`)
+  - `Shared/Data/SoulTreeNodeData.cs`: SO defining a single node (stat bonus or special unlock)
+  - `Shared/Data/SoulTreeConfig.cs`: SO containing all tree nodes
+  - `Shared/Enums/SoulTreeNodeType.cs`: `StatBonus` / `SpecialUnlock` enum
+  - `Roguelite/SoulTree.cs`: Pure C# logic — unlock tracking, additive stacking (DD-2), prerequisite validation (DD-1)
+  - `Roguelite/MetaProgression.cs`: MonoBehaviour manager implementing IMetaProvider, owns SoulTree + CurrencyManager
+  - `Roguelite/MetaProgressionData.cs`: Serializable struct for T039 save/load
+  - `Editor/SoulTreeAssetCreator.cs`: Menu item generating 12 default nodes (9 stat + 3 special) + config SO
+  - `Tests/EditMode/Roguelite/SoulTreeTests.cs`: 18 NUnit tests — stacking math, unlock flow, prerequisites, save/load
+  - Default nodes: hp_1/2/3, atk_1/2, def_1/2, spd_1/2, third_ritual, self_revive, rare_chance
+
+---
+
 ## [Phase 4] — 2026-03-05 (T048 All 8 Ritual Families — DONE)
 
 ### Completed

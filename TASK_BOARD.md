@@ -1,6 +1,6 @@
 # Tomato Fighters — Task Board
 
-> 32/60 tasks DONE | 6 phases | 3 developers + AgentPilot
+> 33/60 tasks DONE | 6 phases | 3 developers + AgentPilot
 
 ---
 
@@ -467,16 +467,16 @@
   - [ ] T3 gated by Main path check
   - [ ] Cooldowns, mana costs, durations per spec
 
-### T038: MetaProgression + SoulTree [PENDING]
+### T038: MetaProgression + SoulTree [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T009
-- **Files:** `Roguelite/MetaProgression.cs`, `Roguelite/SoulTree.cs`
+- **Files:** `Shared/Interfaces/IMetaProvider.cs`, `Shared/Data/SoulTreeNodeData.cs`, `Shared/Data/SoulTreeConfig.cs`, `Shared/Enums/SoulTreeNodeType.cs`, `Roguelite/SoulTree.cs`, `Roguelite/MetaProgression.cs`, `Roguelite/MetaProgressionData.cs`, `Editor/SoulTreeAssetCreator.cs`, `Tests/EditMode/Roguelite/SoulTreeTests.cs`
 - **Description:** Persistent between runs. Soul Tree: health+, damage+, self-revives, rare chance, 3rd ritual choice. Currencies: Crystals (carry over), Imbued Fruits, Primordial Seeds. Unlock nodes with crystals. Modular tree — not rigid branching.
 - **Acceptance:**
-  - [ ] Soul Tree with unlockable nodes
-  - [ ] Crystal cost per node
-  - [ ] Stat bonuses applied through CharacterStatCalculator
-  - [ ] 3rd ritual choice upgrade
-  - [ ] Persistence between runs
+  - [x] Soul Tree with unlockable nodes
+  - [x] Crystal cost per node
+  - [x] Stat bonuses applied through CharacterStatCalculator
+  - [x] 3rd ritual choice upgrade
+  - [x] Persistence between runs
 
 ### T039: SaveSystem [PENDING]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T038
