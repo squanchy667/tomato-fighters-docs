@@ -478,7 +478,7 @@
   - [x] 3rd ritual choice upgrade
   - [x] Persistence between runs
 
-### T039: SaveSystem [PENDING]
+### T039: SaveSystem [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T038
 - **Files:** `Roguelite/SaveSystem.cs`, `Shared/Data/MetaProgressionData.cs`
 - **Description:** JSON serialization to Application.persistentDataPath. Stores: MetaProgressionData (currencies, soul tree, unlocks), per-character unlocks (arcanas, inspirations), quest state, run history.
@@ -488,7 +488,7 @@
   - [ ] Per-character unlock tracking
   - [ ] Save versioning for future migrations
 
-### T040: HubManager — Between-Run Base [PENDING]
+### T040: HubManager — Between-Run Base [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T038, T039
 - **Files:** `Roguelite/HubManager.cs`
 - **Description:** The between-run hub area. Character selection (4 characters with stat preview). Arcana selection. Soul Tree access. NPC interactions (unlock rituals, inspirations). Shop. Quest board. Loads save data on enter.
@@ -498,7 +498,7 @@
   - [ ] NPC interaction framework
   - [ ] Save data loaded on hub enter
 
-### T041: InspirationSystem [PENDING]
+### T041: InspirationSystem [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T018
 - **Files:** `Roguelite/InspirationSystem.cs`, `Shared/Data/InspirationData.cs`, `ScriptableObjects/Inspirations/**`
 - **Description:** Character-specific move unlocks. InspirationData SO: character, path, description, modifier type. 24 total (6 per character, 2 per path). Dropped from minibosses. Some permanently unlockable via Seeds.
@@ -564,7 +564,7 @@
   - [ ] 2nd arcana unlock mid-run
   - [ ] Per-character arcana options
 
-### T047: Twin Rituals [PENDING]
+### T047: Twin Rituals [DONE]
 - **Type:** implementation | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T029
 - **Files:** `Roguelite/TwinRitualSystem.cs`, `ScriptableObjects/Rituals/Twins/*.asset`
 - **Description:** Cross-family ritual combinations. Require both families present. Fire+Lightning = Thunder Burn. Fire+Thorn = Burning Brambles. Create 4-6 Twin Ritual assets. Unlockable via hub NPC.
@@ -584,7 +584,7 @@
   - [x] All trigger-effect links defined via effectId
   - [x] Level 1-3 power values balanced per category template
 
-### T049: Ritual Balance Pass [PENDING]
+### T049: Ritual Balance Pass [DONE]
 - **Type:** refactor | **Priority:** P1 | **Owner:** Dev 2 | **Depends on:** T048
 - **Files:** All ritual ScriptableObject assets
 - **Description:** Test synergy combinations. No single ritual should be strictly dominant. Twin rituals should feel rewarding but not required. Path-ritual interactions should create interesting choices (not obvious best combos).
